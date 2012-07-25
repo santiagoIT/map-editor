@@ -1,0 +1,40 @@
+<button id="btnHome" class="btn btn-primary">EXIT</button>
+<select id="maps"></select>
+<button id="btnEditMap" class="btn">Edit Map</button>
+
+<div class="well">
+    <form id="frmNewMap">
+        <fieldset>
+            <legend>Create new map</legend>
+            <div class="control-group">
+                <label class="control-label" for="name">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="imageWidth">Image width (pixels)</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="imageWidth">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="imageHeight">Image height (pixels)</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="imageHeight">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="fileInput">Image File</label>
+                <div class="controls">
+                    <input class="input-file" id="fileInput" type="file">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="btnSaveMap">Save Map</button>
+                <button class="btn">Cancel</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+

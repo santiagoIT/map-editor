@@ -5,17 +5,18 @@ define([
     'require',
     'text!views/node-editor.html',
     'models/mapModel',
+    'collections/maps',
     'biz/node-editor-canvas-helper',
     'pathfinder',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, require, html, MapModel, canvasHelper, PF){
+    function($, _, Backbone, require, html, MapModel, maps, canvasHelper, PF){
 
-    var nodeEditorView = Backbone.View.extend({
+    var NodeEditorView = Backbone.View.extend({
         el: $('#itworks-app'),
-        model:new MapModel(),
         events : {
             'click #btnHome' : "navigateHome",
+            'click btnSave' : "onSaveMap",
             'click #btnChangeMesh' : "changeMesh",
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
@@ -32,12 +33,18 @@ define([
         _canvasHelper : canvasHelper,
         _editorMode : null,
 
-        initialize : function() {
+        initialize : function(mapid) {
             console.log('editor-view initialize');
             this.$el.html(html);
 
             var
                 self = this;
+
+            this.model = new MapModel({id:mapid});
+            this.model.fetch();
+
+            console.log('Fetched model: ' + mapid);
+            console.log(this.model);
 
             // set queryMap
             this.jqueryMap.$btnHome = $('#btnHome');
@@ -222,6 +229,11 @@ define([
             this._editorMode = $("input:radio[name=editor-mode]:checked").val();
         },
 
+        onSaveMap : function() {
+
+            this.model.save();
+        },
+
         changeMesh : function(){
             var columnCount = this.jqueryMap.$columnCount.val();
             var rowCount = this.jqueryMap.$rowCount.val();
@@ -254,5 +266,5 @@ define([
     });
     // Our module now returns an instantiated view
     // Sometimes you might return an un-instantiated view e.g. return projectListView
-    return nodeEditorView;
+    return NodeEditorView;
 });

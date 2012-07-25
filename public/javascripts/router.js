@@ -3,14 +3,16 @@ define([
     'Underscore',
     'backbone',
     'views/node-editor',
-    'views/home'
-], function ($, _, Backbone, NodeEditorView, homeView) {
+    'views/home',
+    'views/maps'
+], function ($, _, Backbone, NodeEditorView, HomeView, MapView) {
 
     var AppRouter = Backbone.Router.extend({
         routes:{
             // Define some URL routes
             '' : 'showHome',
-            'node-editor':'showNodeEditor',
+            'node-editor/:mapid':'showNodeEditor',
+            'maps':'showMaps',
 
             // Default
             '*actions':'defaultAction'
@@ -18,12 +20,18 @@ define([
 
         showHome : function(){
             console.log('show home');
-            homeView.render();
+            var hmView = new HomeView();
+            hmView.render();
         },
 
-        showNodeEditor:function () {
-            var view = new NodeEditorView();
-            console.log('showNodeEditor');
+        showMaps : function(){
+            console.log('show home');
+            var mapView = new MapView();
+            //mapView.initialize();
+        },
+
+        showNodeEditor:function (mapid) {
+            var view = new NodeEditorView(mapid);
             view.render();
         },
 

@@ -29,6 +29,7 @@ define([
             blockedNodes : [],
             targetNode : null
         },
+        urlRoot : 'api/maps',
 
         setGridSize: function(columnCount, rowCount){
             this.set('columnCount', columnCount);
