@@ -1,17 +1,17 @@
 define([
     'Underscore',
     'backbone'
-], function(_, Backbone){
+], function (_, Backbone) {
     var mapModel = Backbone.Model.extend({
-        defaults: {
+        defaults:{
             // grid layout
-            columnCount: 10,
-            rowCount: 10,
+            columnCount:10,
+            rowCount:10,
 
             // map info
-            imageName : 'map1.jpg',
-            imageWidth : 500,
-            imageHeight: 386,
+            imageName:'map1.jpg',
+            imageWidth:100,
+            imageHeight:100,
 
             // margins
             top:32,
@@ -20,47 +20,47 @@ define([
             right:100,
 
             // marker location
-            markerNode : {
+            markerNode:{
                 row:0,
                 column:0
             },
 
             // paths
-            blockedNodes : [],
-            targetNode : null
+            blockedNodes:[],
+            targetNode:null
         },
-        urlRoot : 'api/maps',
+        urlRoot:'api/maps',
 
-        setGridSize: function(columnCount, rowCount){
+        setGridSize:function (columnCount, rowCount) {
             this.set('columnCount', columnCount);
             this.set('rowCount', rowCount);
             this.trigger('gridLayoutChanged');
             return true;
         },
-        setMarkerLocation : function(row, column) {
+        setMarkerLocation:function (row, column) {
             this.set('markerNode', {row:row, column:column});
             this.trigger('DataChanged');
         },
-        toggleNode : function(row, column) {
+        toggleNode:function (row, column) {
             var nodes = this.get('blockedNodes');
-            for(var index in nodes){
-               if (nodes[index].row === row && nodes[index].column===column){
-                   // remove it!
-                   nodes.splice(index,1);
-                   this.set('blockedNodes', nodes);
-                   this.trigger('change:blockedNodes');
-                   return 1;
-               }
+            for (var index in nodes) {
+                if (nodes[index].row === row && nodes[index].column === column) {
+                    // remove it!
+                    nodes.splice(index, 1);
+                    this.set('blockedNodes', nodes);
+                    this.trigger('change:blockedNodes');
+                    return 1;
+                }
             }
             nodes.push({row:row, column:column});
             this.set('blockedNodes', nodes);
             this.trigger('change:blockedNodes');
             return 0;
         },
-        blockNode : function(row, column) {
+        blockNode:function (row, column) {
             var nodes = this.get('blockedNodes');
-            for(var index in nodes){
-                if (nodes[index].row === row && nodes[index].column===column){
+            for (var index in nodes) {
+                if (nodes[index].row === row && nodes[index].column === column) {
                     // already blocked
                     return;
                 }
@@ -70,12 +70,12 @@ define([
             this.set('blockedNodes', nodes);
             this.trigger('change:blockedNodes');
         },
-        clearNode : function(row, column) {
+        clearNode:function (row, column) {
             var nodes = this.get('blockedNodes');
-            for(var index in nodes){
-                if (nodes[index].row === row && nodes[index].column===column){
+            for (var index in nodes) {
+                if (nodes[index].row === row && nodes[index].column === column) {
                     // remove it!
-                    nodes.splice(index,1);
+                    nodes.splice(index, 1);
                     this.set('blockedNodes', nodes);
                     this.trigger('change:blockedNodes');
                     return;
@@ -83,60 +83,40 @@ define([
             }
         },
 
-        blockAll : function(){
+        blockAll:function () {
             var columnQty = this.get('columnCount');
             var rowQty = this.get('rowCount');
             var nodes = [];
             for (var i = 0; i < rowQty; i++) {
-                for (var j=0; j < columnQty; j++){
-                    nodes.push({row:i, column: j})
+                for (var j = 0; j < columnQty; j++) {
+                    nodes.push({row:i, column:j})
                 }
             }
             this.set('blockedNodes', nodes);
             this.trigger('change:blockedNodes');
         },
 
-        clearAll : function(){
+        clearAll:function () {
             this.set('blockedNodes', []);
             this.trigger('change:blockedNodes');
         },
 
-        getMargins : function(){
+        getMargins:function () {
             return {
-                top: this.get('top'),
-                left: this.get('left'),
-                bottom: this.get('bottom'),
-                right: this.get('right')
+                top:this.get('top'),
+                left:this.get('left'),
+                bottom:this.get('bottom'),
+                right:this.get('right')
             }
         },
 
-        setMargins : function(top, left, bottom, right){
-            this.set('top',top);
-            this.set('left',left);
-            this.set('bottom',bottom);
-            this.set('right',right);
+        setMargins:function (top, left, bottom, right) {
+            this.set('top', top);
+            this.set('left', left);
+            this.set('bottom', bottom);
+            this.set('right', right);
             this.trigger('gridLayoutChanged');
             return true;
-        },
-
-        testSubmit : function($form){
-            console.log('the form');
-            console.log(form);
-            var formData = new FormData(form);
-
-            formData.append('secret_token', '1234567890'); // Append extra data before send.
-            console.log('formData');
-            console.log(formData);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', this.urlRoot, true);
-            xhr.onload = function(e) {
-                console.log('xhr. loaded');
-            };
-
-            xhr.send(formData);
-
-            return false; // Prevent page from submitting.
         }
     });
     // You usually don't return a model instantiated

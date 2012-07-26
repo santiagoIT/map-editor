@@ -2,18 +2,19 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'views/map.canvas',
     'require',
     'text!views/node-editor.html',
     'models/mapModel',
     'collections/maps',
-    'biz/node-editor-canvas-helper',
-    'pathfinder',
+    'biz/mapCanvasState',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, require, html, MapModel, maps, canvasHelper, PF){
+    function($, _, Backbone, CanvasMapView, require, html, MapModel, maps, state){
 
     var NodeEditorView = Backbone.View.extend({
         el: $('#itworks-app'),
+        canvasView : null,
         events : {
             'click #btnHome' : "navigateHome",
             'click btnSave' : "onSaveMap",
@@ -21,17 +22,10 @@ define([
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
             'click #btnClearAll' : "clearAll",
-            'click #canvas' : "onCanvasClick",
-            'mousemove #canvas' : "onCanvasMouseMove",
-            'mousedown #canvas' : "onCanvasMouseDown",
-            'mouseup #canvas' : "onCanvasMouseUp",
-            'mouseout #canvas' : "onCanvasMouseOut",
             'click [name="editor-mode"]' : "onEditorModeSwitched"
         },
 
         jqueryMap:{},
-        _canvasHelper : canvasHelper,
-        _editorMode : null,
 
         initialize : function(mapid) {
             console.log('editor-view initialize');
@@ -43,12 +37,14 @@ define([
             this.model = new MapModel({id:mapid});
             this.model.fetch();
 
+            this.canvasView = new CanvasMapView(this.model, state);
+            $('#canvasContainer').append(this.canvasView.el);
+
             console.log('Fetched model: ' + mapid);
             console.log(this.model);
 
             // set queryMap
             this.jqueryMap.$btnHome = $('#btnHome');
-            this.jqueryMap.$canvas = $('#canvas');
             this.jqueryMap.$nodeInfo = $('#nodeInfo');
             this.jqueryMap.$marginTop = $('#marginTop');
             this.jqueryMap.$marginLeft = $('#marginLeft');
@@ -78,29 +74,17 @@ define([
                 self.navigateHome();
             });
 
-            // size canvas
-            this.jqueryMap.$canvas.attr('height', this.model.get('imageHeight')).attr('width', this.model.get('imageWidth'));
-
-            // set background
-            this.jqueryMap.$canvas.css('background-image', 'url("data/images/' + this.model.get('imageName') + '")'); // Set source path
-
-            // init canvas helper
-            this._canvasHelper.initialize(this.model, this.jqueryMap.$canvas);
-
             // set editor mode
             this.onEditorModeSwitched();
 
-            // bind events
-            this.model.on('change:targetNode', this.doPathfinding, this);
+
             this.model.on('gridLayoutChanged', this.displayMapMetaData, this);
 
             this.displayMapMetaData();
         },
 
-
         render: function() {
             console.log('editor-view render');
-            this._canvasHelper.refresh();
         },
 
         displayMapMetaData : function() {
@@ -113,30 +97,6 @@ define([
             // grid size
             this.jqueryMap.$columnCount.val(this.model.get('columnCount'));
             this.jqueryMap.$rowCount.val(this.model.get('rowCount'));
-        },
-
-        doPathfinding : function() {
-            var node = this.model.get('markerNode');
-            var target = this.model.get('targetNode');
-            if (!(node && target)){
-                return;
-            }
-
-            var grid = new PF.Grid(this.model.get('columnCount'), this.model.get('rowCount'));
-            // block cells
-            var blockedNodes = this.model.get('blockedNodes');
-            for (var i in blockedNodes){
-                grid.setWalkableAt(blockedNodes[i].column, blockedNodes[i].row, false);
-            }
-            var finder = new PF.AStarFinder();
-            var path = finder.findPath(node.column, node.row, target.column, target.row, grid);
-            if (path){
-                path.splice(0,1);
-                path.splice(-1,1);
-                for (var key in path){
-                    this._canvasHelper.highlight({row:path[key][1], column:path[key][0]});
-                }
-            }
         },
 
         blockAll : function(){
@@ -153,80 +113,9 @@ define([
             });
         },
 
-        displayNodeInfo : function(node) {
-            if (node) {
-                this.jqueryMap.$nodeInfo.html('['+node.column + ','+node.row+']')
-            }
-            else {
-                this.jqueryMap.$nodeInfo.html('-');
-            }
-        },
-
-        onCanvasClick : function(e){
-            var node;
-            switch(this._editorMode){
-                case 'markerLocation':
-                    node = this._canvasHelper.getMatrixPosition(e.pageX, e.pageY);
-                    if (node) {
-                        this.model.setMarkerLocation(node.row, node.column);
-                        this.displayNodeInfo(node);
-                    }
-                    break;
-
-                case 'pathfinding':
-                    node = this._canvasHelper.getMatrixPosition(e.pageX, e.pageY);
-                    if (node) {
-                        this.model.set('targetNode', node);
-                        this.displayNodeInfo(node);
-                    }
-                    break;
-
-                case 'nodeInfo':
-                    node = this._canvasHelper.getMatrixPosition(e.pageX, e.pageY);
-                    this.displayNodeInfo(node);
-                break;
-            }
-        },
-
-        onCanvasMouseMove : function(e) {
-            if (this._editorMode === 'toggleNode') {
-                if (this._mouseDown !== undefined){
-                    var node = this._canvasHelper.getMatrixPosition(e.pageX, e.pageY);
-                    if (node) {
-                        if (this._mouseDown) {
-                            this.model.clearNode(node.row, node.column);
-                        }
-                        else {
-                            this.model.blockNode(node.row, node.column);
-                        }
-                    }
-                }
-            }
-        },
-
-        onCanvasMouseDown : function (e) {
-            if (this._editorMode === 'toggleNode'){
-                var node = this._canvasHelper.getMatrixPosition(e.pageX, e.pageY);
-                if (node) {
-                    this._mouseDown = this.model.toggleNode(node.row, node.column);
-                }
-            }
-        },
-
-        onCanvasMouseUp : function(e) {
-            if (this._mouseDown !== undefined){
-                delete this._mouseDown;
-            }
-        },
-
-        onCanvasMouseOut : function(e) {
-            if (this._mouseDown){
-                delete this._mouseDown;
-            }
-        },
-
         onEditorModeSwitched : function(e){
-            this._editorMode = $("input:radio[name=editor-mode]:checked").val();
+            var editorMode = $("input:radio[name=editor-mode]:checked").val();
+            state.setEditorMode(editorMode);
         },
 
         onSaveMap : function() {

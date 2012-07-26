@@ -8,20 +8,20 @@ define([
     'collections/maps',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
-    function($, _, Backbone, require, html, MapModel, maps){
+    function ($, _, Backbone, require, html, MapModel, maps) {
 
         var MapsView = Backbone.View.extend({
-            el: $('#itworks-app'),
-            collection :maps,
-            events : {
-                'click #btnHome' : "navigateHome",
-                'click #btnSaveMap' : "saveMap",
-                'click #btnEditMap' : "onEditMap"
+            el:$('#itworks-app'),
+            collection:maps,
+            events:{
+                'click #btnHome':"navigateHome",
+                'click #btnSaveMap':"saveMap",
+                'click #btnEditMap':"onEditMap"
             },
 
             jqueryMap:{},
 
-            initialize : function() {
+            initialize:function () {
                 console.log('MapsView initialize');
                 this.$el.html(html);
 
@@ -33,7 +33,7 @@ define([
                 this.jqueryMap.$maps = $('#maps');
 
                 // event handlers
-                this.jqueryMap.$btnHome.on('click', function(){
+                this.jqueryMap.$btnHome.on('click', function () {
                     self.navigateHome();
                 });
 
@@ -44,54 +44,65 @@ define([
                 this.collection.fetch();
             },
 
-            render: function() {
+            render:function () {
                 // reset select
                 this.jqueryMap.$maps.empty();
 
                 // insert collection
-                for (var i = 0; i < this.collection.length; i++){
+                for (var i = 0; i < this.collection.length; i++) {
                     var map = this.collection.at(i);
                     console.log(map);
-                    this.jqueryMap.$maps.append($('<option>', { value : map.get('_id') })
+                    this.jqueryMap.$maps.append($('<option>', { value:map.get('_id') })
                         .text(map.get('name')));
                 }
             },
 
-            navigateHome : function() {
-                require(['itworks.app'], function(app){
+            navigateHome:function () {
+                require(['itworks.app'], function (app) {
                     app.Router.navigate('', {trigger:true});
                 });
             },
 
-            saveMap : function(){
-                var map = new MapModel();
-                var $form = $('#frmNewMap');
-                map.set('name', $form.find('#name').val());
-                map.set('imageWidth', $form.find('#imageWidth').val());
-                map.set('imageHeight', $form.find('#imageHeight').val());
+            saveMap:function () {
+                var self = this;
+                var persistMap = function (imageName, $form) {
 
-                $.ajax('api/maps', {
-                    type:"POST",
-                    data: $("input:text", $form).serializeArray(),
-                    files: $("input:file", $form),
-                    iframe: true,
-                    processData: false
-                }).complete(function(data) {
-                        console.log(data);
-                    });
+                    var map = new MapModel();
 
+                    map.set('name', $form.find('#name').val());
+                    map.set('imageWidth', $form.find('#imageWidth').val());
+                    map.set('imageHeight', $form.find('#imageHeight').val());
+                    map.set('imageName', imageName);
 
+                    map.save();
 
+                    self.collection.add(map);
+                }
 
-               /* map.save();
-                this.collection.add(map);  */
-                return false;
+               this.uploadImage($('#frmNewMap'), persistMap);
+
+               return false;
             },
 
-            onEditMap : function() {
+            uploadImage:function ($form, callback) {
+
+                $.ajax('api/uploadmapimage', {
+                    type:"POST",
+                    data:$("input:text", $form).serializeArray(),
+                    files:$("input:file", $form),
+                    dataType: 'json',
+                    iframe:true,
+                    processData:false
+                }).done(function (data) {
+                        callback(data.imagename, $form);
+                    });
+                // TODO handle failure
+            },
+
+            onEditMap:function () {
                 var id = this.jqueryMap.$maps.find('option:selected').val();
-                require(['itworks.app'], function(app){
-                    app.Router.navigate('node-editor/'+id, {trigger:true});
+                require(['itworks.app'], function (app) {
+                    app.Router.navigate('node-editor/' + id, {trigger:true});
                 });
                 return false;
             }
