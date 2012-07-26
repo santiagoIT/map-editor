@@ -117,6 +117,26 @@ define([
             this.set('right',right);
             this.trigger('gridLayoutChanged');
             return true;
+        },
+
+        testSubmit : function($form){
+            console.log('the form');
+            console.log(form);
+            var formData = new FormData(form);
+
+            formData.append('secret_token', '1234567890'); // Append extra data before send.
+            console.log('formData');
+            console.log(formData);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', this.urlRoot, true);
+            xhr.onload = function(e) {
+                console.log('xhr. loaded');
+            };
+
+            xhr.send(formData);
+
+            return false; // Prevent page from submitting.
         }
     });
     // You usually don't return a model instantiated

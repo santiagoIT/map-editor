@@ -5,7 +5,8 @@ define([
     'require',
     'text!views/maps.html',
     'models/mapModel',
-    'collections/maps'
+    'collections/maps',
+    'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
     function($, _, Backbone, require, html, MapModel, maps){
 
@@ -68,8 +69,22 @@ define([
                 map.set('name', $form.find('#name').val());
                 map.set('imageWidth', $form.find('#imageWidth').val());
                 map.set('imageHeight', $form.find('#imageHeight').val());
-                map.save();
-                this.collection.add(map);
+
+                $.ajax('api/maps', {
+                    type:"POST",
+                    data: $("input:text", $form).serializeArray(),
+                    files: $("input:file", $form),
+                    iframe: true,
+                    processData: false
+                }).complete(function(data) {
+                        console.log(data);
+                    });
+
+
+
+
+               /* map.save();
+                this.collection.add(map);  */
                 return false;
             },
 

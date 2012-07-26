@@ -3,17 +3,19 @@
  * Module dependencies.
  */
 
-
-console.log('SB SB ' + );
-
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , knox = require('knox')
+  , fs = require('fs')
+  ;
 
 
 // mongodb
 mongoose.connect(process.env.MONGODB_CONNSTR);
+
+console.log(process.env.MONGODB_CONNSTR);
 
 // define schema
 var Schema = mongoose.Schema,
@@ -73,10 +75,35 @@ app.get('/api/maps', function(req, res){
     });
 });
 
-app.post('/api/maps', function(req, res){
+app.post('/api/maps', function(req, res, next){
     var map;
     console.log("POST: ");
     console.log(req.body);
+    console.log('req.files.image.name: '+ req.files.image.name);
+
+
+    var imageFile = req.files.image;
+    console.log(imageFile);
+    var fn = imageFile.path;
+    console.log('fn: ' + fn);
+    var client = knox.createClient({
+        key: process.env.AWS_ACCESS_KEY
+        , secret: process.env.AWS_SECRET_ACCESS_KEY
+        , bucket: 'itworks.ec'
+    });
+    fs.readFile(fn, function(err, buf){
+        var req = client.put('/test/'+imageFile.name, {
+            'Content-Length': buf.length
+            ,  'Content-Type': imageFile.type
+        });
+        req.on('response', function(res){
+            if (200 == res.statusCode) {
+                console.log('saved to %s', req.url);
+            }
+        });
+        req.end(buf);
+    });
+
     map = new MapModel({
         name: req.body.name,
         imageWidth: req.body.imageWidth,
@@ -89,6 +116,7 @@ app.post('/api/maps', function(req, res){
             return console.log(err);
         }
     });
+
     return res.send(map);
 });
 
@@ -132,6 +160,27 @@ app.delete('/api/maps/:id', function (req, res){
     });
 });
 
+
+app.get('/api/test', function (req, res){
+
+    var client = knox.createClient({
+        key: process.env.AWS_ACCESS_KEY
+        , secret: process.env.AWS_SECRET_ACCESS_KEY
+        , bucket: 'itworks.ec'
+    });
+    fs.readFile('Readme.md', function(err, buf){
+        var req = client.put('/test/Readme.md', {
+            'Content-Length': buf.length
+            ,  'Content-Type': 'text/plain'
+        });
+        req.on('response', function(res){
+            if (200 == res.statusCode) {
+                console.log('saved to %s', req.url);
+            }
+        });
+        req.end(buf);
+    });
+});
 
 
 var port = process.env.PORT || 5000;
