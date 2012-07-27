@@ -30,24 +30,17 @@ define([
                 this.model.on('change', this.render, this);
 
                 // bind events
+                this.state.on('change:targetNode', this.doPathfinding, this);
+                this.state.on('change:markerNode change:targetNode', this.nodeInfoView.showNode, this.nodeInfoView);
+
                 this.model.on('GridSizeChanged', this.refresh, this);
                 this.model.on('DataChanged', this.refresh, this);
                 this.model.on('gridLayoutChanged', this.refresh, this);
-                this.model.on('change:targetNode', this.refresh, this);
                 this.model.on('change:blockedNodes', this.refresh,  this);
-
-                // bind events
-                this.model.on('change:targetNode', this.doPathfinding, this);
+                this.state.on('change:targetNode change:markerNode', this.refresh, this);
 
                 // get canvas context
-              //  var canvas = this.$canvas.get(0);
                 this.ctx = this.el.getContext('2d');
-
-                // create node info container
-                //this.$nodeInfo = $('div').html('<h1>SBSBSSBB</h1>');
-                //this.$el.after(this.$nodeInfo);
-
-
             },
 
             render:function () {
@@ -87,13 +80,13 @@ define([
                 }
 
                 // draw marker
-                var markerNode = this.model.get('markerNode');
+                var markerNode = this.state.get('markerNode');
                 if (markerNode) {
                     this.ctx.fillStyle = "rgba(0,0,255,0.5)";
                     this.ctx.fillRect(markerNode.row*columnWidth+margins.left, markerNode.column*rowHeight+margins.top, columnWidth, rowHeight);
                 }
                 // pathfinding target?
-                var target = this.model.get('targetNode');
+                var target = this.state.get('targetNode');
                 if (target) {
                     this.ctx.fillStyle = "rgba(0,255,0,0.5)";
                     this.ctx.fillRect(target.row*columnWidth+margins.left, target.column*rowHeight+margins.top, columnWidth, rowHeight);
@@ -156,20 +149,19 @@ define([
             onCanvasClick : function(e){
 
                 var node;
-                switch(this.state.getEditorMode()){
+                switch(this.state.get('editorMode')){
                     case 'markerLocation':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
-                            this.model.setMarkerLocation(node.row, node.column);
-                            this.nodeInfoView.showNode(node);
+                            this.state.set('markerNode', {row:node.row, column: node.column});
                         }
                         break;
 
                     case 'pathfinding':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
-                            this.model.set('targetNode', node);
-                            this.nodeInfoView.showNode(node);
+                            this.state.set('targetNode', node);
+                          //  this.nodeInfoView.showNode(node);
                         }
                         break;
 
@@ -181,7 +173,7 @@ define([
             },
 
             onCanvasMouseMove : function(e) {
-                if (this.state.getEditorMode() === 'toggleNode') {
+                if (this.state.get('editorMode') === 'toggleNode') {
                     if (this._mouseDown !== undefined){
                         var node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
@@ -197,7 +189,7 @@ define([
             },
 
             onCanvasMouseDown : function (e) {
-                if (this.state.getEditorMode() === 'toggleNode'){
+                if (this.state.get('editorMode') === 'toggleNode'){
                     var node = this.getMatrixPosition(e.pageX, e.pageY);
                     if (node) {
                         this._mouseDown = this.model.toggleNode(node.row, node.column);
@@ -219,8 +211,8 @@ define([
 
             doPathfinding : function() {
 
-                var node = this.model.get('markerNode');
-                var target = this.model.get('targetNode');
+                var node = this.state.get('markerNode');
+                var target = this.state.get('targetNode');
                 if (!(node && target)){
                     return;
                 }

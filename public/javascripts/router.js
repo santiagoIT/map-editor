@@ -2,7 +2,7 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'views/node-editor',
+    'views/mapEditor',
     'views/home',
     'views/maps'
 ], function ($, _, Backbone, NodeEditorView, HomeView, MapView) {

@@ -19,15 +19,8 @@ define([
             bottom:0,
             right:0,
 
-            // marker location
-            markerNode:{
-                row:0,
-                column:0
-            },
-
             // paths
-            blockedNodes:[],
-            targetNode:null
+            blockedNodes:[]
         },
         urlRoot:'api/maps',
 
@@ -35,10 +28,6 @@ define([
             this.set('columns', columns);
             this.set('rows', rows);
             return true;
-        },
-        setMarkerLocation:function (row, column) {
-            this.set('markerNode', {row:row, column:column});
-            this.trigger('DataChanged');
         },
         toggleNode:function (row, column) {
             var nodes = this.get('blockedNodes');

@@ -2,20 +2,21 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'views/map.canvas',
-    'views/map.canvas.nodeinfo',
+    'views/map',
+    'views/nodeinfo',
     'require',
-    'text!views/node-editor.html',
+    'text!views/mapEditor.html',
     'models/mapModel',
     'collections/maps',
-    'biz/mapCanvasState',
+    'biz/mapStateModel',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, CanvasMapView, NodeInfoView, require, html, MapModel, maps, state){
+    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, MapStateModel){
 
     var NodeEditorView = Backbone.View.extend({
         el: $('#itworks-app'),
         canvasView : null,
+        mapState : new MapStateModel(),
         events : {
             'click #btnHome' : "navigateHome",
             'click #btnSave' : "onSaveMap",
@@ -41,7 +42,7 @@ define([
             var nodeInfoView = new NodeInfoView();
             $('#canvasContainer').append(nodeInfoView.el);
 
-            this.canvasView = new CanvasMapView(this.model, state, nodeInfoView);
+            this.canvasView = new MapView(this.model, this.mapState, nodeInfoView);
             $('#canvasContainer').append(this.canvasView.el);
 
             // set queryMap
@@ -68,11 +69,6 @@ define([
                     marginBottom : {required: true, number: true},
                     marginRight : {required: true, number: true}
                 }
-            });
-
-            // event handlers
-            this.jqueryMap.$btnHome.on('click', function(){
-                self.navigateHome();
             });
 
             // set editor mode
@@ -119,13 +115,13 @@ define([
 
         navigateHome : function() {
             require(['itworks.app'], function(app){
-                app.Router.navigate('', {trigger:true});
+                app.Router.navigate('maps', {trigger:true});
             });
         },
 
         onEditorModeSwitched : function(e){
             var editorMode = $("input:radio[name=editor-mode]:checked").val();
-            state.setEditorMode(editorMode);
+            this.mapState.set('editorMode',editorMode);
         },
 
         onSaveMap : function() {

@@ -24,7 +24,8 @@ define([
                 return this;
             },
 
-            showNode : function(node){
+            showNode : function(model, node) {
+
                 this.node = node;
                 this.render();
             }
