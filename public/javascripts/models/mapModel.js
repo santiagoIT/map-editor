@@ -5,19 +5,19 @@ define([
     var mapModel = Backbone.Model.extend({
         defaults:{
             // grid layout
-            columnCount:10,
-            rowCount:10,
+            columns:1,
+            rows:1,
 
             // map info
             imageName:'map1.jpg',
-            imageWidth:100,
-            imageHeight:100,
+            imageWidth:1,
+            imageHeight:1,
 
             // margins
-            top:32,
-            left:10,
-            bottom:35,
-            right:100,
+            top:0,
+            left:0,
+            bottom:0,
+            right:0,
 
             // marker location
             markerNode:{
@@ -31,10 +31,9 @@ define([
         },
         urlRoot:'api/maps',
 
-        setGridSize:function (columnCount, rowCount) {
-            this.set('columnCount', columnCount);
-            this.set('rowCount', rowCount);
-            this.trigger('gridLayoutChanged');
+        setGridSize:function (columns, rows) {
+            this.set('columns', columns);
+            this.set('rows', rows);
             return true;
         },
         setMarkerLocation:function (row, column) {
@@ -84,8 +83,8 @@ define([
         },
 
         blockAll:function () {
-            var columnQty = this.get('columnCount');
-            var rowQty = this.get('rowCount');
+            var columnQty = this.get('columns');
+            var rowQty = this.get('rows');
             var nodes = [];
             for (var i = 0; i < rowQty; i++) {
                 for (var j = 0; j < columnQty; j++) {
@@ -115,7 +114,6 @@ define([
             this.set('left', left);
             this.set('bottom', bottom);
             this.set('right', right);
-            this.trigger('gridLayoutChanged');
             return true;
         }
     });

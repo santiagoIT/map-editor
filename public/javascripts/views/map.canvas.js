@@ -10,6 +10,8 @@ define([
             tagName: 'canvas',
             ctx : null,
             path : null,
+            $nodeInfo : null,
+            nodeInfoView : null,
 
             events:{
                 'click' : "onCanvasClick",
@@ -19,9 +21,10 @@ define([
                 'mouseout' : "onCanvasMouseOut"
             },
 
-            initialize:function (model, state) {
+            initialize:function (model, state, nodeInfoView) {
                 this.model = model;
                 this.state = state;
+                this.nodeInfoView = nodeInfoView;
 
                 // bind events
                 this.model.on('change', this.render, this);
@@ -39,6 +42,10 @@ define([
                 // get canvas context
               //  var canvas = this.$canvas.get(0);
                 this.ctx = this.el.getContext('2d');
+
+                // create node info container
+                //this.$nodeInfo = $('div').html('<h1>SBSBSSBB</h1>');
+                //this.$el.after(this.$nodeInfo);
 
 
             },
@@ -64,8 +71,8 @@ define([
 
                 var margins = this.model.getMargins();
 
-                var columnQty = this.model.get('columnCount');
-                var rowQty = this.model.get('rowCount');
+                var columnQty = this.model.get('columns');
+                var rowQty = this.model.get('rows');
 
                 var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
                 var columnWidth = (this.$el.width()-(margins.left + margins.right))/columnQty;
@@ -110,8 +117,8 @@ define([
 
             highlight : function(node) {
 
-                var columnQty = this.model.get('columnCount');
-                var rowQty = this.model.get('rowCount');
+                var columnQty = this.model.get('columns');
+                var rowQty = this.model.get('rows');
 
                 var margins = this.model.getMargins();
                 var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
@@ -122,8 +129,8 @@ define([
             },
 
             getMatrixPosition : function(clickX, clickY){
-                var columnQty = this.model.get('columnCount');
-                var rowQty = this.model.get('rowCount');
+                var columnQty = this.model.get('columns');
+                var rowQty = this.model.get('rows');
                 var margins = this.model.getMargins();
                 var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
                 var columnWidth = (this.$el.width()-(margins.left + margins.right))/columnQty;
@@ -154,7 +161,7 @@ define([
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
                             this.model.setMarkerLocation(node.row, node.column);
-                            this.displayNodeInfo(node);
+                            this.nodeInfoView.showNode(node);
                         }
                         break;
 
@@ -162,13 +169,13 @@ define([
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
                             this.model.set('targetNode', node);
-                            this.displayNodeInfo(node);
+                            this.nodeInfoView.showNode(node);
                         }
                         break;
 
                     case 'nodeInfo':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
-                        this.displayNodeInfo(node);
+                        this.nodeInfoView.showNode(node);
                         break;
                 }
             },
@@ -218,7 +225,7 @@ define([
                     return;
                 }
 
-                var grid = new PF.Grid(this.model.get('columnCount'), this.model.get('rowCount'));
+                var grid = new PF.Grid(this.model.get('columns'), this.model.get('rows'));
                 // block cells
                 var blockedNodes = this.model.get('blockedNodes');
                 for (var i in blockedNodes){
@@ -230,18 +237,7 @@ define([
                     this.path.splice(0,1);
                     this.path.splice(-1,1);
                 }
-            },
-
-            displayNodeInfo : function(node) {
-             /*   if (node) {
-                    this.jqueryMap.$nodeInfo.html('['+node.column + ','+node.row+']')
-                }
-                else {
-                    this.jqueryMap.$nodeInfo.html('-');
-                } */
             }
-
-
         });
         // Our module now returns an instantiated view
         // Sometimes you might return an un-instantiated view e.g. return projectListView

@@ -20,18 +20,24 @@ console.log(process.env.MONGODB_CONNSTR);
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+var NodeSchema = new Schema({
+    'column':{type:Number, default:0},
+    'row':{type:Number, default:0}
+});
+
 var MapSchema = new Schema({
     'id':ObjectId,
     'name':{ type:String, index:true, default:'hi sb' },
-    'imageData':String,
-    'columns':{type:Number, default:19},
-    'rows':{type:Number, default:19},
+    'imageName':String,
+    'columns':{type:Number, default:1},
+    'rows':{type:Number, default:1},
     'top':{type:Number, default:0},
     'left':{type:Number, default:0},
     'bottom':{type:Number, default:0},
     'right':{type:Number, default:0},
-    'imageWidth':{type:Number, default:497},
-    'imageHeight':{type:Number, default:386}
+    'imageWidth':{type:Number, default:1},
+    'imageHeight':{type:Number, default:1},
+    'blockedNodes' : [NodeSchema]
 });
 
 var MapModel = mongoose.model('Map', MapSchema);
@@ -78,17 +84,8 @@ app.get('/api/maps', function (req, res) {
 app.post('/api/maps', function (req, res, next) {
     var map;
 
-    // cache props
-    var name = req.body.name;
-    var imageWidth = req.body.imageWidth;
-    var imageHeight = req.body.imageHeight;
-
-    map = new MapModel({
-        name:name,
-        imageName:req.body.imageName,
-        imageWidth:imageWidth,
-        imageHeight:imageHeight
-    });
+    map = new MapModel();
+    mapFormToModel(req.body, map);
     map.save(function (err) {
         if (!err) {
             return res.send(map);
@@ -99,8 +96,8 @@ app.post('/api/maps', function (req, res, next) {
 });
 
 app.post('/api/uploadmapimage', function (req, res, next) {
-    var map;
-    var imageFile = req.files.image;
+    var map,
+        imageFile = req.files.image;
     console.log(imageFile);
     var client = knox.createClient({
         key:process.env.AWS_ACCESS_KEY,
@@ -141,9 +138,7 @@ app.get('/api/maps/:id', function (req, res) {
 
 app.put('/api/maps/:id', function (req, res) {
     return MapModel.findById(req.params.id, function (err, map) {
-        product.title = req.body.title;
-        product.description = req.body.description;
-        product.style = req.body.style;
+        mapFormToModel(req.body, map);
         return map.save(function (err) {
             if (!err) {
                 console.log("updated");
@@ -186,6 +181,42 @@ app.get('/api/test', function (req, res) {
         req.end(buf);
     });
 });
+
+var mapFormToModel = function (form, map){
+    if (form.name){
+        map.name = form.name;
+    }
+    if (form.imageName){
+        map.imageName = form.imageName;
+    }
+    if (form.imageWidth){
+        map.imageWidth = form.imageWidth;
+    }
+    if (form.imageHeight){
+        map.imageHeight = form.imageHeight;
+    }
+    if (form.columns){
+        map.columns = form.columns;
+    }
+    if (form.rows){
+        map.rows = form.rows;
+    }
+    if (form.top){
+        map.top = form.top;
+    }
+    if (form.left){
+        map.left = form.left;
+    }
+    if (form.bottom){
+        map.bottom = form.bottom;
+    }
+    if (form.right){
+        map.right = form.right;
+    }
+    if (form.blockedNodes){
+        map.blockedNodes = form.blockedNodes;
+    }
+}
 
 
 var port = process.env.PORT || 5000;

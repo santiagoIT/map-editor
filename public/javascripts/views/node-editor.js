@@ -3,6 +3,7 @@ define([
     'Underscore',
     'backbone',
     'views/map.canvas',
+    'views/map.canvas.nodeinfo',
     'require',
     'text!views/node-editor.html',
     'models/mapModel',
@@ -10,14 +11,14 @@ define([
     'biz/mapCanvasState',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, CanvasMapView, require, html, MapModel, maps, state){
+    function($, _, Backbone, CanvasMapView, NodeInfoView, require, html, MapModel, maps, state){
 
     var NodeEditorView = Backbone.View.extend({
         el: $('#itworks-app'),
         canvasView : null,
         events : {
             'click #btnHome' : "navigateHome",
-            'click btnSave' : "onSaveMap",
+            'click #btnSave' : "onSaveMap",
             'click #btnChangeMesh' : "changeMesh",
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
@@ -28,7 +29,6 @@ define([
         jqueryMap:{},
 
         initialize : function(mapid) {
-            console.log('editor-view initialize');
             this.$el.html(html);
 
             var
@@ -37,11 +37,12 @@ define([
             this.model = new MapModel({id:mapid});
             this.model.fetch();
 
-            this.canvasView = new CanvasMapView(this.model, state);
-            $('#canvasContainer').append(this.canvasView.el);
+            // nodeInfo view
+            var nodeInfoView = new NodeInfoView();
+            $('#canvasContainer').append(nodeInfoView.el);
 
-            console.log('Fetched model: ' + mapid);
-            console.log(this.model);
+            this.canvasView = new CanvasMapView(this.model, state, nodeInfoView);
+            $('#canvasContainer').append(this.canvasView.el);
 
             // set queryMap
             this.jqueryMap.$btnHome = $('#btnHome');
@@ -50,14 +51,14 @@ define([
             this.jqueryMap.$marginLeft = $('#marginLeft');
             this.jqueryMap.$marginBottom = $('#marginBottom');
             this.jqueryMap.$marginRight = $('#marginRight');
-            this.jqueryMap.$columnCount = $('#columnCount');
-            this.jqueryMap.$rowCount = $('#rowCount');
+            this.jqueryMap.$columns = $('#columns');
+            this.jqueryMap.$rows = $('#rows');
 
             // set form validate
             $('#frmGrid').validate({
                 rules : {
-                    columnCount : {required: true, number: true},
-                    rowCount : {required: true, number: true}
+                    columns : {required: true, number: true},
+                    rows : {required: true, number: true}
                 }
             });
             $('#frmMargins').validate({
@@ -77,8 +78,13 @@ define([
             // set editor mode
             this.onEditorModeSwitched();
 
+            this.model.on('change:top', this.displayMapMetaData, this);
+            this.model.on('change:left', this.displayMapMetaData, this);
+            this.model.on('change:bottom', this.displayMapMetaData, this);
+            this.model.on('change:right', this.displayMapMetaData, this);
 
-            this.model.on('gridLayoutChanged', this.displayMapMetaData, this);
+            this.model.on('change:columns', this.displayGridSize, this);
+            this.model.on('change:rows', this.displayGridSize, this);
 
             this.displayMapMetaData();
         },
@@ -88,15 +94,19 @@ define([
         },
 
         displayMapMetaData : function() {
+
             // display margins
             this.jqueryMap.$marginTop.val(this.model.get('top'));
             this.jqueryMap.$marginLeft.val(this.model.get('left'));
             this.jqueryMap.$marginBottom.val(this.model.get('bottom'));
             this.jqueryMap.$marginRight.val(this.model.get('right'));
+        },
+
+        displayGridSize : function() {
 
             // grid size
-            this.jqueryMap.$columnCount.val(this.model.get('columnCount'));
-            this.jqueryMap.$rowCount.val(this.model.get('rowCount'));
+            this.jqueryMap.$columns.val(this.model.get('columns'));
+            this.jqueryMap.$rows.val(this.model.get('rows'));
         },
 
         blockAll : function(){
@@ -119,20 +129,17 @@ define([
         },
 
         onSaveMap : function() {
-
             this.model.save();
         },
 
         changeMesh : function(){
-            var columnCount = this.jqueryMap.$columnCount.val();
-            var rowCount = this.jqueryMap.$rowCount.val();
+            var columns = this.jqueryMap.$columns.val();
+            var rows = this.jqueryMap.$rows.val();
 
-            columnCount = parseInt(columnCount);
-            rowCount = parseInt(rowCount);
+            columns = parseInt(columns);
+            rows = parseInt(rows);
 
-            console.log(this);
-
-            this.model.setGridSize(columnCount, rowCount);
+            this.model.setGridSize(columns, rows);
 
             return false;
         },
