@@ -27,37 +27,36 @@ define([
                 this.nodeInfoView = nodeInfoView;
 
                 // bind events
-                this.model.on('change', this.render, this);
-
-                // bind events
                 this.state.on('change:targetNode', this.doPathfinding, this);
                 this.state.on('change:markerNode change:targetNode', this.nodeInfoView.showNode, this.nodeInfoView);
 
-                this.model.on('GridSizeChanged', this.refresh, this);
-                this.model.on('DataChanged', this.refresh, this);
-                this.model.on('gridLayoutChanged', this.refresh, this);
-                this.model.on('change:blockedNodes', this.refresh,  this);
-                this.state.on('change:targetNode change:markerNode', this.refresh, this);
+                this.model.on('GridSizeChanged', this.render, this);
+                this.model.on('DataChanged', this.render, this);
+                this.model.on('gridLayoutChanged', this.render, this);
+                this.model.on('change:blockedNodes', this.render,  this);
+                this.model.on('change:imageName', this.onImageNameChanged, this);
+                this.model.on('change:imageHeight change:imageWidth', this.onImageSizeChanged, this);
+                this.state.on('change:targetNode change:markerNode', this.render, this);
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
             },
 
-            render:function () {
-                // size canvas
-                this.$el.attr('height', this.model.get('imageHeight')).attr('width', this.model.get('imageWidth'));
-
+            onImageNameChanged : function(model, imageName) {
                 // set background
-                this.$el.css('background-image', 'url("https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + this.model.get('imageName') + '")'); // Set source path
-
-                this.refresh();
-
-                return this;
+                this.$el.css('background-image', 'url("https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName + '")'); // Set source path
+                this.render();
             },
 
-            refresh : function(){
+            onImageSizeChanged : function(model, value) {
+                // size canvas
+                this.$el.attr('height', this.model.get('imageHeight')).attr('width', this.model.get('imageWidth'));
+                this.render();
+            },
 
-                console.log('refreshhed');
+            render:function () {
+
+                console.log('map.render');
 
                 // clear canvas
                 this.ctx.clearRect(0,0, this.$el.width(), this.$el.height());
@@ -106,6 +105,8 @@ define([
                         this.highlight({row:this.path[key][1], column:this.path[key][0]});
                     }
                 }
+
+                return this;
             },
 
             highlight : function(node) {
