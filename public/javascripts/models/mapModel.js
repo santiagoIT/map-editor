@@ -10,8 +10,6 @@ define([
 
             // map info
             imageName:'map1.jpg',
-            imageWidth:1,
-            imageHeight:1,
 
             // margins
             top:0,

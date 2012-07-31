@@ -70,8 +70,6 @@ define([
                     var map = new MapModel();
 
                     map.set('name', $form.find('#name').val());
-                    map.set('imageWidth', $form.find('#imageWidth').val());
-                    map.set('imageHeight', $form.find('#imageHeight').val());
                     map.set('imageName', imageName);
 
                     map.save();

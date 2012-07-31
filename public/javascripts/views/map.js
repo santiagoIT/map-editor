@@ -35,7 +35,6 @@ define([
                 this.model.on('gridLayoutChanged', this.render, this);
                 this.model.on('change:blockedNodes', this.render,  this);
                 this.model.on('change:imageName', this.onImageNameChanged, this);
-                this.model.on('change:imageHeight change:imageWidth', this.onImageSizeChanged, this);
                 this.state.on('change:targetNode change:markerNode', this.render, this);
 
                 // get canvas context
@@ -43,15 +42,19 @@ define([
             },
 
             onImageNameChanged : function(model, imageName) {
+                var url =  'https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName;
                 // set background
-                this.$el.css('background-image', 'url("https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName + '")'); // Set source path
+                this.$el.css('background-image', 'url("' + url + '")'); // Set source path
                 this.render();
-            },
 
-            onImageSizeChanged : function(model, value) {
-                // size canvas
-                this.$el.attr('height', this.model.get('imageHeight')).attr('width', this.model.get('imageWidth'));
-                this.render();
+                // get image
+                var image = new Image();
+                var self = this;
+                image.onload = function() {
+                    self.$el.attr('height', this.height).attr('width', this.width);
+                    self.render();
+                }
+                image.src = 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName;
             },
 
             render:function () {

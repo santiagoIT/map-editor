@@ -8,8 +8,11 @@ var express = require('express')
     , mongoose = require('mongoose')
     , knox = require('knox')
     , fs = require('fs')
+    , mongooseAuth = require('mongoose-auth')
+    , stylus = require('stylus')
     ;
-
+var everyauth = require('everyauth')
+    , Promise = everyauth.Promise;
 
 // mongodb
 mongoose.connect(process.env.MONGODB_CONNSTR);
@@ -35,33 +38,88 @@ var MapSchema = new Schema({
     'left':{type:Number, default:0},
     'bottom':{type:Number, default:0},
     'right':{type:Number, default:0},
-    'imageWidth':{type:Number, default:1},
-    'imageHeight':{type:Number, default:1},
     'blockedNodes' : [NodeSchema]
 });
 
 var MapModel = mongoose.model('Map', MapSchema);
 
+////////////////////////////////////////////////////////////////////////////
+// configure auth
+var UserSchema = new Schema({})
+    , User;
+
+// STEP 1: Schema Decoration and Configuration for the Routing
+UserSchema.plugin(mongooseAuth, {
+    // Here, we attach your User model to every module
+    everymodule: {
+        everyauth: {
+            User: function () {
+                return User;
+            }
+        }
+    }
+
+    , password: {
+        loginWith: 'email'
+        , loginFormFieldName : 'email'
+        , extraParams: {
+            phone: String
+            , name: {
+                first: String
+                , last: String
+            }
+        }
+        , everyauth: {
+            getLoginPath: '/login'
+            , postLoginPath: '/login'
+            , loginView: 'login.jade'
+            , getRegisterPath: '/register'
+            , postRegisterPath: '/register'
+            , registerView: 'register.jade'
+            , loginSuccessRedirect: '/'
+            , registerSuccessRedirect: '/'
+        }
+    }
+});
+
+mongoose.model('User', UserSchema);
+User = mongoose.model('User');
+
+
+
+////////////////////////////////////////////////////////////////////////////
+// define application
 var app = express();
 
-app.configure(function () {
+var app = express();
+app.use(express.static(__dirname + '/public'))
+    .use(express.favicon())
+    .use(express.logger('dev'))
+    .use(express.bodyParser())
+    .use(express.cookieParser('heysb'))
+    .use(express.session())
+    .use(mongooseAuth.middleware(app))
+    .use(express.methodOverride())
+    .use(stylus.middleware(__dirname + '/public'))
+    ;
+
+app.configure( function () {
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(require('stylus').middleware(__dirname + '/public'));
-    app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function () {
     app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+//mongooseAuth.helpExpress(app);
+
+app.get('/', function(req, res){
+    console.log('EVEYAUTH ****')
+    console.log(req.loggedIn);
+    res.render('index', { title: 'Map Editor' });
+});
 
 
 // API routes
@@ -189,12 +247,6 @@ var mapFormToModel = function (form, map){
     if (form.imageName){
         map.imageName = form.imageName;
     }
-    if (form.imageWidth){
-        map.imageWidth = form.imageWidth;
-    }
-    if (form.imageHeight){
-        map.imageHeight = form.imageHeight;
-    }
     if (form.columns){
         map.columns = form.columns;
     }
@@ -218,9 +270,15 @@ var mapFormToModel = function (form, map){
     }
 }
 
-
-var port = process.env.PORT || 5000;
-http.createServer(app).listen(port, function () {
-    console.log("Express server listening on port " + app.get('port'));
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
 });
 
+var port = process.env.PORT || 5000;
+app.listen(port, function () {
+    console.log("Express server listening on port " + port);
+});
+
+
+console.log(__dirname + "/public");
