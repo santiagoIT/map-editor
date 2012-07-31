@@ -14,7 +14,8 @@
         "jade":"*",
         "stylus":"*",
         "mongoose" : "2.7.x",
-        "mongoose-auth" : "*",
-        "knox" : "*"
+        "knox" : "*",
+        "passport": ">= 0.0.0",
+        "passport-local": ">= 0.0.0"
     }
 }
