@@ -60,18 +60,17 @@ module.exports = {
             if (!err) {
                 return res.send(map);
             } else {
-                return console.log(err);
+                throw err;
             }
         });
     },
 
     getMapById:function (req, res) {
-        console.log("finding map by id: " + req.params.id);
         return MapModel.findById(req.params.id, function (err, map) {
             if (!err) {
                 return res.send(map);
             } else {
-                return console.log(err);
+                throw err;
             }
         });
     },
@@ -83,7 +82,7 @@ module.exports = {
                 if (!err) {
                     console.log("updated");
                 } else {
-                    console.log(err);
+                    throw err;
                 }
                 return res.send(map);
             });
@@ -97,7 +96,7 @@ module.exports = {
                     console.log("removed");
                     return res.send('');
                 } else {
-                    console.log(err);
+                    throw err;
                 }
             });
         });
@@ -133,10 +132,3 @@ module.exports = {
         });
     }
 }
-
-
-console.log('MAP MODEL - in api.js - END');
-console.log(MapModel);
-
-
-

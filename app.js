@@ -4,16 +4,13 @@
 
 var express = require('express')
     , routes = require('./routes')
-    , mongoose = require('mongoose')
     , stylus = require('stylus')
+    , passport = require('passport')
     ;
 
-var API = require('./routes/api');
-
 // mongodb
-mongoose.connect(process.env.MONGODB_CONNSTR);
-
-console.log(process.env.MONGODB_CONNSTR);
+var DB = require('./datastore');
+DB.startup(process.env.MONGODB_CONNSTR);
 
 ////////////////////////////////////////////////////////////////////////////
 // define application
@@ -22,10 +19,16 @@ app.use(express.static(__dirname + '/public'))
     .use(express.favicon())
     .use(express.logger('dev'))
     .use(express.bodyParser())
-    .use(express.cookieParser('heysb'))
-    .use(express.session())
     .use(express.methodOverride())
     .use(stylus.middleware(__dirname + '/public'))
+    .use(express.cookieParser())
+    .use(express.session({
+        secret: 'heysb'
+        }, function() {
+        app.use(app.router);
+    }))
+    .use(passport.initialize())
+    .use(passport.session())
     ;
 
 app.configure( function () {

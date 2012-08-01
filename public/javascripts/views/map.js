@@ -30,9 +30,8 @@ define([
                 this.state.on('change:targetNode', this.doPathfinding, this);
                 this.state.on('change:markerNode change:targetNode', this.nodeInfoView.showNode, this.nodeInfoView);
 
-                this.model.on('GridSizeChanged', this.render, this);
-                this.model.on('DataChanged', this.render, this);
-                this.model.on('gridLayoutChanged', this.render, this);
+                this.model.on('change:rows change:columns', this.render, this);
+                this.model.on('change:top change:left change:bottom change:right', this.render, this);
                 this.model.on('change:blockedNodes', this.render,  this);
                 this.model.on('change:imageName', this.onImageNameChanged, this);
                 this.state.on('change:targetNode change:markerNode', this.render, this);

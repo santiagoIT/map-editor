@@ -16,6 +16,7 @@
         "mongoose" : "2.7.x",
         "knox" : "*",
         "passport": ">= 0.0.0",
-        "passport-local": ">= 0.0.0"
+        "passport-local": ">= 0.0.0",
+        "bcrypt": ">= 0.5.0"
     }
 }

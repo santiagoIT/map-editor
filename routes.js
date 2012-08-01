@@ -7,6 +7,10 @@ var
     ;
 
 function ensureAuthenticated(req, res, next) {
+    // TODO: remove once in production
+    return next();
+    // END TODO
+
     if (req.isAuthenticated()) {
         return next();
     }
@@ -16,27 +20,26 @@ function ensureAuthenticated(req, res, next) {
 module.exports = function (app) {
 
     // home
-    app.get('/', home.index);
+    app.get('/', ensureAuthenticated, home.index);
     app.get('/about', home.about);
 
     app.get('/login', home.login);
     app.post('/login', passport.authenticate('local',
         {
-            successRedirect: '/account',
+            successRedirect: '/',
             failureRedirect: '/login'
         })
     );
-    app.get('/account', ensureAuthenticated, home.getAccount);
     app.get('/logout', home.logout);
 
     // api
-    app.get('/api', api.api);
-    app.get('/api/maps', api.getMaps);
-    app.post('/api/maps', api.postMap);
-    app.get('/api/maps/:id', api.getMapById);
-    app.put('/api/maps/:id', api.updateMap);
-    app.delete('/api/maps/:id', api.deleteMap);
-    app.post('/api/uploadmapimage', api.uploadImage);
+    app.get('/api', ensureAuthenticated, api.api);
+    app.get('/api/maps', ensureAuthenticated, api.getMaps);
+    app.post('/api/maps', ensureAuthenticated, api.postMap);
+    app.get('/api/maps/:id', ensureAuthenticated, api.getMapById);
+    app.put('/api/maps/:id', ensureAuthenticated, api.updateMap);
+    app.delete('/api/maps/:id', ensureAuthenticated, api.deleteMap);
+    app.post('/api/uploadmapimage', ensureAuthenticated, api.uploadImage);
 
     // tests
     app.get('/test/1', test.test1);
