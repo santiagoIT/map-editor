@@ -40,7 +40,7 @@ module.exports = {
         mongoose.connect(dbToUse);
         // Check connection to mongoDB
         mongoose.connection.on('open', function() {
-            console.log('We have connected to mongodb');
+            console.log('We have connected to mongodb: ' + dbToUse);
         });
 
     },

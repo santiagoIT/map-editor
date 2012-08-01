@@ -6,7 +6,11 @@ var express = require('express')
     , routes = require('./routes')
     , stylus = require('stylus')
     , passport = require('passport')
+    , herokuShim = require('./herokuShim')
     ;
+
+// mock heroku environment if we are running locally
+herokuShim.setupEnvironment('MONGODB_CONNSTR');
 
 // mongodb
 var DB = require('./datastore');
