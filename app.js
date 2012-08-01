@@ -8,36 +8,13 @@ var express = require('express')
     , stylus = require('stylus')
     ;
 
+var API = require('./routes/api');
+
 // mongodb
 mongoose.connect(process.env.MONGODB_CONNSTR);
 
 console.log(process.env.MONGODB_CONNSTR);
 
-// define schema
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
-
-var NodeSchema = new Schema({
-    'column':{type:Number, default:0},
-    'row':{type:Number, default:0}
-});
-
-var MapSchema = new Schema({
-    'id':ObjectId,
-    'name':{ type:String, index:true, default:'hi sb' },
-    'imageName':String,
-    'columns':{type:Number, default:1},
-    'rows':{type:Number, default:1},
-    'top':{type:Number, default:0},
-    'left':{type:Number, default:0},
-    'bottom':{type:Number, default:0},
-    'right':{type:Number, default:0},
-    'blockedNodes' : [NodeSchema]
-});
-
-var MapModel = mongoose.model('Map', MapSchema);
-
-User = mongoose.model('User', UserSchema);
 ////////////////////////////////////////////////////////////////////////////
 // define application
 var app = express();
@@ -47,7 +24,6 @@ app.use(express.static(__dirname + '/public'))
     .use(express.bodyParser())
     .use(express.cookieParser('heysb'))
     .use(express.session())
-    .use(mongooseAuth.middleware(app))
     .use(express.methodOverride())
     .use(stylus.middleware(__dirname + '/public'))
     ;
@@ -67,7 +43,7 @@ app.configure('production', function(){
 });
 
 // Routes
-require('./routes')(app, MapModel);
+require('./routes')(app);
 
 app.get('/logout', function (req, res) {
     req.logout();

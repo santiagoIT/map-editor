@@ -2,7 +2,9 @@ var passport = require('passport');
 
 var
     home = require('./routes/home')
-    , test = require('./routes/test');
+    , test = require('./routes/test')
+    , api = require('./routes/api')
+    ;
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -11,9 +13,7 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-module.exports = function (app, MapModel) {
-
-    var api = require('./routes/api')(MapModel);
+module.exports = function (app) {
 
     // home
     app.get('/', home.index);
