@@ -27,17 +27,16 @@ define([
                 this.model = model;
 
                 // bind events
-                mapState.on('change:targetNode', this.doPathfinding, this);
+                this.bindTo(mapState, 'change:targetNode', this.doPathfinding);
 
-
-                this.model.on('change:rows change:columns', this.render, this);
-                this.model.on('change:top change:left change:bottom change:right', this.render, this);
-                this.model.on('change:blockedNodes', this.render, this);
-                this.model.on('change:imageName', this.onImageNameChanged, this);
-                mapState.on('change:editorMode change:markerNode change:targetNode change:showGrid change:showHotSpots change:showBlockedTiles', this.render, this);
+                this.bindTo(this.model, 'change:rows change:columns', this.render);
+                this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.render);
+                this.bindTo(this.model, 'change:blockedNodes', this.render);
+                this.bindTo(this.model, 'change:imageName', this.onImageNameChanged);
+                this.bindTo(mapState, 'change:editorMode change:markerNode change:targetNode change:showGrid change:showHotSpots change:showBlockedTiles', this.render);
 
                 // locations
-                locations.on('all', this.render, this);
+                this.bindTo(locations, 'all', this.render);
                 locations.fetch();
 
                 // get canvas context

@@ -13,36 +13,16 @@ define([
         var View = Backbone.View.extend({
             collection:maps,
             events:{
-                'click #btnHome':"navigateHome",
                 'click #btnSaveMap':"saveMap",
                 'click .navItem' : "onNavigateTo"
             },
             s3Root : 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
-            jqueryMap:{},
-
             initialize:function () {
                 this.$el.html(html);
-
-                var
-                    self = this;
-
-                // set queryMap
-                this.jqueryMap.$btnHome = $('#btnHome');
-
-                // event handlers
-                this.jqueryMap.$btnHome.on('click', function () {
-                    self.navigateHome();
-                });
             },
 
             render:function () {
-            },
-
-            navigateHome:function () {
-                require(['itworks.app'], function (app) {
-                    app.Router.navigate('', {trigger:true});
-                });
             },
 
             saveMap:function () {

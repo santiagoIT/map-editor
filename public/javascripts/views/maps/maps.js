@@ -29,6 +29,7 @@ define([
                 // bind events
                 this.bindTo(this.collection, 'all', this.render);
 
+                this.bindTo(this)
 
                 // fetch data
                 this.collection.fetch();

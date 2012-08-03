@@ -18,18 +18,10 @@ define([
                 'click #btnDeleteLocation' : "deleteLocation"
             },
 
-            jqueryMap:{},
-
             initialize:function () {
 
-                //this.$el.html(html);
-
-
-
-                this.collection.on('all', this.render, this);
-
+                this.bindTo(this.collection, 'all', this.render);
                 this.collection.fetch();
-
             },
 
             render:function () {

@@ -10,7 +10,7 @@ define([
             node:null,
 
             initialize:function () {
-                mapState.on('change:markerNode change:targetNode change:selectedNode', this.showNode, this);
+                this.bindTo(mapState, 'change:markerNode change:targetNode change:selectedNode', this.showNode);
             },
 
             render:function () {
