@@ -5,7 +5,7 @@ define([
     'views/map',
     'views/nodeinfo',
     'require',
-    'text!views/mapEditor.html',
+    'text!views/maps/edit.html',
     'models/mapModel',
     'collections/maps',
     'collections/locations',

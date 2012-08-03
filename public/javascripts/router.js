@@ -53,7 +53,7 @@ define([
 
         map_edit:function (mapid) {
 
-            require(['views/mapEditor'], function(View){
+            require(['views/maps/edit'], function(View){
                 var view = new View(mapid);
                 view.render();
             });
