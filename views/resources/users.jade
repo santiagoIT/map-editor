@@ -1,0 +1,5 @@
+extends ../layout
+
+block content
+  - each doc in docs
+    li= doc.name.first + ' ' + doc.name.last + ' - ' + doc.email

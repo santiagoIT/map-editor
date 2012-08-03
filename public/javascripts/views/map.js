@@ -2,46 +2,50 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'pathfinder'
+    'pathfinder',
+    'collections/locations',
+    'biz/mapStateSingleton'
 ],
-    function ($, _, Backbone, PF) {
+    function ($, _, Backbone, PF, locations, mapState) {
 
-        var CanvasMapView = Backbone.View.extend({
-            tagName: 'canvas',
-            ctx : null,
-            path : null,
-            $nodeInfo : null,
-            nodeInfoView : null,
+        var MapView = Backbone.View.extend({
+            tagName:'canvas',
+            ctx:null,
+            path:null,
+            $nodeInfo:null,
+            s3Root:'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
             events:{
-                'click' : "onCanvasClick",
-                'mousemove' : "onCanvasMouseMove",
-                'mousedown' : "onCanvasMouseDown",
-                'mouseup' : "onCanvasMouseUp",
-                'mouseout' : "onCanvasMouseOut"
+                'click':"onCanvasClick",
+                'mousemove':"onCanvasMouseMove",
+                'mousedown':"onCanvasMouseDown",
+                'mouseup':"onCanvasMouseUp",
+                'mouseout':"onCanvasMouseOut"
             },
 
-            initialize:function (model, state, nodeInfoView) {
+            initialize:function (model) {
                 this.model = model;
-                this.state = state;
-                this.nodeInfoView = nodeInfoView;
 
                 // bind events
-                this.state.on('change:targetNode', this.doPathfinding, this);
-                this.state.on('change:markerNode change:targetNode', this.nodeInfoView.showNode, this.nodeInfoView);
+                mapState.on('change:targetNode', this.doPathfinding, this);
+
 
                 this.model.on('change:rows change:columns', this.render, this);
                 this.model.on('change:top change:left change:bottom change:right', this.render, this);
-                this.model.on('change:blockedNodes', this.render,  this);
+                this.model.on('change:blockedNodes', this.render, this);
                 this.model.on('change:imageName', this.onImageNameChanged, this);
-                this.state.on('change:targetNode change:markerNode', this.render, this);
+                mapState.on('change:editorMode change:markerNode change:targetNode change:showGrid change:showHotSpots change:showBlockedTiles', this.render, this);
+
+                // locations
+                locations.on('all', this.render, this);
+                locations.fetch();
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
             },
 
-            onImageNameChanged : function(model, imageName) {
-                var url =  'https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName;
+            onImageNameChanged:function (model, imageName) {
+                var url = this.s3Root + imageName;
                 // set background
                 this.$el.css('background-image', 'url("' + url + '")'); // Set source path
                 this.render();
@@ -49,7 +53,7 @@ define([
                 // get image
                 var image = new Image();
                 var self = this;
-                image.onload = function() {
+                image.onload = function () {
                     self.$el.attr('height', this.height).attr('width', this.width);
                     self.render();
                 }
@@ -61,123 +65,136 @@ define([
                 console.log('map.render');
 
                 // clear canvas
-                this.ctx.clearRect(0,0, this.$el.width(), this.$el.height());
+                this.ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
 
                 var margins = this.model.getMargins();
 
                 var columnQty = this.model.get('columns');
                 var rowQty = this.model.get('rows');
 
-                var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
-                var columnWidth = (this.$el.width()-(margins.left + margins.right))/columnQty;
+                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
+                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
                 // draw grid lines
-                this.ctx.strokeStyle = '#0f0'; // red
-                this.ctx.lineWidth   = 1;
-                for (var i = 0; i < rowQty; i++) {
-                    for (var j=0; j < columnQty; j++){
-                        this.ctx.strokeRect(j*columnWidth+margins.left, i*rowHeight+margins.top, columnWidth, rowHeight);
+                if (mapState.get('showGrid')) {
+                    this.ctx.strokeStyle = '#0f0'; // red
+                    this.ctx.lineWidth = 1;
+                    for (var i = 0; i < rowQty; i++) {
+                        for (var j = 0; j < columnQty; j++) {
+                            this.ctx.strokeRect(j * columnWidth + margins.left, i * rowHeight + margins.top, columnWidth, rowHeight);
+                        }
                     }
                 }
 
                 // draw marker
-                var markerNode = this.state.get('markerNode');
+                var markerNode = mapState.get('markerNode');
                 if (markerNode) {
                     this.ctx.fillStyle = "rgba(0,0,255,0.5)";
-                    this.ctx.fillRect(markerNode.row*columnWidth+margins.left, markerNode.column*rowHeight+margins.top, columnWidth, rowHeight);
+                    this.ctx.fillRect(markerNode.row * columnWidth + margins.left, markerNode.column * rowHeight + margins.top, columnWidth, rowHeight);
                 }
                 // pathfinding target?
-                var target = this.state.get('targetNode');
+                var target = mapState.get('targetNode');
                 if (target) {
                     this.ctx.fillStyle = "rgba(0,255,0,0.5)";
-                    this.ctx.fillRect(target.row*columnWidth+margins.left, target.column*rowHeight+margins.top, columnWidth, rowHeight);
+                    this.ctx.fillRect(target.row * columnWidth + margins.left, target.column * rowHeight + margins.top, columnWidth, rowHeight);
                 }
 
                 // blocked nodes
-                var nodes = this.model.get('blockedNodes');
-                this.ctx.fillStyle = "rgba(100,100,100, 0.75)";
-                for(var key in nodes){
-                    var node = nodes[key];
-                    this.ctx.fillRect(node.row*columnWidth+margins.left, node.column*rowHeight+margins.top, columnWidth, rowHeight);
+                if (mapState.get('showBlockedTiles')) {
+                    var nodes = this.model.get('blockedNodes');
+                    this.ctx.fillStyle = "rgba(100,100,100, 0.75)";
+                    for (var key in nodes) {
+                        var node = nodes[key];
+                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                    }
                 }
 
                 // path
-                if (this.path){
-                    for (var key in this.path){
+                if (this.path) {
+                    for (var key in this.path) {
                         this.highlight({row:this.path[key][1], column:this.path[key][0]});
+                    }
+                }
+
+                // hotspots
+                if (mapState.get('showHotSpots')) {
+                    var arLocations = locations.where({mapId:this.model.get('_id')});
+                    for (var i in arLocations) {
+                        var node = arLocations[i].get('node');
+                        this.ctx.fillStyle = "rgba(255,0,0,0.5)";
+                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
                 return this;
             },
 
-            highlight : function(node) {
+            highlight:function (node) {
 
                 var columnQty = this.model.get('columns');
                 var rowQty = this.model.get('rows');
 
                 var margins = this.model.getMargins();
-                var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
-                var columnWidth = (this.$el.width()-(margins.left + margins.right))/columnQty;
+                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
+                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
                 this.ctx.fillStyle = "rgba(20,60,80, 0.9)";
-                this.ctx.fillRect(node.row*columnWidth+margins.left, node.column*rowHeight+margins.top, columnWidth, rowHeight);
+                this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
             },
 
-            getMatrixPosition : function(clickX, clickY){
+            getMatrixPosition:function (clickX, clickY) {
                 var columnQty = this.model.get('columns');
                 var rowQty = this.model.get('rows');
                 var margins = this.model.getMargins();
-                var rowHeight = (this.$el.height()-(margins.top+margins.bottom))/rowQty;
-                var columnWidth = (this.$el.width()-(margins.left + margins.right))/columnQty;
+                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
+                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
-                var x = clickX-(this.$el.offset().left+margins.left);
-                var y = clickY-(this.$el.offset().top+margins.top);
+                var x = clickX - (this.$el.offset().left + margins.left);
+                var y = clickY - (this.$el.offset().top + margins.top);
 
                 var row = Math.floor(x / columnWidth);
                 var column = Math.floor(y / rowHeight);
 
                 // in bounds?
-                if (row >= rowQty || column >= columnQty || row <0 || column < 0) {
+                if (row >= rowQty || column >= columnQty || row < 0 || column < 0) {
                     return null;
                 }
 
                 return {
-                    row : row,
-                    column : column
+                    row:row,
+                    column:column
                 };
             },
 
 
-            onCanvasClick : function(e){
+            onCanvasClick:function (e) {
 
                 var node;
-                switch(this.state.get('editorMode')){
+                switch (mapState.get('editorMode')) {
                     case 'markerLocation':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
-                            this.state.set('markerNode', {row:node.row, column: node.column});
+                            mapState.set('markerNode', {row:node.row, column:node.column});
                         }
                         break;
 
                     case 'pathfinding':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
-                            this.state.set('targetNode', node);
-                          //  this.nodeInfoView.showNode(node);
+                            mapState.set('targetNode', node);
                         }
                         break;
 
                     case 'nodeInfo':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
-                        this.nodeInfoView.showNode(node);
+                        mapState.set('selectedNode', node);
                         break;
                 }
             },
 
-            onCanvasMouseMove : function(e) {
-                if (this.state.get('editorMode') === 'toggleNode') {
-                    if (this._mouseDown !== undefined){
+            onCanvasMouseMove:function (e) {
+                if (mapState.get('editorMode') === 'toggleNode') {
+                    if (this._mouseDown !== undefined) {
                         var node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
                             if (this._mouseDown) {
@@ -191,8 +208,8 @@ define([
                 }
             },
 
-            onCanvasMouseDown : function (e) {
-                if (this.state.get('editorMode') === 'toggleNode'){
+            onCanvasMouseDown:function (e) {
+                if (mapState.get('editorMode') === 'toggleNode') {
                     var node = this.getMatrixPosition(e.pageX, e.pageY);
                     if (node) {
                         this._mouseDown = this.model.toggleNode(node.row, node.column);
@@ -200,41 +217,41 @@ define([
                 }
             },
 
-            onCanvasMouseUp : function(e) {
-                if (this._mouseDown !== undefined){
+            onCanvasMouseUp:function (e) {
+                if (this._mouseDown !== undefined) {
                     delete this._mouseDown;
                 }
             },
 
-            onCanvasMouseOut : function(e) {
-                if (this._mouseDown){
+            onCanvasMouseOut:function (e) {
+                if (this._mouseDown) {
                     delete this._mouseDown;
                 }
             },
 
-            doPathfinding : function() {
+            doPathfinding:function () {
 
-                var node = this.state.get('markerNode');
-                var target = this.state.get('targetNode');
-                if (!(node && target)){
+                var node = mapState.get('markerNode');
+                var target = mapState.get('targetNode');
+                if (!(node && target)) {
                     return;
                 }
 
                 var grid = new PF.Grid(this.model.get('columns'), this.model.get('rows'));
                 // block cells
                 var blockedNodes = this.model.get('blockedNodes');
-                for (var i in blockedNodes){
+                for (var i in blockedNodes) {
                     grid.setWalkableAt(blockedNodes[i].column, blockedNodes[i].row, false);
                 }
                 var finder = new PF.AStarFinder();
                 this.path = finder.findPath(node.column, node.row, target.column, target.row, grid);
-                if (this.path){
-                    this.path.splice(0,1);
-                    this.path.splice(-1,1);
+                if (this.path) {
+                    this.path.splice(0, 1);
+                    this.path.splice(-1, 1);
                 }
             }
         });
         // Our module now returns an instantiated view
         // Sometimes you might return an un-instantiated view e.g. return projectListView
-        return CanvasMapView;
+        return MapView;
     });

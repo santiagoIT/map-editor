@@ -1,9 +1,8 @@
-/** Note Schema for CrowdNotes **/
-
 var mongoose = require('mongoose');
 var
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId
+;
 
 // Define schema
 var NodeSchema = new Schema({
@@ -13,7 +12,7 @@ var NodeSchema = new Schema({
 
 var MapSchema = new Schema({
     'id':ObjectId,
-    'name':{ type:String, index:true, default:'hi sb' },
+    'name':{ type:String, index:true, default:'' },
     'imageName':String,
     'columns':{type:Number, default:1},
     'rows':{type:Number, default:1},

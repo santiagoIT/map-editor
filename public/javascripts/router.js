@@ -1,38 +1,62 @@
 define([
     'jquery',
     'Underscore',
-    'backbone',
-    'views/mapEditor',
-    'views/home',
-    'views/maps'
-], function ($, _, Backbone, NodeEditorView, HomeView, MapView) {
+    'backbone'
+], function ($, _, Backbone) {
 
     var AppRouter = Backbone.Router.extend({
         routes:{
             // Define some URL routes
             '' : 'showHome',
-            'node-editor/:mapid':'showNodeEditor',
-            'maps':'showMaps',
+            'map_edit/:mapid':'map_edit',
+            'maps':'maps',
+            'maps_create':'maps_create',
+
+            // locations
+            'locations' : 'locations',
+            createLocation : 'createLocation',
 
             // Default
             '*actions':'defaultAction'
         },
 
         showHome : function(){
-            console.log('show home');
-            var hmView = new HomeView();
-            hmView.render();
+            require(['views/home'], function(View){
+                var view = new View();
+                view.render();
+            });
         },
 
-        showMaps : function(){
-            console.log('show home');
-            var mapView = new MapView();
-            //mapView.initialize();
+        maps : function(){
+            require(['views/maps/maps'], function(View){
+                var view = new View();
+            });
         },
 
-        showNodeEditor:function (mapid) {
-            var view = new NodeEditorView(mapid);
-            view.render();
+        maps_create : function(){
+            require(['views/maps/create'], function(View){
+                var view = new View();
+            });
+        },
+
+        locations : function(){
+            require(['views/locations/index'], function(View){
+                var view = new View();
+            });
+        },
+
+        createLocation : function(){
+            require(['views/locations/create'], function(View){
+                var view = new View();
+            });
+        },
+
+        map_edit:function (mapid) {
+
+            require(['views/mapEditor'], function(View){
+                var view = new View(mapid);
+                view.render();
+            });
         },
 
         defaultAction:function (actions) {

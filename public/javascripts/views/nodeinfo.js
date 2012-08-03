@@ -1,16 +1,17 @@
 define([
     'jquery',
     'Underscore',
-    'backbone'
+    'backbone',
+    'biz/mapStateSingleton'
 ],
-    function ($, _, Backbone) {
+    function ($, _, Backbone, mapState) {
 
         var NodeInfoView = Backbone.View.extend({
             tagName:'div',
             node:null,
 
-
             initialize:function () {
+                mapState.on('change:markerNode change:targetNode change:selectedNode', this.showNode, this);
             },
 
             render:function () {
@@ -25,7 +26,6 @@ define([
             },
 
             showNode : function(model, node) {
-
                 this.node = node;
                 this.render();
             }

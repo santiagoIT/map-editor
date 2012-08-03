@@ -1,11 +1,7 @@
-<button id="btnHome" class="btn btn-primary">EXIT</button>
-<select id="maps"></select>
-<button id="btnEditMap" class="btn">Edit Map</button>
-
 <div class="well">
-    <form id="frmNewMap" enctype="multipart/form-data">
+    <form id="frmNewMap">
         <fieldset>
-            <legend>Create new map</legend>
+            <legend>Create Location</legend>
             <div class="control-group">
                 <label class="control-label" for="name">Name</label>
                 <div class="controls">
@@ -13,16 +9,15 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="image">Image File</label>
+                <label class="control-label" for="description">Description</label>
                 <div class="controls">
-                    <input class="input-file" id="image" type="file" name="image">
+                    <input type="text" class="input-xlarge" id="description" name="description">
                 </div>
             </div>
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary" id="btnSaveMap">Save Map</button>
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
                 <button class="btn">Cancel</button>
             </div>
         </fieldset>
     </form>
 </div>
-

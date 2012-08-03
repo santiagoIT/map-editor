@@ -11,24 +11,45 @@
 <div class="row">
     <div class="span5" id="editor">
         <form id="frmGrid" class="well form-inline">
-            <legend>Grid size</legend>
-            <input type="text" class="input-small" placeholder="Row Count" name="columns" id="columns">
-            <input type="text" class="input-small" placeholder="Column Count" name="rows" id="rows">
+            <h3>Grid size</h3>
+            <div class="input-prepend">
+                <span class="add-on">Columns</span>
+                <input type="text" class="input-small" placeholder="Column Count" name="columns" id="columns">
+            </div>
+
+            <div class="input-prepend">
+                <span class="add-on">Rows</span>
+                <input type="text" class="input-small" placeholder="Column Count" name="rows" id="rows">
+            </div>
             <button type="submit" id="btnChangeMesh" class="btn">Apply</button>
         </form>
 
         <form id="frmMargins" class="well form-inline">
-            <legend>Margins</legend>
-            <input type="text" class="input-small" placeholder="Left" name="marginLeft" id="marginLeft">
-            <input type="text" class="input-small" placeholder="Top"  name="marginTop" id="marginTop">
-            <input type="text" class="input-small" placeholder="Bottom" name="marginBottom" id="marginBottom">
-            <input type="text" class="input-small" placeholder="Right"  name="marginRight" id="marginRight">
+            <h3>Margins</h3>
+            <div class="input-prepend">
+                <span class="add-on">Left</span>
+                <input type="text" class="input-small" placeholder="Left" name="marginLeft" id="marginLeft">
+            </div>
+            <div class="input-prepend">
+                <span class="add-on">Top</span>
+                <input type="text" class="input-small" placeholder="Top" name="marginTop" id="marginTop">
+            </div>
+
+            <div class="input-prepend">
+                <span class="add-on">Bot</span><input type="text" class="input-small" placeholder="Bottom"
+                                                          name="marginBottom" id="marginBottom">
+            </div>
+
+            <div class="input-prepend">
+                <span class="add-on">Right</span>
+                <input type="text" class="input-small" placeholder="Right" name="marginRight" id="marginRight">
+            </div>
             <button type="submit" id="btnChangeMargins" class="btn">Apply</button>
         </form>
     </div>
     <div class="span3">
         <form class="well">
-            <legend>Editor mode</legend>
+            <h3>Editor mode</h3>
             <div class="control-group">
                 <div class="controls">
                     <label class="radio">
@@ -50,13 +71,30 @@
                 </div>
             </div>
         </form>
-        <div class="well" id="nodeInfo">
-        </div>
     </div>
     <div class="span3">
         <button id="btnBlockAll" class="btn">Block All</button>
         <button id="btnClearAll" class="btn">Clear All</button>
     </div>
+    <div class="span3">
+        <button id="btnCreateLocation" class="btn">Create Location</button>
+    </div>
+</div>
+
+<div class="row">
+    <label class="checkbox">
+        <input type="checkbox" class="editor-config" name="showGrid" checked>
+        Show Grid
+    </label>
+    <label class="checkbox">
+        <input type="checkbox" class="editor-config" name="showHotSpots" checked>
+        Show HotSpots
+    </label>
+    <label class="checkbox">
+        <input type="checkbox" class="editor-config" name="showBlockedTiles" checked>
+        Show Blocked Tiles
+    </label>
+
 </div>
 
 

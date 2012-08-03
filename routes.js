@@ -4,6 +4,7 @@ var
     home = require('./routes/home')
     , test = require('./routes/test')
     , api = require('./routes/api')
+    , MongoRest = require('mongo-rest')
     ;
 
 function ensureAuthenticated(req, res, next) {
@@ -32,7 +33,7 @@ module.exports = function (app) {
     );
     app.get('/logout', home.logout);
 
-    // api
+    // api - maps
     app.get('/api', ensureAuthenticated, api.api);
     app.get('/api/maps', ensureAuthenticated, api.getMaps);
     app.post('/api/maps', ensureAuthenticated, api.postMap);
@@ -41,6 +42,21 @@ module.exports = function (app) {
     app.delete('/api/maps/:id', ensureAuthenticated, api.deleteMap);
     app.post('/api/uploadmapimage', ensureAuthenticated, api.uploadImage);
 
+    // api - locations
+    app.get('/api/locations', ensureAuthenticated, api.locations);
+    app.post('/api/locations', ensureAuthenticated, api.createLocation);
+    app.delete('/api/locations/:id', ensureAuthenticated, api.deleteLocation);
+
     // tests
     app.get('/test/1', test.test1);
+
+    // mongo-rest
+    var mongoRest = new MongoRest(app, {
+        viewPath: 'admin/resources/',
+        collectionViewTemplate :  'resources/{{pluralName}}',
+        entityViewTemplate : 'resources/{{singularName}}'
+    });
+
+    // resource based url's
+    mongoRest.addResource('user', require('./models/user'));
 }

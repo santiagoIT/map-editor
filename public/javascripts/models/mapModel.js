@@ -17,10 +17,11 @@ define([
             bottom:0,
             right:0,
 
-            // paths
+            // blocked nodes
             blockedNodes:[]
         },
         urlRoot:'api/maps',
+        idAttribute: "_id",
 
         setGridSize:function (columns, rows) {
             this.set('columns', columns);
@@ -69,7 +70,7 @@ define([
             }
         },
 
-        blockAll:function () {
+        blockAllNodes : function () {
             var columnQty = this.get('columns');
             var rowQty = this.get('rows');
             var nodes = [];
@@ -82,7 +83,7 @@ define([
             this.trigger('change:blockedNodes');
         },
 
-        clearAll:function () {
+        clearAllNodes : function () {
             this.set('blockedNodes', []);
             this.trigger('change:blockedNodes');
         },

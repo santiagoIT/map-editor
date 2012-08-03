@@ -8,15 +8,15 @@ define([
     'text!views/mapEditor.html',
     'models/mapModel',
     'collections/maps',
-    'biz/mapStateModel',
+    'collections/locations',
+    'biz/mapStateSingleton',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, MapStateModel){
+    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState){
 
     var NodeEditorView = Backbone.View.extend({
         el: $('#itworks-app'),
         canvasView : null,
-        mapState : new MapStateModel(),
         events : {
             'click #btnHome' : "navigateHome",
             'click #btnSave' : "onSaveMap",
@@ -24,7 +24,9 @@ define([
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
             'click #btnClearAll' : "clearAll",
-            'click [name="editor-mode"]' : "onEditorModeSwitched"
+            'click [name="editor-mode"]' : "onEditorModeSwitched",
+            'click #btnCreateLocation'  : "onCreateLocation",
+            'click .editor-config' : "onEditorConfigChanged"
         },
 
         jqueryMap:{},
@@ -35,19 +37,20 @@ define([
             var
                 self = this;
 
-            this.model = new MapModel({id:mapid});
+            // reset editor defaults
+            mapState.set(mapState.defaults);
+
+            this.model = new MapModel({_id:mapid});
             this.model.fetch();
 
             // nodeInfo view
             var nodeInfoView = new NodeInfoView();
             $('#canvasContainer').append(nodeInfoView.el);
 
-            this.canvasView = new MapView(this.model, this.mapState, nodeInfoView);
+            this.canvasView = new MapView(this.model);
             $('#canvasContainer').append(this.canvasView.el);
 
             // set queryMap
-            this.jqueryMap.$btnHome = $('#btnHome');
-            this.jqueryMap.$nodeInfo = $('#nodeInfo');
             this.jqueryMap.$marginTop = $('#marginTop');
             this.jqueryMap.$marginLeft = $('#marginLeft');
             this.jqueryMap.$marginBottom = $('#marginBottom');
@@ -106,11 +109,11 @@ define([
         },
 
         blockAll : function(){
-            this.model.blockAll();
+            this.model.blockAllNodes();
         },
 
         clearAll : function(){
-            this.model.clearAll();
+            this.model.clearAllNodes();
         },
 
         navigateHome : function() {
@@ -121,7 +124,7 @@ define([
 
         onEditorModeSwitched : function(e){
             var editorMode = $("input:radio[name=editor-mode]:checked").val();
-            this.mapState.set('editorMode',editorMode);
+            mapState.set('editorMode',editorMode);
         },
 
         onSaveMap : function() {
@@ -154,6 +157,42 @@ define([
             this.model.setMargins(top,left,bottom,right);
 
             return false;
+        },
+
+        onCreateLocation : function() {
+            var self = this;
+            var node = mapState.get('selected-node') || {row:0, column:0};
+            // load location creator
+            require(['modals/locationCreate/module', 'models/locationModel'], function(module, LocationModel) {
+
+                module(self.model, node, function($form){
+                    var location = new LocationModel();
+                    location.set('name', $form.find('input[name="name"]').val());
+                    location.set('description', $form.find('input[name="description"]').val());
+                    location.set('mapId', self.model.get('_id'));
+                    node.column = $form.find('input[name="column"]').val();
+                    node.row = $form.find('input[name="row"]').val()
+                    location.set('node', node);
+                    location.save(null, {
+                        success:function(model, response){
+                            locations.add(location);
+                        },
+                        error : function(err){
+                            // TODO:
+                            throw(err);
+                        }
+                    });
+                });
+            });
+            return false;
+        },
+
+        onEditorConfigChanged : function(el){
+            var $el = $(el.target);
+            var name = $el.attr('name');
+            if (name){
+                mapState.set(name, $el.is(':checked'));
+            }
         }
     });
     // Our module now returns an instantiated view

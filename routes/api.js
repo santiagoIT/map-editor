@@ -2,6 +2,7 @@ var
     knox = require('knox')
     , fs = require('fs')
     , MapModel = require('../models/map')
+    , LocationModel = require('../models/location')
     ;
 
 var mapFormToModel = function (form, map) {
@@ -32,6 +33,9 @@ var mapFormToModel = function (form, map) {
     if (form.blockedNodes) {
         map.blockedNodes = form.blockedNodes;
     }
+    if (form.hotspots){
+        map.hotspots = form.hotspots;
+    }
 }
 
 module.exports = {
@@ -46,7 +50,7 @@ module.exports = {
             if (!err) {
                 return res.send(maps);
             } else {
-                return console.log(err);
+                throw err;
             }
         });
     },
@@ -129,6 +133,45 @@ module.exports = {
                 return res.send({err:'failed!!'});
             });
             reqAWS.end(buf);
+        });
+    },
+
+    locations : function(req, res, next) {
+        LocationModel.find(function (err, maps) {
+            if (!err) {
+                return res.send(maps);
+            } else {
+                throw err;
+            }
+        });
+    },
+
+    createLocation : function(req, res, next) {
+        console.log(req.body);
+        var location = new LocationModel();
+        location.name = req.body.name;
+        location.description = req.body.description;
+        location.mapId = req.body.mapId;
+        location.node = req.body.node;
+        location.save(function (err) {
+            if (!err) {
+                return res.send(location);
+            } else {
+                throw err;
+            }
+        });
+    },
+
+    deleteLocation : function(req, res) {
+        return LocationModel.findById(req.params.id, function (err, entry) {
+            return entry.remove(function (err) {
+                if (!err) {
+                    console.log("removed");
+                    return res.send('');
+                } else {
+                    throw err;
+                }
+            });
         });
     }
 }

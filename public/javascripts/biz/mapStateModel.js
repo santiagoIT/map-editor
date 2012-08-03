@@ -12,7 +12,21 @@ define([
             },
 
             // paths
-            targetNode:null
+            targetNode:null,
+            selectedNode: null,
+
+            // editor - config
+            showGrid : true,
+            showHotSpots : true,
+            showBlockedTiles : true
+        },
+
+        initialize : function(){
+            console.log('JUST LOGGING... MapStateModel created!!!');
+        },
+
+        reset : function (){
+
         }
     });
     // You usually don't return a model instantiated
