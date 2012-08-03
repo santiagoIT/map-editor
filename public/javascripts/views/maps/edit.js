@@ -14,8 +14,7 @@ define([
     ],
     function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState){
 
-    var NodeEditorView = Backbone.View.extend({
-        el: $('#itworks-app'),
+    var View = Backbone.View.extend({
         canvasView : null,
         events : {
             'click #btnHome' : "navigateHome",
@@ -43,29 +42,30 @@ define([
             this.model = new MapModel({_id:mapid});
             this.model.fetch();
 
+            var $container =  this.$('#canvasContainer');
+            this.canvasView = new MapView(this.model);
+            $container.append(this.canvasView.el);
+
             // nodeInfo view
             var nodeInfoView = new NodeInfoView();
-            $('#canvasContainer').append(nodeInfoView.el);
-
-            this.canvasView = new MapView(this.model);
-            $('#canvasContainer').append(this.canvasView.el);
+            $container.append(nodeInfoView.el);
 
             // set queryMap
-            this.jqueryMap.$marginTop = $('#marginTop');
-            this.jqueryMap.$marginLeft = $('#marginLeft');
-            this.jqueryMap.$marginBottom = $('#marginBottom');
-            this.jqueryMap.$marginRight = $('#marginRight');
-            this.jqueryMap.$columns = $('#columns');
-            this.jqueryMap.$rows = $('#rows');
+            this.jqueryMap.$marginTop = this.$('#marginTop');
+            this.jqueryMap.$marginLeft = this.$('#marginLeft');
+            this.jqueryMap.$marginBottom = this.$('#marginBottom');
+            this.jqueryMap.$marginRight = this.$('#marginRight');
+            this.jqueryMap.$columns = this.$('#columns');
+            this.jqueryMap.$rows = this.$('#rows');
 
             // set form validate
-            $('#frmGrid').validate({
+            this.$('#frmGrid').validate({
                 rules : {
                     columns : {required: true, number: true},
                     rows : {required: true, number: true}
                 }
             });
-            $('#frmMargins').validate({
+            this.$('#frmMargins').validate({
                 rules : {
                     marginLeft : {required: true, number: true},
                     marginTop : {required: true, number: true},
@@ -77,22 +77,18 @@ define([
             // set editor mode
             this.onEditorModeSwitched();
 
-            this.model.on('change:top', this.displayMapMetaData, this);
-            this.model.on('change:left', this.displayMapMetaData, this);
-            this.model.on('change:bottom', this.displayMapMetaData, this);
-            this.model.on('change:right', this.displayMapMetaData, this);
+            this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.displayMargins);
+            this.bindTo(this.model, 'change:columns change:rows', this.displayGridSize);
 
-            this.model.on('change:columns', this.displayGridSize, this);
-            this.model.on('change:rows', this.displayGridSize, this);
-
-            this.displayMapMetaData();
+            this.displayMargins();
+            this.displayGridSize();
         },
 
         render: function() {
             console.log('editor-view render');
         },
 
-        displayMapMetaData : function() {
+        displayMargins : function() {
 
             // display margins
             this.jqueryMap.$marginTop.val(this.model.get('top'));
@@ -197,5 +193,5 @@ define([
     });
     // Our module now returns an instantiated view
     // Sometimes you might return an un-instantiated view e.g. return projectListView
-    return NodeEditorView;
+    return View;
 });

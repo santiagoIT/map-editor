@@ -7,7 +7,6 @@ define([
     function ($, _, Backbone, mapState) {
 
         var NodeInfoView = Backbone.View.extend({
-            tagName:'div',
             node:null,
 
             initialize:function () {

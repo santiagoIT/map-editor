@@ -11,11 +11,11 @@ define([
     function ($, _, Backbone, require, html, MapModel, maps) {
 
         var View = Backbone.View.extend({
-            el:$('#itworks-app'),
             collection:maps,
             events:{
                 'click #btnHome':"navigateHome",
-                'click #btnSaveMap':"saveMap"
+                'click #btnSaveMap':"saveMap",
+                'click .navItem' : "onNavigateTo"
             },
             s3Root : 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 

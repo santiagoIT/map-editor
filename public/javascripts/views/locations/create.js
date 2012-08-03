@@ -9,7 +9,6 @@ define([
     function ($, _, Backbone, require, html, LocationModel) {
 
         var View = Backbone.View.extend({
-            el:$('#itworks-app'),
             events:{
                 'click .navItem':"onNavigateTo",
                 'click #btnSubmit':"onSubmit"

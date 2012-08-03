@@ -19,16 +19,8 @@ require.config({
     }
 });
 
-require(['jquery', 'Underscore', 'backbone', 'itworks.app', 'bootstrap',  'domReady!'], function($, _, Backbone, app) {
+require(['jquery', 'Underscore', 'backbone', 'itworks.app', 'bootstrap',  'domReady!', 'utils/extensions/view'], function($, _, Backbone, app) {
 
-    // extend backbone views
-    Backbone.View.prototype.onNavigateTo = function (el) {
-        console.log('Backbone.View.prototype.onNavigateTon was CALLLED!!!!')
-        var route = $(el.target).attr('data-navitem');
-        require(['itworks.app'], function (app) {
-            app.Router.navigate(route, {trigger:true});
-        });
-        return false;
-    };
-
+  // clear loading
+    $('#itworks-app').empty();
 });

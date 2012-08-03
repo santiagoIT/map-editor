@@ -1,8 +1,9 @@
 define([
     'jquery',
     'Underscore',
-    'backbone'
-], function ($, _, Backbone) {
+    'backbone',
+    'utils/viewManager'
+], function ($, _, Backbone, viewManager) {
 
     var AppRouter = Backbone.Router.extend({
         routes:{
@@ -22,40 +23,38 @@ define([
 
         showHome : function(){
             require(['views/home'], function(View){
-                var view = new View();
-                view.render();
+                viewManager.showView(new  View());
             });
         },
 
         maps : function(){
             require(['views/maps/maps'], function(View){
-                var view = new View();
+                viewManager.showView(new  View());
             });
         },
 
         maps_create : function(){
             require(['views/maps/create'], function(View){
-                var view = new View();
+                viewManager.showView(new  View());
             });
         },
 
         locations : function(){
             require(['views/locations/index'], function(View){
-                var view = new View();
+                viewManager.showView(new  View());
             });
         },
 
         createLocation : function(){
             require(['views/locations/create'], function(View){
-                var view = new View();
+                viewManager.showView(new  View());
             });
         },
 
         map_edit:function (mapid) {
 
             require(['views/maps/edit'], function(View){
-                var view = new View(mapid);
-                view.render();
+                viewManager.showView(new  View(mapid));
             });
         },
 

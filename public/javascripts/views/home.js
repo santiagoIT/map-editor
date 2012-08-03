@@ -6,7 +6,6 @@ define([
     'text!views/home.html'
 ], function ($, _, Backbone, require, html) {
     var HomeView = Backbone.View.extend({
-        el:$('#itworks-app'),
         events:{
             'click .navItem':"onNavigateTo"
         },

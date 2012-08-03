@@ -10,7 +10,6 @@ define([
     function ($, _, Backbone, require, html, locations) {
 
         var LocationsView = Backbone.View.extend({
-            el:$('#itworks-app'),
             collection:locations,
             idToDelete : null,
             events:{

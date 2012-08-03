@@ -3,13 +3,13 @@ define(function(){
     return {
         showView : function(view) {
             if (this.currentView){
-                this.currentView.close();
+                this.currentView.dispose();
             }
 
             this.currentView = view;
             this.currentView.render();
 
-            $("#mainContent").html(this.currentView.el);
+            $("#itworks-app").append(this.currentView.el);
         }
     }
 });

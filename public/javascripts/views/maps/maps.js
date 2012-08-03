@@ -11,9 +11,8 @@ define([
     function ($, _, Backbone, require, html, MapModel, maps) {
 
         var MapsView = Backbone.View.extend({
-            el:$('#itworks-app'),
             collection:maps,
-            template : null,
+            template : _.template(html),
             events:{
                 'click .navItem' : "onNavigateTo",
                 'click .edit':"onEditMap",
@@ -24,28 +23,15 @@ define([
             jqueryMap:{},
 
             initialize:function () {
-                console.log('MapsView initialize');
+
                 this.$el.html(html);
 
-                var
-                    self = this;
-
-                // set queryMap
-                this.jqueryMap.$btnHome = $('#btnHome');
-
-                // event handlers
-                this.jqueryMap.$btnHome.on('click', function () {
-                    self.navigateHome();
-                });
-
                 // bind events
-                this.collection.on('all', this.render, this);
+                this.bindTo(this.collection, 'all', this.render);
+
 
                 // fetch data
                 this.collection.fetch();
-
-                // compile template:
-                this.template =  _.template(html);
             },
 
             render:function () {
@@ -55,8 +41,6 @@ define([
 
             onEditMap:function (el) {
                 var id = $(el.target).attr('data-id');
-                console.log('el:');
-                console.log(el);
                 require(['itworks.app'], function (app) {
                     app.Router.navigate('map_edit/' + id, {trigger:true});
                 });
