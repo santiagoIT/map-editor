@@ -20,8 +20,6 @@ define([
             },
             s3Root : 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
-            jqueryMap:{},
-
             initialize:function () {
 
                 this.$el.html(html);

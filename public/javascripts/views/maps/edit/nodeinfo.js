@@ -15,7 +15,7 @@ define([
             render:function () {
                 var node = mapState.get('selectedNode');
                 if (node) {
-                    this.$el.html('[' + node.column + ',' + node.row + ']')
+                    this.$el.html('[' + node.row + ',' + node.column + ']')
                 }
                 else {
                     this.$el.html('[-]');

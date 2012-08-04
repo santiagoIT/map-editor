@@ -10,7 +10,8 @@ define([
             'click .showLocation':"showLocation",
             'click .removeLocation':"removeLocation",
             'click .goToLocation':"goToLocation",
-            'click .setLocation':"setLocation"
+            'click .setLocation':"setLocation",
+            'click .editLocation' : "editLocation"
         },
         template:_.template(html),
         tagName: 'tr',
@@ -45,8 +46,6 @@ define([
         },
 
         goToLocation:function () {
-            console.log('target');
-            console.log(this.model.get('node'));
             mapState.set('targetNode', this.model.get('node'));
             return false;
         },
@@ -61,6 +60,13 @@ define([
                 }, self.model);
             });
             return false;
+        },
+
+        editLocation : function(el){
+            var id = this.model.id;
+            require(['itworks.app'], function (app) {
+                app.Router.navigate('locations_edit/'+id, {trigger:true});
+            });
         }
     });
     // Our module now returns an instantiated view
