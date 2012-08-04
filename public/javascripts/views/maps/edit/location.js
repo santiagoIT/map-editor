@@ -13,6 +13,7 @@ define([
             'click .setLocation':"setLocation"
         },
         template:_.template(html),
+        tagName: 'tr',
 
         initialize:function (model, mapId) {
             this.model = model;
@@ -31,6 +32,7 @@ define([
         showLocation:function (el) {
             var node = this.model.get('node');
             mapState.set('selectedNode', node);
+            return false;
         },
 
         setLocation:function () {
@@ -39,12 +41,14 @@ define([
                 this.model.set('node', node);
                 this.model.save();
             }
+            return false;
         },
 
         goToLocation:function () {
             console.log('target');
             console.log(this.model.get('node'));
             mapState.set('targetNode', this.model.get('node'));
+            return false;
         },
 
         removeLocation:function (el) {
@@ -56,6 +60,7 @@ define([
                     }});
                 }, self.model);
             });
+            return false;
         }
     });
     // Our module now returns an instantiated view

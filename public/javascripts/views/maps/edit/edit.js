@@ -19,7 +19,7 @@ define([
         canvasView : null,
         events : {
             'click .navItem' : "onNavigateTo",
-            'click #btnSave' : "onSaveMap",
+            'click .saveChanges' : "onSaveMap",
             'click #btnChangeMesh' : "changeMesh",
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
@@ -85,7 +85,9 @@ define([
             this.displayMargins();
             this.displayGridSize();
 
-            this.$el.append(this.addChildView(new LocationView(mapid)).el);
+            var locView = new LocationView(mapid);
+            this.addChildView(locView);
+            this.$('.locations').append(locView.el);
         },
 
         render: function() {

@@ -1,20 +1,18 @@
-<div class="row">
-    <div class="span2">
+    <td>
         <%= item.name %>
-    </div>
-    <div class="span1">
+    </td>
+    <td>
         [<%= item.node.row%>, <%= item.node.column%>]
-    </div>
-    <div class="span1">
-        <btn class="btn btn-info showLocation" data-id="<%= item._id %>">SHOW</btn>
-    </div>
-    <div class="span1">
-        <btn class="btn btn-success goToLocation" data-id="<%= item._id %>">GO</btn>
-    </div>
-    <div class="span1">
-        <btn class="btn setLocation" data-id="<%= item._id %>">SET</btn>
-    </div>
-    <div class="span1">
-        <btn class="btn btn-danger removeLocation" data-id="<%= item._id %>">DELETE</btn>
-    </div>
-</div>
+    </td>
+    <td>
+        <a class="showLocation" data-id="<%= item._id %>" href="#">Show</a>
+    </td>
+    <td>
+        <a class="goToLocation" data-id="<%= item._id %>">Go</a>
+    </td>
+    <td>
+        <a class="setLocation" data-id="<%= item._id %>">Set</a>
+    </td>
+    <td>
+        <a class="btn btn-danger removeLocation" data-id="<%= item._id %>">Delete</a>
+    </td>
