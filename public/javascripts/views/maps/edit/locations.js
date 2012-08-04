@@ -25,7 +25,7 @@ define([
             locations.each(function (location) {
                 if (location.get('mapId') === self.mapId) {
                     var view = new LocationView(location, self.mapId);
-                    view.render();
+                    self.addChildView(view);
                     $container.append(view.el);
                 }
             });

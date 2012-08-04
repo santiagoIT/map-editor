@@ -32,15 +32,20 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
                 this._childViews = [];
             }
             this._childViews.push(view);
+            view.render();
+            return view;
         },
 
         disposeChildViews : function(){
             _.each(this._childViews, function(childView){
                 childView.dispose();
+                console.log('*** CHILD VIEW DISPOSED ***');
             });
+            this._childViews = [];
         },
 
         dispose:function () {
+            console.log(this._childViews);
             this.disposeChildViews(); // cleanup child views!
             this.unbindFromAll(); // this will unbind all events that this view has bound to
             this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.

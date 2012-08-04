@@ -44,6 +44,7 @@ define([
 
             var $container =  this.$('#canvasContainer');
             this.canvasView = new MapView(this.model);
+            this.addChildView(this.canvasView);
             $container.append(this.canvasView.el);
 
             // nodeInfo view
@@ -84,7 +85,7 @@ define([
             this.displayMargins();
             this.displayGridSize();
 
-            this.$el.append(new LocationView(mapid).el);
+            this.$el.append(this.addChildView(new LocationView(mapid)).el);
         },
 
         render: function() {
