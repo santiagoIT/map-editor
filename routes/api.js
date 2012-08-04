@@ -33,8 +33,22 @@ var mapFormToModel = function (form, map) {
     if (form.blockedNodes) {
         map.blockedNodes = form.blockedNodes;
     }
-    if (form.hotspots){
-        map.hotspots = form.hotspots;
+}
+
+
+var mapFormToLocation = function (form, obj) {
+
+    if (form.name) {
+        obj.name = form.name;
+    }
+    if (form.description) {
+        obj.imageName = form.description;
+    }
+    if (form.mapId) {
+        obj.mapId = form.mapId;
+    }
+    if (form.node){
+        obj.node = form.node;
     }
 }
 
@@ -147,8 +161,8 @@ module.exports = {
     },
 
     createLocation : function(req, res, next) {
-        console.log(req.body);
         var location = new LocationModel();
+        mapFormToLocation(req.body, location);
         location.name = req.body.name;
         location.description = req.body.description;
         location.mapId = req.body.mapId;
@@ -173,5 +187,19 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+
+    updateLocation:function (req, res) {
+        return LocationModel.findById(req.params.id, function (err, location) {
+            mapFormToLocation(req.body, location);
+            return location.save(function (err) {
+                if (!err) {
+                    console.log("updated");
+                } else {
+                    throw err;
+                }
+                return res.send(location);
+            });
+        });
+    },
 }

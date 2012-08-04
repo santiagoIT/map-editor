@@ -28,7 +28,7 @@ define([
         },
 
         maps : function(){
-            require(['views/maps/maps'], function(View){
+            require(['views/maps/index'], function(View){
                 viewManager.showView(new  View());
             });
         },
@@ -53,7 +53,7 @@ define([
 
         map_edit:function (mapid) {
 
-            require(['views/maps/edit'], function(View){
+            require(['views/maps/edit/edit'], function(View){
                 viewManager.showView(new  View(mapid));
             });
         },

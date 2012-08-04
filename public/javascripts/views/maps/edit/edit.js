@@ -2,29 +2,29 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'views/maps/map',
-    'views/maps/nodeinfo',
+    'views/maps/edit/map',
+    'views/maps/edit/nodeinfo',
     'require',
-    'text!views/maps/edit.html',
+    'text!views/maps/edit/edit.html',
     'models/mapModel',
     'collections/maps',
     'collections/locations',
     'biz/mapStateSingleton',
+    'views/maps/edit/locations',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
     ],
-    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState){
+    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView){
 
     var View = Backbone.View.extend({
         canvasView : null,
         events : {
-            'click #btnHome' : "navigateHome",
+            'click .navItem' : "onNavigateTo",
             'click #btnSave' : "onSaveMap",
             'click #btnChangeMesh' : "changeMesh",
             'click #btnChangeMargins' : "changeMargins",
             'click #btnBlockAll' : "blockAll",
             'click #btnClearAll' : "clearAll",
             'click [name="editor-mode"]' : "onEditorModeSwitched",
-            'click #btnCreateLocation'  : "onCreateLocation",
             'click .editor-config' : "onEditorConfigChanged"
         },
 
@@ -48,6 +48,7 @@ define([
 
             // nodeInfo view
             var nodeInfoView = new NodeInfoView();
+            nodeInfoView.render();
             $container.append(nodeInfoView.el);
 
             // set queryMap
@@ -82,6 +83,8 @@ define([
 
             this.displayMargins();
             this.displayGridSize();
+
+            this.$el.append(new LocationView(mapid).el);
         },
 
         render: function() {
@@ -112,14 +115,8 @@ define([
             this.model.clearAllNodes();
         },
 
-        navigateHome : function() {
-            require(['itworks.app'], function(app){
-                app.Router.navigate('maps', {trigger:true});
-            });
-        },
-
         onEditorModeSwitched : function(e){
-            var editorMode = $("input:radio[name=editor-mode]:checked").val();
+            var editorMode = this.$("input:radio[name=editor-mode]:checked").val();
             mapState.set('editorMode',editorMode);
         },
 
@@ -152,34 +149,6 @@ define([
 
             this.model.setMargins(top,left,bottom,right);
 
-            return false;
-        },
-
-        onCreateLocation : function() {
-            var self = this;
-            var node = mapState.get('selected-node') || {row:0, column:0};
-            // load location creator
-            require(['modals/locationCreate/module', 'models/locationModel'], function(module, LocationModel) {
-
-                module(self.model, node, function($form){
-                    var location = new LocationModel();
-                    location.set('name', $form.find('input[name="name"]').val());
-                    location.set('description', $form.find('input[name="description"]').val());
-                    location.set('mapId', self.model.get('_id'));
-                    node.column = $form.find('input[name="column"]').val();
-                    node.row = $form.find('input[name="row"]').val()
-                    location.set('node', node);
-                    location.save(null, {
-                        success:function(model, response){
-                            locations.add(location);
-                        },
-                        error : function(err){
-                            // TODO:
-                            throw(err);
-                        }
-                    });
-                });
-            });
             return false;
         },
 

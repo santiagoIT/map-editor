@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/maps.html',
+    'text!views/maps/index.html',
     'models/mapModel',
     'collections/maps',
     'libs/jquery.iframe-transport/jquery.iframe-transport'

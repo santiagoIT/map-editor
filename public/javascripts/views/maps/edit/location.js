@@ -1,0 +1,64 @@
+define([
+    'jquery',
+    'Underscore',
+    'backbone',
+    'text!views/maps/edit/location.html',
+    'biz/mapStateSingleton'
+], function ($, _, Backbone, html, mapState) {
+    var View = Backbone.View.extend({
+        events:{
+            'click .showLocation':"showLocation",
+            'click .removeLocation':"removeLocation",
+            'click .goToLocation':"goToLocation",
+            'click .setLocation':"setLocation"
+        },
+        template:_.template(html),
+
+        initialize:function (model, mapId) {
+            this.model = model;
+            this.mapId = mapId;
+            this.bindTo(this.model, 'change:all', this.render);
+        },
+
+        render:function () {
+            this.$el.html(this.template({
+                item:this.model.toJSON(),
+                mapId:this.mapId
+            }));
+            return this;
+        },
+
+        showLocation:function (el) {
+            var node = this.model.get('node');
+            mapState.set('selectedNode', node);
+        },
+
+        setLocation:function () {
+            var node = mapState.get('selectedNode');
+            if (node) {
+                this.model.set('node', node);
+                this.model.save();
+            }
+        },
+
+        goToLocation:function () {
+            console.log('target');
+            console.log(this.model.get('node'));
+            mapState.set('targetNode', this.model.get('node'));
+        },
+
+        removeLocation:function (el) {
+            var self = this;
+            require(['biz/deleteConfirm'], function (lib) {
+                lib('Location: ' + self.model.get('name'), function (model) {
+                    model.destroy({success:function () {
+                        // self.collection.remove(model);
+                    }});
+                }, self.model);
+            });
+        }
+    });
+    // Our module now returns an instantiated view
+    // Sometimes you might return an un-instantiated view e.g. return projectListView
+    return View;
+});

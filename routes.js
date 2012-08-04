@@ -46,6 +46,7 @@ module.exports = function (app) {
     app.get('/api/locations', ensureAuthenticated, api.locations);
     app.post('/api/locations', ensureAuthenticated, api.createLocation);
     app.delete('/api/locations/:id', ensureAuthenticated, api.deleteLocation);
+    app.put('/api/locations/:id', ensureAuthenticated, api.updateLocation);
 
     // tests
     app.get('/test/1', test.test1);

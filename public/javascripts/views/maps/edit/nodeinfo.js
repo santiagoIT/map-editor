@@ -7,26 +7,21 @@ define([
     function ($, _, Backbone, mapState) {
 
         var NodeInfoView = Backbone.View.extend({
-            node:null,
 
             initialize:function () {
-                this.bindTo(mapState, 'change:markerNode change:targetNode change:selectedNode', this.showNode);
+                this.bindTo(mapState, 'change:markerNode change:targetNode change:selectedNode', this.render);
             },
 
             render:function () {
-                if (this.node) {
-                    this.$el.html('[' + this.node.column + ',' + this.node.row + ']')
+                var node = mapState.get('selectedNode');
+                if (node) {
+                    this.$el.html('[' + node.column + ',' + node.row + ']')
                 }
                 else {
-                    this.$el.html('-');
+                    this.$el.html('[-]');
                 }
 
                 return this;
-            },
-
-            showNode : function(model, node) {
-                this.node = node;
-                this.render();
             }
         });
 

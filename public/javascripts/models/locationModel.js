@@ -6,7 +6,11 @@ define([
         defaults:{
             // grid layout
             name:'Name me',
-            description:'Please provide'
+            description:'Please provide',
+            node : {
+                column : 0,
+                row : 0
+            }
         },
         urlRoot:'api/locations',
         idAttribute: "_id"

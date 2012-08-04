@@ -33,7 +33,7 @@ define([
                 this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.render);
                 this.bindTo(this.model, 'change:blockedNodes', this.render);
                 this.bindTo(this.model, 'change:imageName', this.onImageNameChanged);
-                this.bindTo(mapState, 'change:editorMode change:markerNode change:targetNode change:showGrid change:showHotSpots change:showBlockedTiles', this.render);
+                this.bindTo(mapState, 'change:editorMode change:markerNode change:targetNode change:showGrid change:showHotSpots change:showBlockedTiles change:selectedNode', this.render);
 
                 // locations
                 this.bindTo(locations, 'all', this.render);
@@ -73,6 +73,8 @@ define([
 
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
+
+                var node;
 
                 // draw grid lines
                 if (mapState.get('showGrid')) {
@@ -119,10 +121,16 @@ define([
                 if (mapState.get('showHotSpots')) {
                     var arLocations = locations.where({mapId:this.model.get('_id')});
                     for (var i in arLocations) {
-                        var node = arLocations[i].get('node');
+                        node = arLocations[i].get('node');
                         this.ctx.fillStyle = "rgba(255,0,0,0.5)";
                         this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
                     }
+                }
+
+                node = mapState.get('selectedNode');
+                if (node){
+                    this.ctx.fillStyle = "rgb(255,255,0)";
+                    this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
                 }
 
                 return this;
