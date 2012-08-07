@@ -1,0 +1,36 @@
+<div class="row-fluid">
+    <div class="span12">
+        <h1>Tunnels</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Map 1</th>
+                <th>Map 2</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% _.each(items,function(item,key,list){ %>
+            <tr>
+                <% var map1 = _.find(maps, function(m){if (m._id == item.mapId1) return m;}); if (!map1){map1 = {name:'---'};}
+                var map2 = _.find(maps, function(m){if (m._id == item.mapId2) return m;}); if (!map2){map2 = {name:'---'};}
+                %>
+                <!-- use variables -->
+                <td><%= item.name %></td>
+                <td><%= item.description %></td>
+                <td><%= map1.name %></td>
+                <td><%= map2.name %></td>
+                <td><a class="edit" data-id="<%= item._id %>">Edit</a></td>
+                <td><a class="delete" data-id="<%= item._id %>">Delete</a></td>
+            </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row-fluid">
+    <button id="btnCreate" class="btn navItem" data-navitem="tunnels_create">New Tunnel</button>
+    <button class="btn navItem" data-navitem="">Go Back</button>
+</div>

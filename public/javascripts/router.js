@@ -9,53 +9,63 @@ define([
         routes:{
             // Define some URL routes
             '' : 'showHome',
-            'map_edit/:mapid':'map_edit',
+            'map_edit/:id':'map_edit',
             'maps':'maps',
             'maps_create':'maps_create',
 
             // locations
             'locations' : 'locations',
-            createLocation : 'createLocation',
+            'locations_edit/:id' : 'locations_edit',
+            'createLocation' : 'locations_create',
+
+            // tunnels
+            'tunnels' : 'tunnels',
+            'tunnels_create' : 'tunnels_create',
+            'tunnels_edit/:id' : 'tunnels_edit',
 
             // Default
             '*actions':'defaultAction'
         },
 
         showHome : function(){
-            require(['views/home'], function(View){
-                viewManager.showView(new  View());
-            });
+            this.launchView('views/home');
         },
 
         maps : function(){
-            require(['views/maps/index'], function(View){
-                viewManager.showView(new  View());
-            });
+            this.launchView('views/maps/index');
         },
 
         maps_create : function(){
-            require(['views/maps/create'], function(View){
-                viewManager.showView(new  View());
-            });
+            this.launchView('views/maps/create');
+        },
+
+        map_edit:function (id) {
+            this.launchView('views/maps/edit/edit', id);
         },
 
         locations : function(){
-            require(['views/locations/index'], function(View){
-                viewManager.showView(new  View());
-            });
+            this.launchView('views/locations/index');
         },
 
-        createLocation : function(){
-            require(['views/locations/create'], function(View){
-                viewManager.showView(new  View());
-            });
+        locations_create : function(){
+            this.launchView('views/locations/create');
         },
 
-        map_edit:function (mapid) {
+        locations_edit : function(id){
+            this.launchView('views/locations/edit', id);
+        },
 
-            require(['views/maps/edit/edit'], function(View){
-                viewManager.showView(new  View(mapid));
-            });
+        // tunnels
+        tunnels : function(){
+            this.launchView('views/tunnels/index');
+        },
+
+        tunnels_create : function(){
+            this.launchView('views/tunnels/create');
+        },
+
+        tunnels_edit : function(id){
+            this.launchView('views/tunnels/edit', id);
         },
 
         defaultAction:function (actions) {
@@ -65,6 +75,12 @@ define([
 
         initialize : function() {
             Backbone.history.start();
+        },
+
+        launchView : function(view, id){
+            require([view], function(View){
+                viewManager.showView(new  View(id));
+            });
         }
     });
 

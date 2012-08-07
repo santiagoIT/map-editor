@@ -5,8 +5,8 @@ define([
     var locationModel = Backbone.Model.extend({
         defaults:{
             // grid layout
-            name:'Name me',
-            description:'Please provide',
+            name:'',
+            description:'',
             node : {
                 column : 0,
                 row : 0

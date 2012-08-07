@@ -5,6 +5,7 @@ var
     , test = require('./routes/test')
     , api = require('./routes/api')
     , MongoRest = require('mongo-rest')
+    , restify = require('./libs/restify')
     ;
 
 function ensureAuthenticated(req, res, next) {
@@ -35,18 +36,13 @@ module.exports = function (app) {
 
     // api - maps
     app.get('/api', ensureAuthenticated, api.api);
-    app.get('/api/maps', ensureAuthenticated, api.getMaps);
-    app.post('/api/maps', ensureAuthenticated, api.postMap);
-    app.get('/api/maps/:id', ensureAuthenticated, api.getMapById);
-    app.put('/api/maps/:id', ensureAuthenticated, api.updateMap);
-    app.delete('/api/maps/:id', ensureAuthenticated, api.deleteMap);
+
     app.post('/api/uploadmapimage', ensureAuthenticated, api.uploadImage);
 
-    // api - locations
-    app.get('/api/locations', ensureAuthenticated, api.locations);
-    app.post('/api/locations', ensureAuthenticated, api.createLocation);
-    app.delete('/api/locations/:id', ensureAuthenticated, api.deleteLocation);
-    app.put('/api/locations/:id', ensureAuthenticated, api.updateLocation);
+    // app models
+    restify(app, ensureAuthenticated, 'maps', require('./models/map'));
+    restify(app, ensureAuthenticated, 'locations', require('./models/location'));
+    restify(app, ensureAuthenticated, 'tunnels', require('./models/tunnel'));
 
     // tests
     app.get('/test/1', test.test1);

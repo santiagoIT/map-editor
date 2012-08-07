@@ -1,0 +1,54 @@
+<div class="well">
+    <form>
+        <fieldset>
+            <legend>Create Tunnel</legend>
+            <div class="control-group">
+                <label class="control-label" for="name">Name</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="name" name="name">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="description">Description</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="description" name="description">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">
+                    Map 1
+                    <select name="mapId1">
+                        <% for (var i = 0; i < maps.length; i++) { %>
+                        <% var map = maps[i]; %>
+                        <% if (i==0) { %>
+                        <option value="<%=map._id%>" selected><%=map.name%></option>
+                        <%} else { %>
+                        <option value="<%=map._id%>" ><%=map.name%></option>
+                        <%}%>
+                        <% } %>
+                    </select>
+                </label>
+            </div>
+            <div class="control-group">
+                <label class="control-label">
+                    Map 2
+                    <select name="mapId2">
+                        <% for (var i = 0; i < maps.length; i++) { %>
+                        <% var map = maps[i]; %>
+                        <% if (i==0) { %>
+                        <option value="<%=map._id%>" selected><%=map.name%></option>
+                        <%} else { %>
+                        <option value="<%=map._id%>" ><%=map.name%></option>
+                        <%}%>
+                        <% } %>
+                    </select>
+                </label>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+                <button class="btn navItem" data-navitem="tunnels">Cancel</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
