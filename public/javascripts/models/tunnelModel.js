@@ -5,7 +5,15 @@ define([
     var Model = Backbone.Model.extend({
         defaults:{
             name:'',
-            description:''
+            description:'',
+            node1 : {
+                row : 0,
+                column : 0
+            },
+            node2 : {
+                row : 0,
+                column : 0
+            }
         },
         urlRoot:'api/tunnels',
         idAttribute: "_id"
