@@ -10,7 +10,6 @@ define([
     function ($, _, Backbone, require, html, tunnels, maps) {
 
         var View = Backbone.View.extend({
-            idToDelete : null,
             events:{
                 'click .navItem':"onNavigateTo",
                 'click .delete' : "deleteItem",

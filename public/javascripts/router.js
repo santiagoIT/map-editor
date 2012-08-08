@@ -23,6 +23,9 @@ define([
             'tunnels_create' : 'tunnels_create',
             'tunnels_edit/:id' : 'tunnels_edit',
 
+            // testing
+            'testGraphBuilder' : 'testGraphBuilder',
+
             // Default
             '*actions':'defaultAction'
         },
@@ -66,6 +69,11 @@ define([
 
         tunnels_edit : function(id){
             this.launchView('views/tunnels/edit', id);
+        },
+
+        // tests
+        testGraphBuilder : function(){
+            this.launchView('views/test/testGraphBuilder');
         },
 
         defaultAction:function (actions) {
