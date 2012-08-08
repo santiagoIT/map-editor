@@ -108,7 +108,7 @@ define([
         }
         /*
          // we need to find out all the maps involved and the transitions/tunnels involved
-         initialize:function (location, destination, tunnels) {
+         initialize:function () {
 
          //
          var used = [];

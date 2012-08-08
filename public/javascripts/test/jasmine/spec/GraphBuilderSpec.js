@@ -1,10 +1,9 @@
 define([
-    'biz/GraphBuilder',
+    'biz/graphBuilder',
     'collections/tunnels',
     'models/tunnelModel'
     ], function(gb, tunnels, TunnelModel){
-    console.log(gb);
-    describe("Graph Builder", function() {
+    describe("Graph Builder test", function() {
 
         beforeEach(function(){
             tunnels.reset();
@@ -87,7 +86,7 @@ define([
             }
         ];
 
-        it("build graph", function(){
+        it("should build a matching graph", function(){
             var graph = gb.buildMapGraph(tunnels, 1);
             //gb.printMapGraph(graph);
             expect(graph).toEqual(handcrafted);
