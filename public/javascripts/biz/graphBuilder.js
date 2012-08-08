@@ -85,9 +85,6 @@ define([
 
         buildMapGraph:function (tunnels, mapId) {
 
-            console.log('the tunnels:');
-            console.log(tunnels.toJSON());
-
             var
                 graph = [],
                 used = [],
@@ -98,9 +95,6 @@ define([
             graph.push(rootNode);
 
             buildGraphHelper(rootNode, tunnels, mapId, used);
-
-            console.log('the result:');
-            console.log(graph);
 
             return graph;
         },
