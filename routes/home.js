@@ -17,5 +17,11 @@ module.exports = {
     logout: function(req, res){
         req.logout();
         res.redirect('/');
+    },
+
+    // app.get('/tests', ...
+    specRunner: function(req, res) {
+        console.log('spec runner requested!');
+        res.render('specRunner.jade', { title: 'Map Editor' });
     }
 };

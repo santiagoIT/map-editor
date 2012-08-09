@@ -1,0 +1,58 @@
+doctype 5
+html
+    head
+        title='Jasmine Spec Runner'
+        link(rel='shortcut icon', href='javascripts/test/jasmine/lib/jasmine-1.2.0/jasmine_favicon', type="image/png", href="png")
+        link(rel='stylesheet', href='javascripts/test/jasmine/lib/jasmine-1.2.0/jasmine.css')
+        script(src="javascripts/test/jasmine/lib/jasmine-1.2.0/jasmine.js")
+        script(src="javascripts/test/jasmine/lib/jasmine-1.2.0/jasmine-html.js")
+
+        script(type='text/javascript', src='javascripts/require-jquery.js')
+        script(type='text/javascript')
+          require.config({
+              baseUrl: '../../javascripts',
+              paths: {
+                  bootstrap: 'bootstrap.min',
+                  Underscore: 'libs/underscore/underscore',
+                  backbone: 'libs/backbone/backbone',
+                  doT : 'libs/doT/doT.min',
+                  pathfinder : 'libs/pathfinder/pathfinding'
+              },
+              shim: {
+                  'backbone' : ['Underscore']
+              }
+          });
+
+        script(type='text/javascript')
+            require(['test/jasmine/spec/graphBuilderSpec'], function(){});
+            require(['test/jasmine/spec/journeyBuilderSpec'], function(){});
+            require(['test/jasmine/spec/kioskHelperSpec'], function(){});
+
+        script(type='text/javascript')
+            (function() {
+              var jasmineEnv = jasmine.getEnv();
+              jasmineEnv.updateInterval = 1000;
+
+              var htmlReporter = new jasmine.HtmlReporter();
+
+              jasmineEnv.addReporter(htmlReporter);
+
+              jasmineEnv.specFilter = function(spec) {
+                return htmlReporter.specFilter(spec);
+              };
+
+              var currentWindowOnload = window.onload;
+
+              window.onload = function() {
+                if (currentWindowOnload) {
+                  currentWindowOnload();
+                }
+                execJasmine();
+              };
+
+              function execJasmine() {
+                jasmineEnv.execute();
+              }
+
+            })();
+    body

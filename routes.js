@@ -24,6 +24,7 @@ module.exports = function (app) {
     // home
     app.get('/', ensureAuthenticated, home.index);
     app.get('/about', home.about);
+    app.get('/tests',home.specRunner);
 
     app.get('/login', home.login);
     app.post('/login', passport.authenticate('local',

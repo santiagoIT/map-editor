@@ -22,7 +22,6 @@ define([
         },
 
         initialize : function(){
-            console.log('JUST LOGGING... MapStateModel created!!!');
         },
 
         reset : function (){
