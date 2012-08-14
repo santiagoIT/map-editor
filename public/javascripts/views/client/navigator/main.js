@@ -2,22 +2,29 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'pathfinder',
     'collections/locations',
-    'models/journeyModel'
+    'models/navigatorModel',
+    'text!views/client/navigator/main.html',
+    'views/client/navigator/links'
 ],
-    function ($, _, Backbone, PF, locations, JourneyModel) {
+    function ($, _, Backbone, locations, NavigatorModel, html,
+        LinkView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
-                this.model = new JourneyModel();
+                this.model = new NavigatorModel();
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);
 
-                // read kiosk location (mapId, node) from local storage
+                this.$el.html(html);
 
+                // child views
+                var linkView = new LinkView(this.model);
+                linkView.setElement(this.$el.find('#mapLinks')[0]);
+                this.addChildView(linkView);
             },
 
             render:function () {
+
             },
 
             navigationChanged : function(model){

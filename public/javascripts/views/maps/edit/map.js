@@ -4,9 +4,10 @@ define([
     'backbone',
     'pathfinder',
     'collections/locations',
-    'biz/mapStateSingleton'
+    'biz/mapStateSingleton',
+    'biz/kioskHelper'
 ],
-    function ($, _, Backbone, PF, locations, mapState) {
+    function ($, _, Backbone, PF, locations, mapState, kioskHelper) {
 
         var MapView = Backbone.View.extend({
             tagName:'canvas',
@@ -88,7 +89,9 @@ define([
                 }
 
                 // draw marker
-                var markerNode = mapState.get('markerNode');
+                var
+                    markerNode = mapState.get('markerNode'),
+                    kioskInfo = kioskHelper.getKioskLocation();
                 if (markerNode) {
                     this.ctx.fillStyle = "rgba(0,0,255,0.5)";
                     this.ctx.fillRect(markerNode.row * columnWidth + margins.left, markerNode.column * rowHeight + margins.top, columnWidth, rowHeight);
@@ -131,6 +134,15 @@ define([
                 if (node){
                     this.ctx.fillStyle = "rgb(255,255,0)";
                     this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                }
+
+                if (kioskInfo && kioskInfo.mapId === this.model.get('_id'))
+                {
+                    node = kioskInfo.node;
+                    if (node){
+                        this.ctx.fillStyle = "rgb(19,159,119)";
+                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                    }
                 }
 
                 return this;
@@ -176,7 +188,9 @@ define([
 
             onCanvasClick:function (e) {
 
-                var node;
+                var
+                    node;
+
                 switch (mapState.get('editorMode')) {
                     case 'markerLocation':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
@@ -195,6 +209,12 @@ define([
                     case 'nodeInfo':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         mapState.set('selectedNode', node);
+                        break;
+
+                    case 'setKioskLocation':
+                        node = this.getMatrixPosition(e.pageX, e.pageY);
+                        kioskHelper.setKioskLocation(this.model.get('_id'), node);
+                        this.render();
                         break;
                 }
             },

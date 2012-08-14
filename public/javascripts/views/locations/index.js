@@ -9,7 +9,7 @@ define([
 ],
     function ($, _, Backbone, require, html, locations, maps) {
 
-        var LocationsView = Backbone.View.extend({
+        var View = Backbone.View.extend({
             collection:locations,
             events:{
                 'click .navItem':"onNavigateTo",
@@ -55,5 +55,5 @@ define([
         });
         // Our module now returns an instantiated view
         // Sometimes you might return an un-instantiated view e.g. return projectListView
-        return LocationsView;
+        return View;
     });

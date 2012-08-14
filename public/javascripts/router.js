@@ -23,6 +23,9 @@ define([
             'tunnels_create' : 'tunnels_create',
             'tunnels_edit/:id' : 'tunnels_edit',
 
+            // kiosk
+            'kiosk' : 'kiosk',
+
             // Default
             '*actions':'defaultAction'
         },
@@ -66,6 +69,11 @@ define([
 
         tunnels_edit : function(id){
             this.launchView('views/tunnels/edit', id);
+        },
+
+        // client
+        kiosk : function() {
+            this.launchView('views/client/navigator/main');
         },
 
         defaultAction:function (actions) {

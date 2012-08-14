@@ -106,37 +106,6 @@ define([
                 printGraphHelper(entry);
             }
         }
-        /*
-         // we need to find out all the maps involved and the transitions/tunnels involved
-         initialize:function () {
-
-         //
-         var used = [];
-         searched.push(location.mapId);
-
-         var stages = [];
-
-
-         var current = {
-         mapId : location.mapId,
-         node : location.node
-         };
-         // loop until we reach target map
-         while (true) {
-         // push first map
-         _stages.push({
-         mapId:location.mapId,
-         sourceNode:location.node
-         });
-
-         // just need to use one map?
-         if (location.mapId === destination.mapId) {
-         var stage = _.first(_stages);
-         stage.targetNode = destination.node;
-         return;
-         }
-         }
-         } */
     };
 });
 
