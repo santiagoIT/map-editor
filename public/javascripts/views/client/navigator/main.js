@@ -3,12 +3,15 @@ define([
     'Underscore',
     'backbone',
     'collections/locations',
-    'models/navigatorModel',
+    'collections/maps',
+    'models/navigator',
     'text!views/client/navigator/main.html',
-    'views/client/navigator/links'
+    'views/client/navigator/links',
+    'views/client/navigator/search'
 ],
-    function ($, _, Backbone, locations, NavigatorModel, html,
-        LinkView) {
+    function ($, _, Backbone, locations, maps, NavigatorModel, html,
+        LinkView,
+        SearchView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
@@ -18,9 +21,17 @@ define([
                 this.$el.html(html);
 
                 // child views
-                var linkView = new LinkView(this.model);
+                var linkView = new LinkView(this.model, maps);
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
                 this.addChildView(linkView);
+
+                var searchView = new SearchView(this.model, locations);
+                searchView.setElement(this.$el.find('#search')[0]);
+                this.addChildView(searchView);
+
+                // fetch data
+                locations.fetch();
+                maps.fetch();
             },
 
             render:function () {

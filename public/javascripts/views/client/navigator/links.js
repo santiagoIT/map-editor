@@ -12,12 +12,14 @@ define([
                 'click .showMap' : 'showMap'
             },
 
-            initialize:function (model) {
+            initialize:function (model, maps) {
 
                 this.model = model;
+                this.maps = maps;
 
                 // subscribe to changes
                 this.bindTo(this.model, 'change:graph', this.render);
+                this.bindTo(this.maps, 'all', this.render);
             },
 
             render:function () {
@@ -28,7 +30,8 @@ define([
                 }
 
                 this.$el.html(this.template({
-                    links:links
+                    links:links,
+                    maps:this.maps.toJSON()
                 }));
             },
 

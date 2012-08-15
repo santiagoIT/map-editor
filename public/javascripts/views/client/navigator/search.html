@@ -1,10 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<div>
+    <form class="navbar-search pull-left" action="">
+        <input type="text" class="search-query span2" placeholder="Buscar">
+        <a class="btn btnSearch" href="#"><i class="icon-search"></i>Buscar</a>
+    </form
+            >
+</div>
+<% if (haveSearched) { %>
+<div>
+    <% if (_.size(links) > 0) { %>
+    <h3>Your results</h3>
+    <% _.each(links,function(item,key,list){ %>
+    <button class="btn btnGoToLocation" data-loc-id="<%= item._id %>"><%= item.name %></button>
+    <% }) %>
+    <% } else { %>
+    <p>No se encontro ningun resultado</p>
+    <% } %>
+</div>
+<% } %>

@@ -10,32 +10,32 @@ define([
     var Model = Backbone.Model.extend({
         defaults:{
             // true when navigating. Will influence UI
-            currentMapId : null,
+            currentMapId:null,
 
             // map ID kiosk is set to show
-            kioskInfo : null,
+            kioskInfo:null,
 
             // links that originate from current map
-            graph : null
+            graph:null
         },
 
-        initialize : function(){
+        initialize:function () {
 
             // tunnels available?
-            if (tunnels.length < 1){
+            if (tunnels.length < 1) {
                 var self = this;
                 tunnels.fetch({
-                    success:function() {
+                    success:function () {
                         self.initHelper();
                     }
                 });
             }
-            else{
+            else {
                 this.initHelper();
             }
         },
 
-        initHelper : function(){
+        initHelper:function () {
             // load kiosk data
             this.setupKioskData();
             // show kiosk Map
@@ -43,7 +43,7 @@ define([
         },
 
         // just show map
-        showMap : function(id) {
+        showMap:function (id) {
             this.set('currentMapId', id);
             // setup links
             var graph = graphBuilder.buildMapGraph(tunnels, id);
@@ -51,25 +51,19 @@ define([
         },
 
         // fire-up path finding
-        navigateTo : function(locationId) {
-            var
-                location = new LocationModel({_id:locationId}),
-                self = this;
-            location.fetch(function(){
-                // setup journey
-                self.journey = journeyBuilder.composeJourney(self.kioskInfo, {mapId:location.mapId, node:location.node}, tunnels);
-                // debug it
-                console.log('JOURNEY CALCULATED!!!!');
-                console.log(self.journey);
-            });
-
+        navigateTo:function (location) {
+            console.log('navigating to:');
+            console.log(location.toJSON());
+            // setup journey
+            this.journey = journeyBuilder.composeJourney(this.kioskInfo, {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
+            // debug it
+            console.log('JOURNEY CALCULATED!!!!');
+            console.log(this.journey);
         },
 
-        setupKioskData : function(){
+        setupKioskData:function () {
             this.kioskInfo = kioskHelper.getKioskLocation();
         }
-
-
     });
     // You usually don't return a model instantiated
     return Model;
