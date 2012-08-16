@@ -1,16 +1,18 @@
-<div>
-    <form class="navbar-search pull-left" action="">
-        <input type="text" class="search-query span2" placeholder="Buscar">
-        <a class="btn btnSearch" href="#"><i class="icon-search"></i>Buscar</a>
-    </form
-            >
+<div class="row-fluid">
+
+    <form class="well form-search">
+        <input type="text" class="input-medium search-query" placeholder="Buscar">
+        <button type="submit" class="btn btnSearch">Buscar</button>
+    </form>
 </div>
 <% if (haveSearched) { %>
-<div>
+<div class="row-fluid">
     <% if (_.size(links) > 0) { %>
-    <h3>Your results</h3>
+    <h3>Resultados</h3>
     <% _.each(links,function(item,key,list){ %>
+    <div>
     <button class="btn btnGoToLocation" data-loc-id="<%= item._id %>"><%= item.name %></button>
+    </div>
     <% }) %>
     <% } else { %>
     <p>No se encontro ningun resultado</p>

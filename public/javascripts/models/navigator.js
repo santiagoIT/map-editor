@@ -39,7 +39,7 @@ define([
             // load kiosk data
             this.setupKioskData();
             // show kiosk Map
-            this.showMap(this.kioskInfo.mapId);
+            this.showMap(this.get('kioskInfo').mapId);
         },
 
         // just show map
@@ -55,14 +55,14 @@ define([
             console.log('navigating to:');
             console.log(location.toJSON());
             // setup journey
-            this.journey = journeyBuilder.composeJourney(this.kioskInfo, {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
+            this.journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
             // debug it
             console.log('JOURNEY CALCULATED!!!!');
             console.log(this.journey);
         },
 
         setupKioskData:function () {
-            this.kioskInfo = kioskHelper.getKioskLocation();
+            this.set('kioskInfo', kioskHelper.getKioskLocation());
         }
     });
     // You usually don't return a model instantiated

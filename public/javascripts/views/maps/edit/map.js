@@ -5,16 +5,16 @@ define([
     'pathfinder',
     'collections/locations',
     'biz/mapStateSingleton',
-    'biz/kioskHelper'
+    'biz/kioskHelper',
+    'biz/imageManager'
 ],
-    function ($, _, Backbone, PF, locations, mapState, kioskHelper) {
+    function ($, _, Backbone, PF, locations, mapState, kioskHelper, imageManager) {
 
         var MapView = Backbone.View.extend({
             tagName:'canvas',
             ctx:null,
             path:null,
             $nodeInfo:null,
-            s3Root:'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
             events:{
                 'click':"onCanvasClick",
@@ -45,7 +45,7 @@ define([
             },
 
             onImageNameChanged:function (model, imageName) {
-                var url = this.s3Root + imageName;
+                var url = imageManager.getUrl(imageName);
                 // set background
                 this.$el.css('background-image', 'url("' + url + '")'); // Set source path
                 this.render();
@@ -57,7 +57,7 @@ define([
                     self.$el.attr('height', this.height).attr('width', this.width);
                     self.render();
                 }
-                image.src = 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/' + imageName;
+                image.src = url;
             },
 
             render:function () {

@@ -16,7 +16,6 @@ define([
                 'click #btnSaveMap':"saveMap",
                 'click .navItem' : "onNavigateTo"
             },
-            s3Root : 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
             initialize:function () {
                 this.$el.html(html);

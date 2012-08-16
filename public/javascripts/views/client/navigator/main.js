@@ -7,11 +7,13 @@ define([
     'models/navigator',
     'text!views/client/navigator/main.html',
     'views/client/navigator/links',
-    'views/client/navigator/search'
+    'views/client/navigator/search',
+    'views/client/navigator/map'
 ],
     function ($, _, Backbone, locations, maps, NavigatorModel, html,
         LinkView,
-        SearchView) {
+        SearchView,
+        MapView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
@@ -25,9 +27,15 @@ define([
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
                 this.addChildView(linkView);
 
+                // search view
                 var searchView = new SearchView(this.model, locations);
                 searchView.setElement(this.$el.find('#search')[0]);
                 this.addChildView(searchView);
+
+                // map view
+                var mapView = new MapView(this.model, maps);
+                this.addChildView(mapView);
+                this.$el.find('#mapHolder').append(mapView.el);
 
                 // fetch data
                 locations.fetch();

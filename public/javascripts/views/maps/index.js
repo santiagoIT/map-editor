@@ -6,9 +6,10 @@ define([
     'text!views/maps/index.html',
     'models/mapModel',
     'collections/maps',
+    'biz/imageManager',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
-    function ($, _, Backbone, require, html, MapModel, maps) {
+    function ($, _, Backbone, require, html, MapModel, maps, imageManager) {
 
         var MapsView = Backbone.View.extend({
             collection:maps,
@@ -18,7 +19,6 @@ define([
                 'click .edit':"onEditMap",
                 'click .delete' : "onConfirmDelete"
             },
-            s3Root : 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/',
 
             initialize:function () {
 
@@ -35,7 +35,7 @@ define([
 
             render:function () {
                 // reset select
-                this.$el.html(this.template({s3Root: this.s3Root, maps:this.collection.toJSON()}));
+                this.$el.html(this.template({s3Root: imageManager.getS3Root(), maps:this.collection.toJSON()}));
             },
 
             onEditMap:function (el) {
