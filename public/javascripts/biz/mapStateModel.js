@@ -7,8 +7,8 @@ define([
             editorMode :  'toggleNode',
             // marker location
             markerNode:{
-                row:0,
-                column:0
+                y:0,
+                x:0
             },
 
             // paths

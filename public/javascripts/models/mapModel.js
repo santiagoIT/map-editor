@@ -5,8 +5,8 @@ define([
     var mapModel = Backbone.Model.extend({
         defaults:{
             // grid layout
-            columns:1,
-            rows:1,
+            x:1,
+            y:1,
 
             // map info
             imageName:'map1.jpg',
@@ -23,15 +23,15 @@ define([
         urlRoot:'api/maps',
         idAttribute: "_id",
 
-        setGridSize:function (columns, rows) {
-            this.set('columns', columns);
-            this.set('rows', rows);
+        setGridSize:function (x, y) {
+            this.set('x', x);
+            this.set('y', y);
             return true;
         },
-        toggleNode:function (row, column) {
+        toggleNode:function (x, y) {
             var nodes = this.get('blockedNodes');
             for (var index in nodes) {
-                if (nodes[index].row === row && nodes[index].column === column) {
+                if (nodes[index].y === y && nodes[index].x === x) {
                     // remove it!
                     nodes.splice(index, 1);
                     this.set('blockedNodes', nodes);
@@ -39,28 +39,28 @@ define([
                     return 1;
                 }
             }
-            nodes.push({row:row, column:column});
+            nodes.push({y:y, x:x});
             this.set('blockedNodes', nodes);
             this.trigger('change:blockedNodes');
             return 0;
         },
-        blockNode:function (row, column) {
+        blockNode:function (x, y) {
             var nodes = this.get('blockedNodes');
             for (var index in nodes) {
-                if (nodes[index].row === row && nodes[index].column === column) {
+                if (nodes[index].y === y && nodes[index].x === x) {
                     // already blocked
                     return;
                 }
             }
             // block it
-            nodes.push({row:row, column:column});
+            nodes.push({y:y, x:x});
             this.set('blockedNodes', nodes);
             this.trigger('change:blockedNodes');
         },
-        clearNode:function (row, column) {
+        clearNode:function (x, y) {
             var nodes = this.get('blockedNodes');
             for (var index in nodes) {
-                if (nodes[index].row === row && nodes[index].column === column) {
+                if (nodes[index].y === y && nodes[index].x === x) {
                     // remove it!
                     nodes.splice(index, 1);
                     this.set('blockedNodes', nodes);
@@ -71,12 +71,12 @@ define([
         },
 
         blockAllNodes : function () {
-            var columnQty = this.get('columns');
-            var rowQty = this.get('rows');
+            var columnQty = this.get('x');
+            var rowQty = this.get('y');
             var nodes = [];
             for (var i = 0; i < rowQty; i++) {
                 for (var j = 0; j < columnQty; j++) {
-                    nodes.push({row:i, column:j})
+                    nodes.push({y:i, x:j})
                 }
             }
             this.set('blockedNodes', nodes);

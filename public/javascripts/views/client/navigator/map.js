@@ -2,9 +2,10 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'biz/imageManager'
+    'biz/imageManager',
+    'pathfinder'
 ],
-    function ($, _, Backbone, imageManager) {
+    function ($, _, Backbone, imageManager, PF) {
 
         var View = Backbone.View.extend({
             events:{
@@ -20,7 +21,8 @@ define([
                     this.onCurrentMapChanged();
                 }
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
-
+                this.bindTo(this.model, 'change:transitionTo', this.onTransitionTo);
+                this.bindTo(this.model, 'change:pathFind', this.onPathFind);
             },
 
             render:function () {
@@ -32,8 +34,8 @@ define([
                 }
 
                 var margins = this.map.getMargins();
-                var columnQty = this.map.get('columns');
-                var rowQty = this.map.get('rows');
+                var columnQty = this.map.get('x');
+                var rowQty = this.map.get('y');
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
@@ -42,13 +44,46 @@ define([
                 if (kioskInfo && kioskInfo.mapId === this.map.get('_id'))
                 {
                     var node = kioskInfo.node;
-                    console.log('is my map!');
-                    console.log(kioskInfo);
-
                     if (node){
                         ctx.fillStyle = "rgb(19,159,119)";
-                        ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                        ctx.fillRect(node.y * columnWidth + margins.left, node.x * rowHeight + margins.top, columnWidth, rowHeight);
                     }
+                }
+            },
+
+            onTransitionTo : function(){
+                var info = this.model.get('transitionTo');
+                if (!info){
+                    return;
+                }
+                var self = this;
+                this.$el.fadeOut('slow').promise().then(function(){
+                    self.model.showMap(info.mapId);
+                    self.$el.fadeIn('slow', function(){info.callback();});
+                });
+            },
+
+            onPathFind : function(){
+
+                var node = this.model.get('pathFrom');
+                var target = this.model.get('pathTo');
+                if (!(node && target)) {
+                    return;
+                }
+                var mapId = this.model.get('currentMapId');
+                var map = this.maps.get(mapId);
+
+                var grid = new PF.Grid(map.get('x'), map.get('y'));
+                // block cells
+                var blockedNodes = map.get('blockedNodes');
+                for (var i in blockedNodes) {
+                    grid.setWalkableAt(blockedNodes[i].x, blockedNodes[i].y, false);
+                }
+                var finder = new PF.AStarFinder();
+                var path = finder.findPath(node.x, node.y, target.x, target.y, grid);
+                if (path) {
+                    path.splice(0, 1);
+                    path.splice(-1, 1);
                 }
             },
 

@@ -33,7 +33,7 @@ define([
 
         createLocation : function(){
             var self = this;
-            var node = mapState.get('selectedNode') || {row:0, column:0};
+            var node = mapState.get('selectedNode') || {x:0, y:0};
             // load location creator
             require(['views/maps/edit/modals/locationCreate/module', 'models/locationModel'], function(module, LocationModel) {
 
@@ -42,8 +42,8 @@ define([
                     location.set('name', $form.find('input[name="name"]').val());
                     location.set('description', $form.find('input[name="description"]').val());
                     location.set('mapId', self.mapId);
-                    node.column = $form.find('input[name="column"]').val();
-                    node.row = $form.find('input[name="row"]').val();
+                    node.x = $form.find('input[name="x"]').val();
+                    node.y = $form.find('input[name="y"]').val();
                     location.set('node', node);
                     location.save(null, {
                         success:function(model, response){

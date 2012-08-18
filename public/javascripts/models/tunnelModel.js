@@ -7,12 +7,12 @@ define([
             name:'',
             description:'',
             node1 : {
-                row : 0,
-                column : 0
+                x : 0,
+                y : 0
             },
             node2 : {
-                row : 0,
-                column : 0
+                x : 0,
+                y : 0
             }
         },
         urlRoot:'api/tunnels',

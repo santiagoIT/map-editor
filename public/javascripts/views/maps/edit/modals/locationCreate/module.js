@@ -14,8 +14,8 @@ define([
                 });
 
             if (node) {
-                $modal.find('input[name="row"]').val(node.row);
-                $modal.find('input[name="column"]').val(node.column);
+                $modal.find('input[name="x"]').val(node.x);
+                $modal.find('input[name="y"]').val(node.y);
             }
 
             var onClick = function(){

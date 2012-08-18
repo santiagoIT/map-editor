@@ -30,7 +30,7 @@ define([
                 // bind events
                 this.bindTo(mapState, 'change:targetNode', this.doPathfinding);
 
-                this.bindTo(this.model, 'change:rows change:columns', this.render);
+                this.bindTo(this.model, 'change:x change:y', this.render);
                 this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.render);
                 this.bindTo(this.model, 'change:blockedNodes', this.render);
                 this.bindTo(this.model, 'change:imageName', this.onImageNameChanged);
@@ -79,8 +79,8 @@ define([
 
                 var margins = this.model.getMargins();
 
-                var columnQty = this.model.get('columns');
-                var rowQty = this.model.get('rows');
+                var columnQty = this.model.get('x');
+                var rowQty = this.model.get('y');
 
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
@@ -104,13 +104,13 @@ define([
                     kioskInfo = kioskHelper.getKioskLocation();
                 if (markerNode) {
                     this.ctx.fillStyle = "rgba(0,0,255,0.5)";
-                    this.ctx.fillRect(markerNode.row * columnWidth + margins.left, markerNode.column * rowHeight + margins.top, columnWidth, rowHeight);
+                    this.ctx.fillRect(markerNode.x * columnWidth + margins.left, markerNode.y * rowHeight + margins.top, columnWidth, rowHeight);
                 }
                 // pathfinding target?
                 var target = mapState.get('targetNode');
                 if (target) {
                     this.ctx.fillStyle = "rgba(0,255,0,0.5)";
-                    this.ctx.fillRect(target.row * columnWidth + margins.left, target.column * rowHeight + margins.top, columnWidth, rowHeight);
+                    this.ctx.fillRect(target.x * columnWidth + margins.left, target.y * rowHeight + margins.top, columnWidth, rowHeight);
                 }
 
                 // blocked nodes
@@ -119,14 +119,14 @@ define([
                     this.ctx.fillStyle = "rgba(100,100,100, 0.75)";
                     for (var key in nodes) {
                         var node = nodes[key];
-                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                        this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
                 // path
                 if (this.path) {
                     for (var key in this.path) {
-                        this.highlight({row:this.path[key][1], column:this.path[key][0]});
+                        this.highlight({x:this.path[key][0], y:this.path[key][1]});
                     }
                 }
 
@@ -136,14 +136,14 @@ define([
                     for (var i in arLocations) {
                         node = arLocations[i].get('node');
                         this.ctx.fillStyle = "rgba(255,0,0,0.5)";
-                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                        this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
                 node = mapState.get('selectedNode');
                 if (node){
                     this.ctx.fillStyle = "rgb(255,255,0)";
-                    this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                    this.ctx.fillRect(node.x * columnWidth + margins.top, node.y * rowHeight + margins.left, columnWidth, rowHeight);
                 }
 
                 if (kioskInfo && kioskInfo.mapId === this.model.get('_id'))
@@ -151,7 +151,7 @@ define([
                     node = kioskInfo.node;
                     if (node){
                         this.ctx.fillStyle = "rgb(19,159,119)";
-                        this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                        this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
@@ -160,38 +160,38 @@ define([
 
             highlight:function (node) {
 
-                var columnQty = this.model.get('columns');
-                var rowQty = this.model.get('rows');
+                var columnQty = this.model.get('x');
+                var rowQty = this.model.get('y');
 
                 var margins = this.model.getMargins();
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
                 this.ctx.fillStyle = "rgba(20,60,80, 0.9)";
-                this.ctx.fillRect(node.row * columnWidth + margins.left, node.column * rowHeight + margins.top, columnWidth, rowHeight);
+                this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
             },
 
             getMatrixPosition:function (clickX, clickY) {
-                var columnQty = this.model.get('columns');
-                var rowQty = this.model.get('rows');
+                var columnQty = this.model.get('x');
+                var rowQty = this.model.get('y');
                 var margins = this.model.getMargins();
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
-                var x = clickX - (this.$el.offset().left + margins.left);
-                var y = clickY - (this.$el.offset().top + margins.top);
+                var x1 = clickX - (this.$el.offset().left + margins.left);
+                var y1 = clickY - (this.$el.offset().top + margins.top);
 
-                var row = Math.floor(x / columnWidth);
-                var column = Math.floor(y / rowHeight);
+                var x = Math.floor(x1 / columnWidth);
+                var y = Math.floor(y1 / rowHeight);
 
                 // in bounds?
-                if (row >= rowQty || column >= columnQty || row < 0 || column < 0) {
+                if (y >= rowQty || x >= columnQty || x1 < 0 || y1 < 0) {
                     return null;
                 }
 
                 return {
-                    row:row,
-                    column:column
+                    x:x,
+                    y:y
                 };
             },
 
@@ -205,7 +205,7 @@ define([
                     case 'markerLocation':
                         node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
-                            mapState.set('markerNode', {row:node.row, column:node.column});
+                            mapState.set('markerNode', {x:node.x, y:node.y});
                         }
                         break;
 
@@ -235,10 +235,10 @@ define([
                         var node = this.getMatrixPosition(e.pageX, e.pageY);
                         if (node) {
                             if (this._mouseDown) {
-                                this.model.clearNode(node.row, node.column);
+                                this.model.clearNode(node.x, node.y);
                             }
                             else {
-                                this.model.blockNode(node.row, node.column);
+                                this.model.blockNode(node.x, node.y);
                             }
                         }
                     }
@@ -249,7 +249,7 @@ define([
                 if (mapState.get('editorMode') === 'toggleNode') {
                     var node = this.getMatrixPosition(e.pageX, e.pageY);
                     if (node) {
-                        this._mouseDown = this.model.toggleNode(node.row, node.column);
+                        this._mouseDown = this.model.toggleNode(node.x, node.y);
                     }
                 }
             },
@@ -274,14 +274,14 @@ define([
                     return;
                 }
 
-                var grid = new PF.Grid(this.model.get('columns'), this.model.get('rows'));
+                var grid = new PF.Grid(this.model.get('x'), this.model.get('y'));
                 // block cells
                 var blockedNodes = this.model.get('blockedNodes');
                 for (var i in blockedNodes) {
-                    grid.setWalkableAt(blockedNodes[i].column, blockedNodes[i].row, false);
+                    grid.setWalkableAt(blockedNodes[i].x, blockedNodes[i].y, false);
                 }
                 var finder = new PF.AStarFinder();
-                this.path = finder.findPath(node.column, node.row, target.column, target.row, grid);
+                this.path = finder.findPath(node.x, node.y, target.x, target.y, grid);
                 if (this.path) {
                     this.path.splice(0, 1);
                     this.path.splice(-1, 1);

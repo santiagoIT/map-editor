@@ -8,8 +8,8 @@ define([
             name:'',
             description:'',
             node : {
-                column : 0,
-                row : 0
+                x : 0,
+                y : 0
             }
         },
         urlRoot:'api/locations',

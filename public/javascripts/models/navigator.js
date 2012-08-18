@@ -53,14 +53,25 @@ define([
         // fire-up path finding
         navigateTo:function (location) {
             // setup journey
-            this.journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
+            var journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
+            this.set('journey', journey);
             // debug it
             console.log('JOURNEY CALCULATED!!!!');
-            console.log(this.journey);
+            console.log(journey);
         },
 
         setupKioskData:function () {
             this.set('kioskInfo', kioskHelper.getKioskLocation());
+        },
+
+        transitionTo : function(mapId, callback){
+            this.set('transitionTo', {mapId: mapId, callback:callback});
+        },
+
+        pathFind : function(from, to){
+            this.set('pathFrom', from);
+            this.set('pathTo', to);
+            this.trigger('change:pathFind');
         }
     });
     // You usually don't return a model instantiated

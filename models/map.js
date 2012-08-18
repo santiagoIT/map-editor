@@ -6,16 +6,16 @@ var
 
 // Define schema
 var NodeSchema = new Schema({
-    'column':{type:Number, default:0},
-    'row':{type:Number, default:0}
+    'x':{type:Number, default:0},
+    'y':{type:Number, default:0}
 });
 
 var MapSchema = new Schema({
     'id':ObjectId,
     'name':{ type:String, index:true, default:'' },
     'imageName':String,
-    'columns':{type:Number, default:1},
-    'rows':{type:Number, default:1},
+    'x':{type:Number, default:1},
+    'y':{type:Number, default:1},
     'top':{type:Number, default:0},
     'left':{type:Number, default:0},
     'bottom':{type:Number, default:0},

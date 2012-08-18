@@ -12,15 +12,15 @@ var TunnelSchema = new Schema({
     // map 1
     'mapId1' : ObjectId,
     'node1' : {
-        'column':{type:Number, default:0},
-        'row':{type:Number, default:0}
+        'x':{type:Number, default:0},
+        'y':{type:Number, default:0}
     },
 
     // map 2
     'mapId2' : ObjectId,
     'node2' : {
-        'column':{type:Number, default:0},
-        'row':{type:Number, default:0}
+        'x':{type:Number, default:0},
+        'y':{type:Number, default:0}
     }
 });
 

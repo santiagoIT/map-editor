@@ -12,8 +12,8 @@ var LocationSchema = new Schema({
     // map node
     'mapId' : ObjectId,
     'node' : {
-        'column':{type:Number, default:0},
-        'row':{type:Number, default:0}
+        'x':{type:Number, default:0},
+        'y':{type:Number, default:0}
     }
 });
 

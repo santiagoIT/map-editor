@@ -57,14 +57,14 @@ define([
             this.jqueryMap.$marginLeft = this.$('#marginLeft');
             this.jqueryMap.$marginBottom = this.$('#marginBottom');
             this.jqueryMap.$marginRight = this.$('#marginRight');
-            this.jqueryMap.$columns = this.$('#columns');
-            this.jqueryMap.$rows = this.$('#rows');
+            this.jqueryMap.$x = this.$('#x');
+            this.jqueryMap.$y = this.$('#y');
 
             // set form validate
             this.$('#frmGrid').validate({
                 rules : {
-                    columns : {required: true, number: true},
-                    rows : {required: true, number: true}
+                    x : {required: true, number: true},
+                    y : {required: true, number: true}
                 }
             });
             this.$('#frmMargins').validate({
@@ -80,7 +80,7 @@ define([
             this.onEditorModeSwitched();
 
             this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.displayMargins);
-            this.bindTo(this.model, 'change:columns change:rows', this.displayGridSize);
+            this.bindTo(this.model, 'change:x change:y', this.displayGridSize);
 
             this.displayMargins();
             this.displayGridSize();
@@ -106,8 +106,8 @@ define([
         displayGridSize : function() {
 
             // grid size
-            this.jqueryMap.$columns.val(this.model.get('columns'));
-            this.jqueryMap.$rows.val(this.model.get('rows'));
+            this.jqueryMap.$x.val(this.model.get('x'));
+            this.jqueryMap.$y.val(this.model.get('y'));
         },
 
         blockAll : function(){
@@ -128,13 +128,13 @@ define([
         },
 
         changeMesh : function(){
-            var columns = this.jqueryMap.$columns.val();
-            var rows = this.jqueryMap.$rows.val();
+            var x = this.jqueryMap.$x.val();
+            var y = this.jqueryMap.$y.val();
 
-            columns = parseInt(columns);
-            rows = parseInt(rows);
+            x = parseInt(x);
+            y = parseInt(y);
 
-            this.model.setGridSize(columns, rows);
+            this.model.setGridSize(x, y);
 
             return false;
         },
