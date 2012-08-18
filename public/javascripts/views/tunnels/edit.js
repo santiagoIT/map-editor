@@ -40,7 +40,7 @@ define([
                 this.model.save(null, {
                     success:function(){
                         require(['itworks.app'], function (app) {
-                            app.Router.navigate('locations', {trigger:true});
+                            app.Router.navigate('tunnels', {trigger:true});
                         });
                     }
                 });

@@ -52,8 +52,6 @@ define([
 
         // fire-up path finding
         navigateTo:function (location) {
-            console.log('navigating to:');
-            console.log(location.toJSON());
             // setup journey
             this.journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
             // debug it

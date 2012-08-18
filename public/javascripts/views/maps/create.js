@@ -36,6 +36,11 @@ define([
                     map.save();
 
                     self.collection.add(map);
+
+                    // go to maps view
+                    require(['itworks.app'], function (app) {
+                        app.Router.navigate('maps', {trigger:true});
+                    });
                 }
 
                 this.uploadImage($('#frmNewMap'), persistMap);

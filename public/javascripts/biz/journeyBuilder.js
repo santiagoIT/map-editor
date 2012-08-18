@@ -105,14 +105,6 @@ define([
                 to:destination.node
             });
 
-            console.log('results');
-            console.log(results);
-
-            var test = _.map(results, function(e){
-                return e.mapId;
-            });
-            console.log(test);
-
             return results;
         }
     };

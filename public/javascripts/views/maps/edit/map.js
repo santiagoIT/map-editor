@@ -42,9 +42,19 @@ define([
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
+
+                // model might be fetched by now
+                var imageName = this.model.get('imageName');
+                if (imageName && imageName.length > 0){
+                    this.onImageNameChanged(this.model, imageName);
+
+                }
             },
 
             onImageNameChanged:function (model, imageName) {
+
+                console.log('onImageNameChanged');
+
                 var url = imageManager.getUrl(imageName);
                 // set background
                 this.$el.css('background-image', 'url("' + url + '")'); // Set source path

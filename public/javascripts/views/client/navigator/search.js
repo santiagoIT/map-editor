@@ -33,9 +33,6 @@ define([
                     haveSearched:this.searchModel.get('haveSearched')
                 };
                 this.$el.html(this.template(model));
-                console.log('model....');
-                console.log(model);
-                //console.log(this.searchModel.get('links'));
             },
 
             search:function () {
