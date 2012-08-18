@@ -22,6 +22,16 @@ define([
 
                 this.$el.html(html);
 
+                // fetch data, proceed only when promises complete
+                var self = this;
+                var def1 = locations.fetch();
+                var def2 = maps.fetch();
+                $.when(def1,def2).done(function(){
+                    self.setupChildViews();
+                })
+            },
+
+            setupChildViews: function(){
                 // child views
                 var linkView = new LinkView(this.model, maps);
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
@@ -36,10 +46,6 @@ define([
                 var mapView = new MapView(this.model, maps);
                 this.addChildView(mapView);
                 this.$el.find('#mapHolder').append(mapView.el);
-
-                // fetch data
-                locations.fetch();
-                maps.fetch();
             },
 
             render:function () {

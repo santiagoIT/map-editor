@@ -25,9 +25,11 @@ define([
             render:function () {
                 var links = [];
                 var graph = this.model.get('graph');
-                if (graph != null){
-                    links = graph[0].links;
+                if (graph == null || this.maps.length == 0){
+                    this.$el.html('');
+                    return;
                 }
+                links = graph[0].links;
 
                 this.$el.html(this.template({
                     links:links,

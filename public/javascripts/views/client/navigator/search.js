@@ -3,9 +3,10 @@ define([
     'Underscore',
     'backbone',
     'text!views/client/navigator/search.html',
-    'models/navigator.search'
+    'models/navigator.search',
+    'biz/journeyManager'
 ],
-    function ($, _, Backbone, html, NavigatorSearchModel) {
+    function ($, _, Backbone, html, NavigatorSearchModel, journeyManager) {
 
         var View = Backbone.View.extend({
             events:{
@@ -25,6 +26,9 @@ define([
                 this.bindTo(this.locations, 'all', this.render());
 
                 this.bindTo(this.searchModel, 'change:links', this.render);
+
+                // activate journeyManager when journey is set
+                this.bindTo(this.model, 'change:journey', this.launchJorneyManager);
             },
 
             render:function () {
@@ -33,6 +37,10 @@ define([
                     haveSearched:this.searchModel.get('haveSearched')
                 };
                 this.$el.html(this.template(model));
+            },
+
+            launchJorneyManager : function(){
+                journeyManager.activate(this.model);
             },
 
             search:function () {

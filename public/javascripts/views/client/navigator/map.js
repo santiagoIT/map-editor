@@ -15,6 +15,10 @@ define([
 
                 this.model = model;
                 this.maps = maps;
+                var mapId = this.model.get('currentMapId');
+                if (mapId){
+                    this.onCurrentMapChanged();
+                }
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
 
             },
@@ -50,6 +54,7 @@ define([
 
             onCurrentMapChanged:function(){
                 var id = this.model.get('currentMapId');
+                console.log('mapid: ' + id);
                 this.map = this.maps.get(id);
                 if (!this.map){
                     return;
