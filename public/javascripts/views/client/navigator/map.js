@@ -14,6 +14,8 @@ define([
 
             initialize:function (model, maps) {
 
+                imageManager.setRunLocally(true);
+
                 this.model = model;
                 this.maps = maps;
                 var mapId = this.model.get('currentMapId');

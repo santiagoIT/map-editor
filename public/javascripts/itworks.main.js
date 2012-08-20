@@ -19,7 +19,16 @@ require.config({
     }
 });
 
-require(['jquery', 'Underscore', 'backbone', 'itworks.app', 'bootstrap',  'domReady!', 'utils/extensions/view'], function($, _, Backbone, app) {
+require([
+    'jquery',
+    'Underscore',
+    'backbone',
+    'itworks.app',
+    'biz/imageManager',
+    'bootstrap',
+    'domReady!',
+    'utils/extensions/view'
+], function($, _, Backbone, app, imageManager) {
 
   // clear loading
     $('#itworks-app').empty();
