@@ -69,12 +69,10 @@ define([
                         this.model.trigger('PF_completed');
                     }
                     else {
-                        console.log('****');
                         for (var i = this.nodeCounter; i >= (this.nodeCounter - tailLength); i--) {
                             if (i < 0) {
                                 break;
                             }
-                            console.log('i is: ' + i);
                             this.highlight({x:this.path[i][0], y:this.path[i][1]}, ctx, alpha);
                             alpha -= 0.15;
                         }

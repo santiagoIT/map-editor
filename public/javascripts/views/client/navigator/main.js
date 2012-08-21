@@ -84,7 +84,9 @@ define([
                 }
 
                 // destination reached?
-                if (journeyNode >= journey.length){
+                console.log('pathFindingComplete - 19 - 19');
+                console.log('journeyNode: ' + journeyNode + ' length: ' + journey.length);
+                if (journeyNode >= journey.length-1){
                     alert('you did it!!!!');
                     return;
                 }
