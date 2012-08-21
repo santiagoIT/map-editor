@@ -16,7 +16,10 @@ define([
             kioskInfo:null,
 
             // links that originate from current map
-            graph:null
+            graph:null,
+
+            // current journey node
+            currentJourneyNode:0
         },
 
         initialize:function () {
@@ -55,6 +58,7 @@ define([
             // setup journey
             var journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
             this.set('journey', journey);
+            this.set('currentJourneyNode', 0);
             // debug it
             console.log('JOURNEY CALCULATED!!!!');
             console.log(journey);
@@ -72,6 +76,12 @@ define([
             this.set('pathFrom', from);
             this.set('pathTo', to);
             this.trigger('change:pathFind');
+        },
+
+        journeyStepComplete : function(){
+            var currentNode = this.get('currentJourneyNode');
+            this.set('currentJourneyNode', currentNode+1);
+            this.trigger('change:journey');
         }
     });
     // You usually don't return a model instantiated

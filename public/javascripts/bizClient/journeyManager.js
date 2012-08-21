@@ -5,16 +5,12 @@ define([
 ],
     function ($, _, Backbone) {
 
-        var activateHelper = function(model) {
+        var fireTransition = function (model, journey, journeyNode) {
 
-        };
-
-        var fireTransition = function (model) {
-
-            var journey = model.get('journey');
-            var currentId = model.get('currentMapId');
-            var entry = _.first(journey);
-            var fromId = entry.mapId;
+            var
+                currentId = model.get('currentMapId'),
+                entry = journey[journeyNode],
+                fromId = entry.mapId;
 
             console.log('Must travel from: ' + currentId + ' to: ' + fromId);
             console.log(entry);
@@ -26,17 +22,22 @@ define([
                     model.pathFind(entry.from, entry.to);
                 });
             }
+            else{
+                model.pathFind(entry.from, entry.to);
+            }
         };
 
         var exports = {
-            activate : function(model) {
+            continueJourney : function(model) {
+                var
+                    journey = model.get('journey'),
+                    journeyNode = model.get('currentJourneyNode');
                 // we must have a journey
-                var journey = model.get('journey');
                 if (!journey){
                     return;
                 }
 
-                fireTransition(model);
+                fireTransition(model, journey, journeyNode);
             }
         };
 

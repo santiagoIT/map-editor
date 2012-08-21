@@ -90,7 +90,8 @@ define([
                 results.push({
                     mapId:nextMapId,
                     from:nextSourceNode,
-                    to:targetNode
+                    to:targetNode,
+                    tunnelId:node.tunnelId
                 });
 
                 // prepare for next map

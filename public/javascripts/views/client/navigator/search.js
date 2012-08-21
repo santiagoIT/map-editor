@@ -4,7 +4,7 @@ define([
     'backbone',
     'text!views/client/navigator/search.html',
     'models/navigator.search',
-    'biz/journeyManager'
+    'bizClient/journeyManager'
 ],
     function ($, _, Backbone, html, NavigatorSearchModel, journeyManager) {
 
@@ -40,7 +40,7 @@ define([
             },
 
             launchJorneyManager : function(){
-                journeyManager.activate(this.model);
+                journeyManager.continueJourney(this.model);
             },
 
             search:function () {

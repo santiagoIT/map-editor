@@ -4,21 +4,25 @@ define([
     'backbone',
     'collections/locations',
     'collections/maps',
+    'collections/tunnels',
     'models/navigator',
     'text!views/client/navigator/main.html',
     'views/client/navigator/links',
     'views/client/navigator/search',
-    'views/client/navigator/map'
+    'views/client/navigator/map',
+    'views/client/navigator/tunnelTransition'
 ],
-    function ($, _, Backbone, locations, maps, NavigatorModel, html,
+    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, html,
         LinkView,
         SearchView,
-        MapView) {
+        MapView,
+        tunnelTransition) {
         var View = Backbone.View.extend({
 
             initialize:function () {
                 this.model = new NavigatorModel();
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);
+                this.bindTo(this.model, 'PF_completed', this.pathFindingComplete);
 
                 this.$el.html(html);
 
@@ -26,13 +30,14 @@ define([
                 var self = this;
                 var def1 = locations.fetch();
                 var def2 = maps.fetch();
-                $.when(def1,def2).done(function(){
+                var def3 = tunnels.fetch();
+                $.when(def1,def2, def3).done(function(){
                     self.setupChildViews();
                 })
             },
 
             setupChildViews: function(){
-                // child views
+                // map links
                 var linkView = new LinkView(this.model, maps);
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
                 this.addChildView(linkView);
@@ -64,6 +69,38 @@ define([
                         $btn.attr('disabled', true);
                     }
                 }
+            },
+
+            pathFindingComplete : function(){
+                // either we reached our target or
+                // we need to display tunnel info
+                var
+                    journey = this.model.get('journey'),
+                    journeyNode = this.model.get('currentJourneyNode'),
+                    entry;
+                // we must have a journey
+                if (!journey){
+                    throw new Error('No journey!!!');
+                }
+
+                // destination reached?
+                if (journeyNode >= journey.length){
+                    alert('you did it!!!!');
+                    return;
+                }
+
+                entry = journey[journeyNode];
+                // using a tunnel?
+                if (!entry.tunnelId) {
+                    return;
+                }
+
+                // get tunnel
+                var tunnel = tunnels.get(entry.tunnelId);
+                var instructions = 'Now you need to: ' + tunnel.get('description');
+                tunnelTransition(instructions, this.model, function(model){
+                    model.journeyStepComplete();
+                });
             }
         });
 
