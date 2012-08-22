@@ -55,10 +55,12 @@ define([
 
         // fire-up path finding
         navigateTo:function (location) {
+            this.set('currentJourneyNode', 0);
+
             // setup journey
             var journey = journeyBuilder.composeJourney(this.get('kioskInfo'), {mapId:location.get('mapId'), node:location.get('node')}, tunnels);
             this.set('journey', journey);
-            this.set('currentJourneyNode', 0);
+
             // debug it
             console.log('JOURNEY CALCULATED!!!!');
             console.log(journey);
@@ -66,6 +68,13 @@ define([
 
         setupKioskData:function () {
             this.set('kioskInfo', kioskHelper.getKioskLocation());
+        },
+
+        showKioskLocation : function(){
+            var kioskInfo = this.get('kioskInfo');
+            if (kioskInfo && kioskInfo.mapId){
+                this.set('currentMapId', kioskInfo.mapId);
+            }
         },
 
         transitionTo : function(mapId, callback){

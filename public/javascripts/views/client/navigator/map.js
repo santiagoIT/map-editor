@@ -25,18 +25,19 @@ define([
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
                 this.bindTo(this.model, 'change:transitionTo', this.onTransitionTo);
                 this.bindTo(this.model, 'change:pathFind', this.onPathFind);
+
+                // get canvas context
+                this.ctx = this.el.getContext('2d');
             },
 
             render:function () {
-                // get canvas context
-                var ctx = this.el.getContext('2d');
 
                 if (!this.map) {
                     return;
                 }
 
                 // clear canvas
-                ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
+                this.ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
 
                 var margins = this.map.getMargins();
                 var columnQty = this.map.get('x');
@@ -49,8 +50,8 @@ define([
                 if (kioskInfo && kioskInfo.mapId === this.map.get('_id')) {
                     var node = kioskInfo.node;
                     if (node) {
-                        ctx.fillStyle = "rgb(19,159,119)";
-                        ctx.fillRect(node.y * columnWidth + margins.left, node.x * rowHeight + margins.top, columnWidth, rowHeight);
+                        this.ctx.fillStyle = "rgb(19,159,119)";
+                        this.ctx.fillRect(node.y * columnWidth + margins.left, node.x * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
@@ -58,7 +59,7 @@ define([
                 // path
                 if (this.path) {
                     var
-                        tailLength = 2,
+                        tailLength = 1,
                         alpha = 1;
 
                     if (this.nodeCounter >= this.path.length) {
@@ -73,27 +74,25 @@ define([
                             if (i < 0) {
                                 break;
                             }
-                            this.highlight({x:this.path[i][0], y:this.path[i][1]}, ctx, alpha);
+                            this.highlight({x:this.path[i][0], y:this.path[i][1]}, alpha, columnQty, rowQty, margins);
                             alpha -= 0.15;
                         }
                     }
                 }
+
+                return this;
             },
 
-            highlight:function (node, ctx,alpha) {
+            highlight:function (node,alpha, columnQty, rowQty, margins) {
                 if (!this.map) {
-                    console.log('no map!!');
                     return;
                 }
-                var columnQty = this.map.get('x');
-                var rowQty = this.map.get('y');
 
-                var margins = this.map.getMargins();
                 var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
                 var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
 
-                ctx.fillStyle = "rgba(20,60,80," + alpha + ")";
-                ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
+                this.ctx.fillStyle = "rgba(20,60,80," + alpha + ")";
+                this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
             },
 
             onTransitionTo:function () {
@@ -139,7 +138,7 @@ define([
                     this.timerID = window.setInterval(function () {
                         self.render();
                         self.nodeCounter++;
-                    }, 250);
+                    }, 100);
 
                 }
             },

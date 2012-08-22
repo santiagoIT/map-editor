@@ -2,7 +2,11 @@
 
     <form class="well form-search">
         <input type="text" class="input-medium search-query" placeholder="Buscar">
+        <% if (journeyActive){ %>
+        <button type="submit" class="btn btnSearch disabled">Buscar</button>
+        <%} else {%>
         <button type="submit" class="btn btnSearch">Buscar</button>
+        <%}%>
     </form>
 </div>
 <% if (haveSearched) { %>
@@ -11,7 +15,11 @@
     <h3>Resultados</h3>
     <% _.each(links,function(item,key,list){ %>
     <div>
-    <button class="btn btnGoToLocation" data-loc-id="<%= item._id %>"><%= item.name %></button>
+    <% if (journeyActive){ %>
+        <button class="btn btnGoToLocation disabled" data-loc-id="<%= item._id %>"><%= item.name %></button>
+    <%} else {%>
+        <button class="btn btnGoToLocation" data-loc-id="<%= item._id %>"><%= item.name %></button>
+    <%}%>
     </div>
     <% }) %>
     <% } else { %>

@@ -32,18 +32,33 @@ define([
             },
 
             render:function () {
+                var
+                    journey = this.model.get('journey');
                 var model = {
                     links:this.searchModel.getLinksAsJson(),
-                    haveSearched:this.searchModel.get('haveSearched')
+                    haveSearched:this.searchModel.get('haveSearched'),
+                    journeyActive:journey ? true : false
                 };
                 this.$el.html(this.template(model));
             },
 
-            launchJorneyManager : function(){
-                journeyManager.continueJourney(this.model);
+            launchJorneyManager : function(a1, a2, a3) {
+                var
+                    journey = this.model.get('journey');
+                console.log(journey);
+                if (journey) {
+                    journeyManager.continueJourney(this.model);
+                }
+                this.render();
             },
 
-            search:function () {
+            search:function (el) {
+                var
+                    journey = this.model.get('journey');
+                if (journey) {
+                    return false;
+                }
+
                 this.searchModel.set('haveSearched', true);
 
                 var searchFor = this.$('.search-query').val();
@@ -59,7 +74,12 @@ define([
             },
 
             goToLocation : function(el){
-                var locationId = $(el.target).attr('data-loc-id');
+                var $btn = $(el.target);
+                if ($btn.hasClass('disabled')){
+                    return;
+                }
+
+                var locationId = $btn.attr('data-loc-id');
                 var loc = this.locations.get(locationId);
                 this.model.navigateTo(loc);
                 return false;

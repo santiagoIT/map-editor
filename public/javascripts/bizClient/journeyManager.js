@@ -12,9 +12,6 @@ define([
                 entry = journey[journeyNode],
                 fromId = entry.mapId;
 
-            console.log('Must travel from: ' + currentId + ' to: ' + fromId);
-            console.log(entry);
-
             if (fromId != currentId){
                 // transition
                 var self = this;

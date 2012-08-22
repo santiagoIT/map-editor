@@ -88,6 +88,7 @@ define([
                 console.log('journeyNode: ' + journeyNode + ' length: ' + journey.length);
                 if (journeyNode >= journey.length-1){
                     alert('you did it!!!!');
+                    this.model.set('journey', null);
                     return;
                 }
 
