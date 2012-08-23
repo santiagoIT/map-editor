@@ -11,6 +11,7 @@ define([
             events:{
             },
             tagName:'canvas',
+            destinations: [],
 
             initialize:function (model, maps) {
 
@@ -25,6 +26,7 @@ define([
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
                 this.bindTo(this.model, 'change:transitionTo', this.onTransitionTo);
                 this.bindTo(this.model, 'change:pathFind', this.onPathFind);
+                this.bindTo(this.model, 'change:destination-node', this.onDestinationReached);
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
@@ -36,14 +38,18 @@ define([
                     return;
                 }
 
+                var
+                    self = this,
+                    margins = this.map.getMargins(),
+                    columnQty = this.map.get('x'),
+                    rowQty = this.map.get('y'),
+                    rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty,
+                    columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
+
                 // clear canvas
                 this.ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
 
-                var margins = this.map.getMargins();
-                var columnQty = this.map.get('x');
-                var rowQty = this.map.get('y');
-                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
-                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
+
 
                 // highlight kiosk if this is our map
                 var kioskInfo = this.model.get('kioskInfo');
@@ -51,7 +57,7 @@ define([
                     var node = kioskInfo.node;
                     if (node) {
                         this.ctx.fillStyle = "rgb(19,159,119)";
-                        this.ctx.fillRect(node.y * columnWidth + margins.left, node.x * rowHeight + margins.top, columnWidth, rowHeight);
+                        this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
                     }
                 }
 
@@ -80,6 +86,14 @@ define([
                     }
                 }
 
+                // highlight reached destinations
+                if (this.destinations.length > 0){
+                    _.each(this.destinations, function(entry){
+                        self.ctx.fillStyle = "rgba(255,0,0," + entry.alpha + ")";
+                        self.ctx.fillRect(entry.info.node.x * columnWidth + margins.left, entry.info.node.y * rowHeight + margins.top, columnWidth, rowHeight);
+                    });
+                }
+
                 return this;
             },
 
@@ -93,6 +107,30 @@ define([
 
                 this.ctx.fillStyle = "rgba(20,60,80," + alpha + ")";
                 this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
+            },
+
+            onDestinationReached : function() {
+                var
+                    info = this.model.get('destination-node'),
+                    self = this,
+                    index, entry;
+                entry = {
+                    info:info,
+                    alpha:1
+                };
+                this.destinations.push(entry);
+                var timerId = window.setInterval(function(){
+                    entry.alpha -= 0.1;
+                    if (entry.alpha <= 0.2){
+                        window.clearInterval(timerId);
+                        // remove from list
+                        index = _.indexOf(self.destinations, entry);
+                        self.destinations.splice(index,1);
+                        self.render();
+                        return;
+                    }
+                    self.render();
+                },250);
             },
 
             onTransitionTo:function () {
@@ -160,6 +198,8 @@ define([
                 image.onload = function () {
                     self.$el.attr('height', this.height).attr('width', this.width);
                     self.render();
+                    // set parent dimensions as well
+                    self.$el.closest('div').height(this.height).width(this.width);
                 }
                 image.src = url;
             }

@@ -84,10 +84,9 @@ define([
                 }
 
                 // destination reached?
-                console.log('pathFindingComplete - 19 - 19');
-                console.log('journeyNode: ' + journeyNode + ' length: ' + journey.length);
                 if (journeyNode >= journey.length-1){
-                    alert('you did it!!!!');
+                    var destination = journey[journeyNode];
+                    this.model.set('destination-node', {mapId: destination.mapId, node:destination.to});
                     this.model.set('journey', null);
                     return;
                 }
