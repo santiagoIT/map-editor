@@ -1,5 +1,9 @@
 <h3>Links to other maps</h3>
 <% _.each(links,function(item,key,list){ %>
 <% var map = _.find(maps, function(m){if (m._id == item.map.mapId) return m;}); %>
+<% if (journeyActive) { %>
+<button class="btn showMap disabled" data-mapid="<%=item.map.mapId%>"><%=map.name%></button>
+<% } else {  %>
 <button class="btn showMap" data-mapid="<%=item.map.mapId%>"><%=map.name%></button>
+<% } %>
 <% }) %>

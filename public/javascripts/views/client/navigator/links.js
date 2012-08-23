@@ -18,13 +18,15 @@ define([
                 this.maps = maps;
 
                 // subscribe to changes
-                this.bindTo(this.model, 'change:graph', this.render);
+                this.bindTo(this.model, 'change:graph change:journey', this.render);
                 this.bindTo(this.maps, 'all', this.render);
             },
 
             render:function () {
-                var links = [];
-                var graph = this.model.get('graph');
+                var
+                    links = [],
+                    graph = this.model.get('graph'),
+                   journey = this.model.get('journey');
                 if (graph == null || this.maps.length == 0){
                     this.$el.html('');
                     return;
@@ -33,12 +35,17 @@ define([
 
                 this.$el.html(this.template({
                     links:links,
-                    maps:this.maps.toJSON()
+                    maps:this.maps.toJSON(),
+                    journeyActive:journey ? true : false
                 }));
             },
 
             showMap : function(el){
-                var mapId = $(el.target).attr('data-mapid');
+                var $btn = $(el.target);
+                if ($btn.hasClass('disabled')){
+                    return;
+                }
+                var mapId = $btn.attr('data-mapid');
                 this.model.showMap(mapId);
             }
         });

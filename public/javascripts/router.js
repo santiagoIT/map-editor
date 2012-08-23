@@ -7,8 +7,11 @@ define([
 
     var AppRouter = Backbone.Router.extend({
         routes:{
+            // kiosk
+            '' : 'kiosk',
+
             // Define some URL routes
-            '' : 'showHome',
+            'admin' : 'admin',
             'map_edit/:id':'map_edit',
             'maps':'maps',
             'maps_create':'maps_create',
@@ -23,14 +26,11 @@ define([
             'tunnels_create' : 'tunnels_create',
             'tunnels_edit/:id' : 'tunnels_edit',
 
-            // kiosk
-            'kiosk' : 'kiosk',
-
             // Default
             '*actions':'defaultAction'
         },
 
-        showHome : function(){
+        admin : function(){
             this.launchView('views/home');
         },
 
