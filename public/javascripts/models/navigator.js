@@ -87,6 +87,12 @@ define([
             this.trigger('change:pathFind');
         },
 
+        destinationNodeReached: function(info){
+            this.set('destination-node', info);
+            this.set('journey', null);
+            this.trigger('destinationNodeReached');
+        },
+
         journeyStepComplete : function(){
             var currentNode = this.get('currentJourneyNode');
             this.set('currentJourneyNode', currentNode+1);

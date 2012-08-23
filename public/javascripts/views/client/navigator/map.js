@@ -26,7 +26,7 @@ define([
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
                 this.bindTo(this.model, 'change:transitionTo', this.onTransitionTo);
                 this.bindTo(this.model, 'change:pathFind', this.onPathFind);
-                this.bindTo(this.model, 'change:destination-node', this.onDestinationReached);
+                this.bindTo(this.model, 'destinationNodeReached', this.onDestinationReached);
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
@@ -118,9 +118,11 @@ define([
                     info:info,
                     alpha:1
                 };
+                console.log('onDestinationReached');
                 this.destinations.push(entry);
                 var timerId = window.setInterval(function(){
                     entry.alpha -= 0.1;
+                    console.log('onDestinationReached- timer');
                     if (entry.alpha <= 0.2){
                         window.clearInterval(timerId);
                         // remove from list
