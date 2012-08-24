@@ -25,16 +25,13 @@ require([
     'backbone',
     'itworks.app',
     'biz/imageManager',
-    'router',
+    'admin.router',
     'bootstrap',
     'domReady!',
     'utils/extensions/view'
 ], function($, _, Backbone, app, imageManager, Router) {
-    var
-        router = new Router();
-    console.log('the Router');
-    console.log(router);
-    app.setRouter(router);
-  // clear loading
+
+    app.setRouter(new Router());
+    // clear loading
     $('#itworks-app').empty();
 });

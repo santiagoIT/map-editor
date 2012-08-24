@@ -39,7 +39,7 @@ define([
 
                     // go to maps view
                     require(['itworks.app'], function (app) {
-                        app.Router.navigate('maps', {trigger:true});
+                        app.getRouter().navigate('maps', {trigger:true});
                     });
                 }
 

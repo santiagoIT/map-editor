@@ -70,6 +70,4 @@ module.exports = function (app, wraper, route, Model){
             });
         });
     });
-
-
 }

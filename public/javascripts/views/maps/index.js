@@ -41,7 +41,7 @@ define([
             onEditMap:function (el) {
                 var id = $(el.target).attr('data-id');
                 require(['itworks.app'], function (app) {
-                    app.Router.navigate('map_edit/' + id, {trigger:true});
+                    app.getRouter().navigate('map_edit/' + id, {trigger:true});
                 });
                 return false;
             },

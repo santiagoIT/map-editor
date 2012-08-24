@@ -47,7 +47,7 @@ define([
             editItem:function(el){
                 var id = $(el.target).attr('data-id');
                 require(['itworks.app'], function (app) {
-                    app.Router.navigate('tunnels_edit/'+id, {trigger:true});
+                    app.getRouter().navigate('tunnels_edit/'+id, {trigger:true});
                 });
             }
         });

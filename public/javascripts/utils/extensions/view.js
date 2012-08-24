@@ -4,7 +4,7 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
     Backbone.View.prototype.onNavigateTo = function (el) {
         var route = $(el.target).attr('data-navitem');
         require(['itworks.app'], function (app) {
-            app.Router.navigate(route, {trigger:true});
+            app.getRouter().navigate(route, {trigger:true});
         });
         return false;
     };

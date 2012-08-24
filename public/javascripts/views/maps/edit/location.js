@@ -65,7 +65,7 @@ define([
         editLocation : function(el){
             var id = this.model.id;
             require(['itworks.app'], function (app) {
-                app.Router.navigate('locations_edit/'+id, {trigger:true});
+                app.getRouter().navigate('locations_edit/'+id, {trigger:true});
             });
         }
     });

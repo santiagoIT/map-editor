@@ -1,11 +1,12 @@
 var passport = require('passport');
 
 var
-    home = require('./routes/home')
-    , test = require('./routes/test')
-    , api = require('./routes/api')
-    , MongoRest = require('mongo-rest')
-    , restify = require('./libs/restify')
+    home = require('./routes/home'),
+    admin = require('./routes/admin'),
+    test = require('./routes/test'),
+    api = require('./routes/api'),
+    MongoRest = require('mongo-rest'),
+    restify = require('./libs/restify')
     ;
 
 function ensureAuthenticated(req, res, next) {
@@ -19,21 +20,28 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
+var dummyWrapper = function(req, res, next) {
+    return next();
+}
+
 module.exports = function (app) {
 
     // home
-    app.get('/', ensureAuthenticated, home.index);
+    app.get('/', home.index);
     app.get('/about', home.about);
-    app.get('/tests',home.specRunner);
+    app.get('/tests', home.specRunner);
 
     app.get('/login', home.login);
     app.post('/login', passport.authenticate('local',
         {
-            successRedirect: '/',
-            failureRedirect: '/login'
+            successRedirect:'/',
+            failureRedirect:'/login'
         })
     );
     app.get('/logout', home.logout);
+
+    // admin
+    app.get('/admin', ensureAuthenticated, admin.index);
 
     // api - maps
     app.get('/api', ensureAuthenticated, api.api);
@@ -41,18 +49,18 @@ module.exports = function (app) {
     app.post('/api/uploadmapimage', ensureAuthenticated, api.uploadImage);
 
     // app models
-    restify(app, ensureAuthenticated, 'maps', require('./models/map'));
-    restify(app, ensureAuthenticated, 'locations', require('./models/location'));
-    restify(app, ensureAuthenticated, 'tunnels', require('./models/tunnel'));
+    restify(app, dummyWrapper, 'maps', require('./models/map'));
+    restify(app, dummyWrapper, 'locations', require('./models/location'));
+    restify(app, dummyWrapper, 'tunnels', require('./models/tunnel'));
 
     // tests
     app.get('/test/1', test.test1);
 
     // mongo-rest
     var mongoRest = new MongoRest(app, {
-        viewPath: 'admin/resources/',
-        collectionViewTemplate :  'resources/{{pluralName}}',
-        entityViewTemplate : 'resources/{{singularName}}'
+        viewPath:'admin/resources/',
+        collectionViewTemplate:'resources/{{pluralName}}',
+        entityViewTemplate:'resources/{{singularName}}'
     });
 
     // resource based url's

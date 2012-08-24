@@ -1,13 +1,20 @@
 define([
     'jquery',
     'Underscore',
-    'backbone',
-    'router'
-    ],function($, _, Backbone,Router){
+    'backbone'
+    ],function($, _, Backbone){
 
-    var router = new Router();
+    var
+        _router = null;
 
     return {
-        Router : router
+        getRouter : function() {
+            console.log('getRouter');
+            console.log(_router);
+            return _router;
+        },
+        setRouter : function(router){
+            _router = router;
+        }
     }
 });

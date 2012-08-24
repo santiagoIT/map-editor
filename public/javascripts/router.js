@@ -10,69 +10,13 @@ define([
             // kiosk
             '' : 'kiosk',
 
-            // Define some URL routes
-            'admin' : 'admin',
-            'map_edit/:id':'map_edit',
-            'maps':'maps',
-            'maps_create':'maps_create',
-
-            // locations
-            'locations' : 'locations',
-            'locations_edit/:id' : 'locations_edit',
-            'createLocation' : 'locations_create',
-
-            // tunnels
-            'tunnels' : 'tunnels',
-            'tunnels_create' : 'tunnels_create',
-            'tunnels_edit/:id' : 'tunnels_edit',
-
             // Default
             '*actions':'defaultAction'
         },
 
-        admin : function(){
-            this.launchView('views/home');
-        },
-
-        maps : function(){
-            this.launchView('views/maps/index');
-        },
-
-        maps_create : function(){
-            this.launchView('views/maps/create');
-        },
-
-        map_edit:function (id) {
-            this.launchView('views/maps/edit/edit', id);
-        },
-
-        locations : function(){
-            this.launchView('views/locations/index');
-        },
-
-        locations_create : function(){
-            this.launchView('views/locations/create');
-        },
-
-        locations_edit : function(id){
-            this.launchView('views/locations/edit', id);
-        },
-
-        // tunnels
-        tunnels : function(){
-            this.launchView('views/tunnels/index');
-        },
-
-        tunnels_create : function(){
-            this.launchView('views/tunnels/create');
-        },
-
-        tunnels_edit : function(id){
-            this.launchView('views/tunnels/edit', id);
-        },
-
         // client
         kiosk : function() {
+            console.log('KIOSK view');
             this.launchView('views/client/navigator/main');
         },
 
@@ -83,6 +27,7 @@ define([
 
         initialize : function() {
             Backbone.history.start();
+            console.log('router initialized');
         },
 
         launchView : function(view, id){

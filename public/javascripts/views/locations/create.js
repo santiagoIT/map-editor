@@ -43,7 +43,7 @@ define([
 
             navigateToHelper : function(route) {
                 require(['itworks.app'], function (app) {
-                    app.Router.navigate(route, {trigger:true});
+                    app.getRouter().navigate(route, {trigger:true});
                 });
             }
         });

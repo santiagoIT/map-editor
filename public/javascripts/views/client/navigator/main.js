@@ -33,10 +33,16 @@ define([
                 var def3 = tunnels.fetch();
                 $.when(def1,def2, def3).done(function(){
                     self.setupChildViews();
-                })
+                }).fail(function(err){
+                        console.log('failled!');
+                        console.log(err);
+                    });
+                console.log('launch child views');
             },
 
             setupChildViews: function(){
+                console.log('setup child views');
+
                 // map links
                 var linkView = new LinkView(this.model, maps);
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
