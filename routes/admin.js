@@ -74,7 +74,6 @@ module.exports = {
             }
         });
         // foreach map download image
-
-        res.render('localSetup', { title: 'Local Server Setup' });
+        res.redirect('/admin/localSetupSuccess', { title: 'Local Server Setup' });
     }
 };
