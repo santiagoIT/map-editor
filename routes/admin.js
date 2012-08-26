@@ -54,7 +54,7 @@ module.exports = {
     localSetupPost : function(req, res) {
 
         var
-            downloadPath = path.join(process.cwd(), '/public/data/images');
+            downloadPath = path.join(process.cwd(), '/public/data/test');
         // make sure directory exists
         var exists = fs.existsSync(downloadPath);
         if (!exists){
@@ -74,6 +74,10 @@ module.exports = {
             }
         });
         // foreach map download image
-        res.redirect('/admin/localSetupSuccess', { title: 'Local Server Setup' });
+        res.redirect('/admin/localSetupSuccess');
+    },
+
+    localSetupSuccess : function(req, res) {
+        res.render('admin/localSetupSuccess', { title: 'Local Server Setup' });
     }
 };

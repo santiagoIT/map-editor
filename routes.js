@@ -44,6 +44,7 @@ module.exports = function (app) {
     app.get('/admin', ensureAuthenticated, admin.index);
     app.get('/admin/localSetup', ensureAuthenticated, admin.localSetup);
     app.post('/admin/localSetup', ensureAuthenticated, admin.localSetupPost);
+    app.get('/admin/localSetupSuccess', ensureAuthenticated, admin.localSetupSuccess);
 
     // api - maps
     app.get('/api', ensureAuthenticated, api.api);
