@@ -54,7 +54,7 @@ module.exports = {
     localSetupPost : function(req, res) {
 
         var
-            downloadPath = path.join(process.cwd(), '/public/data/test');
+            downloadPath = path.join(process.cwd(), '/public/data/images');
         // make sure directory exists
         var exists = fs.existsSync(downloadPath);
         if (!exists){
