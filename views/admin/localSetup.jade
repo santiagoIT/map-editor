@@ -1,0 +1,6 @@
+extends ../layout
+
+block content
+    .row
+        form(action='/admin/localSetup', method='POST')
+            button.btn.btn-primary(type='submit') Setup local server

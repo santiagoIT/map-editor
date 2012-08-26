@@ -1,9 +1,9 @@
 var
-    knox = require('knox')
-    , fs = require('fs')
-    , MapModel = require('../models/map')
-    , LocationModel = require('../models/location')
-    , extend = require('xtend')
+    knox = require('knox'),
+    fs = require('fs'),
+    MapModel = require('../models/map'),
+    LocationModel = require('../models/location'),
+    extend = require('xtend')
     ;
 
 module.exports = {
