@@ -83,30 +83,35 @@ define([
                 var
                     journey = this.model.get('journey'),
                     journeyNode = this.model.get('currentJourneyNode'),
-                    entry;
+                    entry, description, instructions, tunnel;
                 // we must have a journey
                 if (!journey){
                     throw new Error('No journey!!!');
                 }
+                entry = journey[journeyNode];
 
                 // destination reached?
                 if (journeyNode >= journey.length-1){
-                    var destination = journey[journeyNode];
                     console.log('dest node set!!!');
-                    this.model.destinationNodeReached({mapId: destination.mapId, node:destination.to});
+                    this.model.destinationNodeReached({mapId: entry.mapId, node:entry.to});
                     return;
                 }
 
-                entry = journey[journeyNode];
                 // using a tunnel?
                 if (!entry.tunnelId) {
                     return;
                 }
 
                 // get tunnel
-                var tunnel = tunnels.get(entry.tunnelId);
-                var instructions = 'Now you need to: ' + tunnel.get('description');
-                tunnelTransition(instructions, this.model, function(model){
+                tunnel = tunnels.get(entry.tunnelId);
+                if (tunnel.get('mapId1') == entry.mapId) {
+                    instructions = tunnel.get('descTo2');
+                }
+                else {
+                    instructions = tunnel.get('descTo1');
+                }
+                description = tunnel.get('description');
+                tunnelTransition(description, instructions, this.model, function(model){
                     model.journeyStepComplete();
                 });
             }

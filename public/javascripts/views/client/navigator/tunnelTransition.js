@@ -3,7 +3,7 @@ define([
     'text!views/client/navigator/tunnelTransition.html'
 ],
     function ($, html) {
-        return function (instructions, model, callback) {
+        return function (description, instructions, model, callback) {
             var timeLeft = 5,
                 $modal = $(html).appendTo('body'),
                 timerId = window.setInterval(function(){
@@ -26,6 +26,7 @@ define([
                     }
                 });
 
+            $modal.find('.modal-header > h3').html(description);
             $modal.find('.modal-body > p').html(instructions);
             $modal.find('#timeCountDown').html(timeLeft);
         }
