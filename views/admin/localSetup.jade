@@ -2,5 +2,8 @@ extends ../layout
 
 block content
     .row
+        p The following actions will take place
+        ul
+            li Copy images from S3 storage to local media
         form(action='/admin/localSetup', method='POST')
             button.btn.btn-primary(type='submit') Setup local server
