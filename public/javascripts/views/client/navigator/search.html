@@ -1,6 +1,6 @@
-<div class="row-fluid">
+<div class="well">
 
-    <form class="well form-search">
+    <form class="form-search">
         <input type="text" class="input-medium search-query" placeholder="Buscar">
         <% if (journeyActive){ %>
         <button type="submit" class="btn btnSearch disabled">Buscar</button>
@@ -8,22 +8,22 @@
         <button type="submit" class="btn btnSearch">Buscar</button>
         <%}%>
     </form>
-</div>
 <% if (haveSearched) { %>
-<div class="row-fluid">
     <% if (_.size(links) > 0) { %>
     <h3>Resultados</h3>
+    <ul class="nav nav-list">
     <% _.each(links,function(item,key,list){ %>
-    <div>
-    <% if (journeyActive){ %>
-        <button class="btn btnGoToLocation disabled" data-loc-id="<%= item._id %>"><%= item.name %></button>
-    <%} else {%>
-        <button class="btn btnGoToLocation" data-loc-id="<%= item._id %>"><%= item.name %></button>
-    <%}%>
-    </div>
+    <li class="navItem">
+        <% if (journeyActive){ %>
+        <a href="#" data-loc-id="<%= item._id %>" class="btnGoToLocation disabled"><%= item.name %></a>
+        <%} else {%>
+        <a href="#" data-loc-id="<%= item._id %>" class="btnGoToLocation"><%= item.name %></a>
+        <%}%>
+    </li>
     <% }) %>
+    </ul>
     <% } else { %>
     <p>No se encontro ningun resultado</p>
     <% } %>
-</div>
 <% } %>
+</div>
