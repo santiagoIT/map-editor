@@ -7,3 +7,6 @@
 [submodule "submodules/underscore"]
 	path = submodules/underscore
 	url = https://github.com/documentcloud/underscore.git
+[submodule "submodules/require-jquery"]
+	path = submodules/require-jquery
+	url = https://github.com/jrburke/require-jquery.git
