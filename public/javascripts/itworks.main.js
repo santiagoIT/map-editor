@@ -11,7 +11,6 @@ require.config({
         bootstrap: 'bootstrap/bootstrap.min',
         Underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
-        doT : 'libs/doT/doT.min',
         pathfinder : 'libs/pathfinder/pathfinding'
     },
     shim: {
