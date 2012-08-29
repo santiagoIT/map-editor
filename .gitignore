@@ -18,3 +18,4 @@ img
 bootstrap
 backbone-min.js
 underscore-min.js
+require-jquery.js

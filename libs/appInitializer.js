@@ -35,4 +35,9 @@ module.exports = function (rootPath) {
     dest =  path.join(rootPath, '/public/javascripts/libs/underscore/underscore-min.js');
     source = path.join(rootPath, '/submodules/underscore/underscore-min.js');
     createSymlink(dest, source);
+
+    // require-jquery
+    dest =  path.join(rootPath, '/public/javascripts/require-jquery.js');
+    source = path.join(rootPath, '/submodules/require-jquery/jquery-require-sample/webapp/scripts/require-jquery.js');
+    createSymlink(dest, source);
 }
