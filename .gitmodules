@@ -1,3 +1,9 @@
 [submodule "submodules/bootstrap"]
 	path = submodules/bootstrap
 	url = https://github.com/twitter/bootstrap.git
+[submodule "submodules/backbone"]
+	path = submodules/backbone
+	url = https://github.com/documentcloud/backbone.git
+[submodule "submodules/underscore"]
+	path = submodules/underscore
+	url = https://github.com/documentcloud/underscore.git

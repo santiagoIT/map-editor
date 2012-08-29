@@ -25,4 +25,14 @@ module.exports = function (rootPath) {
     dest =  path.join(rootPath, '/public/javascripts/bootstrap');
     source = path.join(rootPath, '/submodules/bootstrap/docs/assets/js');
     createSymlink(dest, source);
+
+    // backbone
+    dest =  path.join(rootPath, '/public/javascripts/libs/backbone/backbone-min.js');
+    source = path.join(rootPath, '/submodules/backbone/backbone-min.js');
+    createSymlink(dest, source);
+
+    // underscore
+    dest =  path.join(rootPath, '/public/javascripts/libs/underscore/underscore-min.js');
+    source = path.join(rootPath, '/submodules/underscore/underscore-min.js');
+    createSymlink(dest, source);
 }
