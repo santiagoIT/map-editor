@@ -7,6 +7,7 @@ var express = require('express')
     , stylus = require('stylus')
     , passport = require('passport')
     , herokuShim = require('./herokuShim')
+    , appInitializer = require('./libs/appInitializer')
     ;
 
 // mock heroku environment if we are running locally
@@ -56,6 +57,10 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
+
+// create submodule symlinks
+appInitializer(__dirname);
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function () {

@@ -8,7 +8,7 @@
 
 require.config({
     paths: {
-        bootstrap: 'bootstrap.min',
+        bootstrap: 'bootstrap/bootstrap.min',
         Underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
         doT : 'libs/doT/doT.min',
