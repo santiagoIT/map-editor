@@ -40,4 +40,9 @@ module.exports = function (rootPath) {
     dest =  path.join(rootPath, '/public/javascripts/require-jquery.js');
     source = path.join(rootPath, '/submodules/require-jquery/jquery-require-sample/webapp/scripts/require-jquery.js');
     createSymlink(dest, source);
+
+    // pathfinding.js
+    dest =  path.join(rootPath, '/public/javascripts/libs/pathfinder/pathfinding-browser.js');
+    source = path.join(rootPath, '/submodules/pathfinding/lib/pathfinding-browser.js');
+    createSymlink(dest, source);
 }

@@ -19,3 +19,4 @@ bootstrap
 backbone-min.js
 underscore-min.js
 require-jquery.js
+pathfinding-browser.js
