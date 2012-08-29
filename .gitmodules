@@ -13,3 +13,6 @@
 [submodule "submodules/Pathfinding"]
 	path = submodules/Pathfinding
 	url = https://github.com/qiao/PathFinding.js.git
+[submodule "submodules/jquery-iframe-transport"]
+	path = submodules/jquery-iframe-transport
+	url = http://github.com/cmlenz/jquery-iframe-transport
