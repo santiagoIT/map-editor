@@ -10,3 +10,6 @@
 [submodule "submodules/require-jquery"]
 	path = submodules/require-jquery
 	url = https://github.com/jrburke/require-jquery.git
+[submodule "submodules/Pathfinding"]
+	path = submodules/Pathfinding
+	url = https://github.com/qiao/PathFinding.js.git
