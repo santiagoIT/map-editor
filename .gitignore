@@ -16,3 +16,5 @@ npm-debug.log
 .env
 img
 bootstrap
+backbone-min.js
+underscore-min.js
