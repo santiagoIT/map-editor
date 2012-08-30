@@ -21,3 +21,5 @@ underscore-min.js
 require-jquery.js
 pathfinding-browser.js
 jquery.iframe-transport.js
+backbone-dbg.js
+underscore-dbg.js

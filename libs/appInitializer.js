@@ -31,9 +31,17 @@ module.exports = function (rootPath) {
     source = path.join(rootPath, '/submodules/backbone/backbone-min.js');
     createSymlink(dest, source);
 
+    dest =  path.join(rootPath, '/public/javascripts/libs/backbone/backbone-dbg.js');
+    source = path.join(rootPath, '/submodules/backbone/backbone.js');
+    createSymlink(dest, source);
+
     // underscore
     dest =  path.join(rootPath, '/public/javascripts/libs/underscore/underscore-min.js');
     source = path.join(rootPath, '/submodules/underscore/underscore-min.js');
+    createSymlink(dest, source);
+
+    dest =  path.join(rootPath, '/public/javascripts/libs/underscore/underscore-dbg.js');
+    source = path.join(rootPath, '/submodules/underscore/underscore.js');
     createSymlink(dest, source);
 
     // require-jquery
@@ -45,10 +53,6 @@ module.exports = function (rootPath) {
     dest =  path.join(rootPath, '/public/javascripts/libs/pathfinding/pathfinding-browser.js');
     source = path.join(rootPath, '/submodules/pathfinding/lib/pathfinding-browser.js');
     createSymlink(dest, source);
-
-    if (fs.existsSync(dest)) {
-        console.log('pathfinding-browser.js DOOEEES EXXXXISST!!!!');
-    }
 
     //jquery - iframe transport
     dest =  path.join(rootPath, '/public/javascripts/libs/jquery.iframe-transport/jquery.iframe-transport.js');

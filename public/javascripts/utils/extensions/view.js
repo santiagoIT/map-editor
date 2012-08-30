@@ -24,6 +24,7 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
             _.each(this._bindings, function (binding) {
                 binding.model.unbind(binding.ev, binding.callback);
             });
+
             this._bindings = [];
         },
 
@@ -37,6 +38,8 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
         },
 
         disposeChildViews : function(){
+
+
             _.each(this._childViews, function(childView){
                 childView.dispose();
             });

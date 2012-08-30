@@ -17,16 +17,14 @@ define([
             },
 
             initialize:function () {
-
-                this.bindTo(tunnels, 'all', this.render);
+                this.bindTo(tunnels, 'reset', this.render);
                 tunnels.fetch();
 
-                this.bindTo(maps, 'all', this.render);
+                this.bindTo(maps, 'reset', this.render);
                 maps.fetch();
             },
 
             render:function () {
-
                 this.$el.html(_.template(html,{items:tunnels.toJSON(), maps:maps.toJSON()}));
             },
 
