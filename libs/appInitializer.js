@@ -46,6 +46,10 @@ module.exports = function (rootPath) {
     source = path.join(rootPath, '/submodules/pathfinding/lib/pathfinding-browser.js');
     createSymlink(dest, source);
 
+    if (fs.existsSync(dest)) {
+        console.log('pathfinding-browser.js DOOEEES EXXXXISST!!!!');
+    }
+
     //jquery - iframe transport
     dest =  path.join(rootPath, '/public/javascripts/libs/jquery.iframe-transport/jquery.iframe-transport.js');
     source = path.join(rootPath, '/submodules/jquery-iframe-transport/jquery.iframe-transport.js');
