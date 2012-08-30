@@ -1,4 +1,4 @@
-define(['libs/backbone/backbone-min-0-9-2'], function(){
+define(['libs/backbone/backbone-min'], function(){
     _.noConflict();
     return Backbone.noConflict();
 });

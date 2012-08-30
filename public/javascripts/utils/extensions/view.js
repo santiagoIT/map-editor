@@ -46,7 +46,7 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
             this._childViews = [];
         },
 
-        dispose:function () {
+        itworksDispose:function () {
             this.disposeChildViews(); // cleanup child views!
             this.unbindFromAll(); // this will unbind all events that this view has bound to
             this.unbind(); // this will unbind all listeners to events from this view. This is probably not necessary because this view will be garbage collected.
