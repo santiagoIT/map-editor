@@ -42,7 +42,7 @@ module.exports = function (rootPath) {
     createSymlink(dest, source);
 
     // pathfinding.js
-    dest =  path.join(rootPath, '/public/javascripts/libs/pathfinder/pathfinding-browser.js');
+    dest =  path.join(rootPath, '/public/javascripts/libs/pathfinding/pathfinding-browser.js');
     source = path.join(rootPath, '/submodules/pathfinding/lib/pathfinding-browser.js');
     createSymlink(dest, source);
 
