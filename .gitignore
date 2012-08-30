@@ -20,3 +20,4 @@ backbone-min.js
 underscore-min.js
 require-jquery.js
 pathfinding-browser.js
+jquery.iframe-transport.js
