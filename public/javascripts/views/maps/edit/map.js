@@ -55,7 +55,7 @@ define([
 
                 console.log('onImageNameChanged');
 
-                var url = imageManager.getUrl(imageName);
+                var url = imageManager.getS3Url(imageName);
                 // set background
                 this.$el.css('background-image', 'url("' + url + '")'); // Set source path
                 this.render();

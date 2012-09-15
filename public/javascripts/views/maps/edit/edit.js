@@ -11,7 +11,8 @@ define([
     'collections/locations',
     'biz/mapStateSingleton',
     'views/maps/edit/locations',
-    'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js'
+    'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js',
+    'libs/jquery.iframe-transport/jquery.iframe-transport'
     ],
     function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView){
 
@@ -25,7 +26,9 @@ define([
             'click #btnBlockAll' : "blockAll",
             'click #btnClearAll' : "clearAll",
             'click [name="editor-mode"]' : "onEditorModeSwitched",
-            'click .editor-config' : "onEditorConfigChanged"
+            'click .editor-config' : "onEditorConfigChanged",
+            'click .btnImageChange' : "onChangeMapImage",
+            'click #btnSaveNewImage' : "onSaveNewMapImage"
         },
 
         jqueryMap:{},
@@ -161,6 +164,29 @@ define([
             if (name){
                 mapState.set(name, $el.is(':checked'));
             }
+        },
+
+        onChangeMapImage : function(){
+            this.$('.modal').modal('show');
+        },
+
+        onSaveNewMapImage : function(){
+            var
+                $form = $('#frmChangeImage'),
+                self = this;
+
+            $.ajax('api/uploadmapimage', {
+                type:"POST",
+                data:$("input:text", $form).serializeArray(),
+                files:$("input:file", $form),
+                dataType:'json',
+                iframe:true,
+                processData:false
+            }).done(function (data) {
+                    self.model.set('imageName', data.imagename);
+                    self.model.save();
+                    self.$('.modal').modal('hide');
+                });
         }
     });
     // Our module now returns an instantiated view

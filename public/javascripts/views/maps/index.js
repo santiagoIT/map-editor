@@ -35,7 +35,7 @@ define([
 
             render:function () {
                 // reset select
-                this.$el.html(this.template({s3Root: imageManager.getRoot(), maps:this.collection.toJSON()}));
+                this.$el.html(this.template({s3Root: imageManager.getS3Root(), maps:this.collection.toJSON()}));
             },
 
             onEditMap:function (el) {

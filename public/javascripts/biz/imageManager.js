@@ -18,6 +18,14 @@ define(function () {
 
         setRunLocally : function(value){
             runLocally = value;
+        },
+
+        getS3Root : function(){
+            return s3Root;
+        },
+
+        getS3Url : function(imageName) {
+            return s3Root + imageName;
         }
     };
 });
