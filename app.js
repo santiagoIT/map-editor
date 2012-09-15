@@ -11,7 +11,7 @@ var express = require('express')
     ;
 
 // mock heroku environment if we are running locally
-herokuShim.setupEnvironment('MONGODB_CONNSTR');
+herokuShim.setupEnvironment(__dirname + '/.env');
 
 // mongodb
 var DB = require('./datastore');

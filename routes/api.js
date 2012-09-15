@@ -15,7 +15,6 @@ module.exports = {
     uploadImage:function (req, res, next) {
         var map,
             imageFile = req.files.image;
-        console.log(imageFile);
         var client = knox.createClient({
             key:process.env.AWS_ACCESS_KEY,
             secret:process.env.AWS_SECRET_ACCESS_KEY,
