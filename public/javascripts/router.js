@@ -8,10 +8,18 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes:{
             // kiosk
-            '' : 'kiosk',
+            '' : 'home',
+
+            'kiosk' : 'kiosk',
 
             // Default
             '*actions':'defaultAction'
+        },
+
+        // home
+        home : function() {
+            console.log('HOME view');
+            this.launchView('views/client/home/main');
         },
 
         // client
