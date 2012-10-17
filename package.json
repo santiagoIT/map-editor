@@ -17,7 +17,6 @@
     "knox": "*",
     "passport": ">= 0.0.0",
     "passport-local": ">= 0.0.0",
-    "bcrypt": ">= 0.5.0",
     "mongo-rest": "~2.1.2",
     "xtend": ">1.0"
   }

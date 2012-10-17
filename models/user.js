@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var passport = require('passport');
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 
 // Define schema
 var UserSchema = new Schema({
@@ -24,12 +24,12 @@ UserSchema
     })
     .set(function (password) {
         this._password = password;
-        var salt = this.salt = bcrypt.genSaltSync(10);
-        this.hash = bcrypt.hashSync(password, salt);
+  //      var salt = this.salt = bcrypt.genSaltSync(10);
+  //      this.hash = bcrypt.hashSync(password, salt);
     });
 
 UserSchema.method('verifyPassword', function(password, callback) {
-    bcrypt.compare(password, this.hash, callback);
+    //bcrypt.compare(password, this.hash, callback);
 });
 
 UserSchema.static('authenticate', function(email, password, callback) {
