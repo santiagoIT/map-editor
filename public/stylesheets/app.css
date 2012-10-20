@@ -4786,3 +4786,18 @@ a {
   top: 312px;
   left: 74px;
 }
+.map-container {
+  background-image: url('/images/maps/bkgd_maps.jpg');
+  background-repeat: no-repeat;
+  width: 724px;
+  height: 1280px;
+}
+#search-form {
+  position: absolute;
+  top: 150px;
+}
+#mapCanvas {
+  position: absolute;
+  top: 215px;
+  margin-left: 30px;
+}

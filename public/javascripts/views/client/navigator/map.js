@@ -11,6 +11,7 @@ define([
             events:{
             },
             tagName:'canvas',
+            id:'mapCanvas',
             destinations: [],
 
             initialize:function (model, maps) {
@@ -200,8 +201,6 @@ define([
                 image.onload = function () {
                     self.$el.attr('height', this.height).attr('width', this.width);
                     self.render();
-                    // set parent dimensions as well
-                    self.$el.closest('div').height(this.height).width(this.width);
                 }
                 image.src = url;
             }
