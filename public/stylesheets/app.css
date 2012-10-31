@@ -4754,7 +4754,7 @@ a {
 .home-container {
   background-image: url('/images/home/bkgd_home.jpg');
   background-repeat: no-repeat;
-  width: 724px;
+  width: 720px;
   height: 1280px;
 }
 #btnMedicos {
@@ -4789,7 +4789,7 @@ a {
 .map-container {
   background-image: url('/images/maps/bkgd_maps.jpg');
   background-repeat: no-repeat;
-  width: 724px;
+  width: 720px;
   height: 1280px;
 }
 #search-form {
