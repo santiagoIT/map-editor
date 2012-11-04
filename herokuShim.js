@@ -2,6 +2,9 @@ module.exports = {
     setupEnvironment:function (envFile) {
 
         var fs = require('fs');
+        if (!fs.existsSync(envFile)){
+            return;
+        }
         var entries = fs.readFileSync(envFile, 'ascii').split('\n');
         for (var e in entries) {
             var line = entries[e];
