@@ -10,18 +10,27 @@ define([
         var View = Backbone.View.extend({
             events:{
                 'submit form':'search',
-                'click .btnSearch':'search'
+                'click .btnSearch':'search',
+                'focus input' : 'showKeyboard'
             },
             template:_.template(html),
 
-            initialize:function (model, searchModel, locations) {
+            initialize:function (model, searchModel, locations, keyboardView) {
 
                 this.model = model;
                 this.locations = locations;
                 this.searchModel = searchModel;
+                this.keyboardView = keyboardView;
 
                 // activate journeyManager when journey is set
                 this.bindTo(this.model, 'change:journey', this.launchJorneyManager);
+            },
+
+            showKeyboard:function(el) {
+                this.keyboardView.$el.parent().show();
+
+                var $element = $(el.target);
+                this.keyboardView.setFocusedElement($element);
             },
 
             render:function () {

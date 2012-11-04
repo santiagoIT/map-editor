@@ -14,6 +14,7 @@ define([
     'views/client/navigator/tunnelTransition',
     'views/client/navigator/searchResults',
     'views/client/menu/main',
+    'views/client/keyboard/main',
     'bootstrap'
 ],
     function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, NavigatorSearchModel, html,
@@ -22,7 +23,8 @@ define([
         MapView,
         tunnelTransition,
         SearchResultsView,
-        MainMenuView) {
+        MainMenuView,
+        KeyboardView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
@@ -50,13 +52,19 @@ define([
             setupChildViews: function(){
                 console.log('setup child views');
 
+                // keyboard view
+                this.keyboardView = new KeyboardView();
+                var $keyboard = this.$el.find('.keyboard');
+                $keyboard.append(this.keyboardView.el);
+                this.addChildView(this.keyboardView);
+
                 // map links
                 var linkView = new LinkView(this.model, maps);
                 linkView.setElement(this.$el.find('#mapLinks')[0]);
                 this.addChildView(linkView);
 
                 // search view
-                var searchView = new SearchView(this.model, this.searchModel, locations);
+                var searchView = new SearchView(this.model, this.searchModel, locations, this.keyboardView);
                 searchView.setElement(this.$el.find('#search')[0]);
                 this.addChildView(searchView);
 

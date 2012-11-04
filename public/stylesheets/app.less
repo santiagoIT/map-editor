@@ -84,4 +84,51 @@ a {
   }
 }
 
+// virtual keyboard
+.keyboard {
+  position: absolute;
+  bottom: 0px;
+  background-image: url('/images/keyboard/keyboard.png');
+  .size(348px,720px);
+  z-index: 1000;
+
+  .keyboardRow {
+    clear: both;
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .btnKey {
+    background-image: url('/images/keyboard/btnKey.png');
+    .size(40px,104px);
+    font-size: 22px;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .btnKeyLarge {
+  background-image: url('/images/keyboard/btnKeyLarge.png');
+    .size(63px,124px);
+    font-size: 22px;
+    line-height: 63px;
+    text-align: center;
+  }
+
+  .char {
+    background-image: url('/images/keyboard/char.png');
+    .size(63px,63px);
+    font-size: 22px;
+    line-height: 63px;
+    text-align: center;
+    float:left;
+  }
+
+  #keySpace {
+    background-image: url('/images/keyboard/space.png');
+    .size(63px,416px);
+  }
+}
+
 

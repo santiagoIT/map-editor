@@ -5067,3 +5067,47 @@ a {
   width: 170px;
   height: 129px;
 }
+.keyboard {
+  position: absolute;
+  bottom: 0px;
+  background-image: url('/images/keyboard/keyboard.png');
+  width: 720px;
+  height: 348px;
+  z-index: 1000;
+}
+.keyboard .keyboardRow {
+  clear: both;
+}
+.keyboard .clickable {
+  cursor: pointer;
+}
+.keyboard .btnKey {
+  background-image: url('/images/keyboard/btnKey.png');
+  width: 104px;
+  height: 40px;
+  font-size: 22px;
+  line-height: 40px;
+  text-align: center;
+}
+.keyboard .btnKeyLarge {
+  background-image: url('/images/keyboard/btnKeyLarge.png');
+  width: 124px;
+  height: 63px;
+  font-size: 22px;
+  line-height: 63px;
+  text-align: center;
+}
+.keyboard .char {
+  background-image: url('/images/keyboard/char.png');
+  width: 63px;
+  height: 63px;
+  font-size: 22px;
+  line-height: 63px;
+  text-align: center;
+  float: left;
+}
+.keyboard #keySpace {
+  background-image: url('/images/keyboard/space.png');
+  width: 416px;
+  height: 63px;
+}
