@@ -1,0 +1,26 @@
+<div class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Resultados</h3>
+    </div>
+    <div class="modal-body">
+        <% if (haveSearched) { %>
+        <% if (_.size(links) > 0) { %>
+        <ul class="nav nav-list">
+            <% _.each(links,function(item,key,list){ %>
+            <li class="navItem">
+                <% if (journeyActive){ %>
+                <a href="#" data-loc-id="<%= item._id %>" class="btnGoToLocation disabled"><%= item.name %></a>
+                <%} else {%>
+                <a href="#" data-loc-id="<%= item._id %>" class="btnGoToLocation"><%= item.name %></a>
+                <%}%>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+        <p>No se encontro ningun resultado</p>
+        <% } %>
+        <% } %>
+
+    </div>
+</div>

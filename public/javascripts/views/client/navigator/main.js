@@ -6,21 +6,26 @@ define([
     'collections/maps',
     'collections/tunnels',
     'models/navigator',
+    'models/navigator.search',
     'text!views/client/navigator/main.html',
     'views/client/navigator/links',
     'views/client/navigator/search',
     'views/client/navigator/map',
-    'views/client/navigator/tunnelTransition'
+    'views/client/navigator/tunnelTransition',
+    'views/client/navigator/searchResults',
+    'bootstrap'
 ],
-    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, html,
+    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, NavigatorSearchModel, html,
         LinkView,
         SearchView,
         MapView,
-        tunnelTransition) {
+        tunnelTransition,
+        SearchResultsView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
                 this.model = new NavigatorModel();
+                this.searchModel = new NavigatorSearchModel();
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);
                 this.bindTo(this.model, 'PF_completed', this.pathFindingComplete);
 
@@ -49,9 +54,14 @@ define([
                 this.addChildView(linkView);
 
                 // search view
-                var searchView = new SearchView(this.model, locations);
+                var searchView = new SearchView(this.model, this.searchModel, locations);
                 searchView.setElement(this.$el.find('#search')[0]);
                 this.addChildView(searchView);
+
+                // search results view
+                var searchResultsView = new SearchResultsView(this.model, this.searchModel, locations);
+                searchResultsView.setElement(this.$el.find('#searchResults')[0]);
+                this.addChildView(searchResultsView);
 
                 // map view
                 var mapView = new MapView(this.model, maps);

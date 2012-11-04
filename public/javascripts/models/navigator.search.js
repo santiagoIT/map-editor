@@ -6,7 +6,8 @@ define([
         defaults:{
             // links
             links:null,
-            haveSearched : false
+            haveSearched : false,
+            showResults : false
         },
 
         initialize:function () {

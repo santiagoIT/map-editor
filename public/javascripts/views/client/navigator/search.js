@@ -3,29 +3,22 @@ define([
     'Underscore',
     'backbone',
     'text!views/client/navigator/search.html',
-    'models/navigator.search',
     'bizClient/journeyManager'
 ],
-    function ($, _, Backbone, html, NavigatorSearchModel, journeyManager) {
+    function ($, _, Backbone, html, journeyManager) {
 
         var View = Backbone.View.extend({
             events:{
                 'submit form':'search',
-                'click .btnSearch':'search',
-                'click .btnGoToLocation': 'goToLocation'
+                'click .btnSearch':'search'
             },
             template:_.template(html),
 
-            initialize:function (model, locations) {
+            initialize:function (model, searchModel, locations) {
 
                 this.model = model;
                 this.locations = locations;
-                this.searchModel = new NavigatorSearchModel();
-
-                // subscribe
-                this.bindTo(this.locations, 'all', this.render());
-
-                this.bindTo(this.searchModel, 'change:links', this.render);
+                this.searchModel = searchModel;
 
                 // activate journeyManager when journey is set
                 this.bindTo(this.model, 'change:journey', this.launchJorneyManager);
@@ -35,11 +28,12 @@ define([
                 var
                     journey = this.model.get('journey');
                 var model = {
-                    links:this.searchModel.getLinksAsJson(),
-                    haveSearched:this.searchModel.get('haveSearched'),
                     journeyActive:journey ? true : false
                 };
                 this.$el.html(this.template(model));
+
+                console.log('journeyActive');
+                console.log(model);
             },
 
             launchJorneyManager : function(a1, a2, a3) {
@@ -53,6 +47,7 @@ define([
             },
 
             search:function (el) {
+
                 var
                     journey = this.model.get('journey');
                 if (journey) {
@@ -70,18 +65,8 @@ define([
                 });
                 this.searchModel.set('links', results);
 
-                return false;
-            },
+                this.searchModel.set('showResults', true);
 
-            goToLocation : function(el){
-                var $btn = $(el.target);
-                if ($btn.hasClass('disabled')){
-                    return;
-                }
-
-                var locationId = $btn.attr('data-loc-id');
-                var loc = this.locations.get(locationId);
-                this.model.navigateTo(loc);
                 return false;
             }
         });
