@@ -4990,6 +4990,9 @@ a.badge:hover {
 a {
   cursor: pointer;
 }
+.kioskContainer {
+  width: 720px;
+}
 .home-container {
   background-image: url('/images/home/bkgd_home.jpg');
   background-repeat: no-repeat;
