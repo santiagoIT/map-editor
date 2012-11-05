@@ -4993,6 +4993,9 @@ a {
 .kioskContainer {
   width: 720px;
 }
+.row {
+  margin-left: 0px;
+}
 .home-container {
   background-image: url('/images/home/bkgd_home.jpg');
   background-repeat: no-repeat;
