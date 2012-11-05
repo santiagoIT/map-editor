@@ -5048,6 +5048,12 @@ a {
   position: absolute;
   top: 150px;
 }
+#search-form input {
+  height: 33px;
+  line-height: 33px;
+  font-size: 27px;
+  margin-left: 15px;
+}
 #mapCanvas {
   position: absolute;
   top: 215px;
