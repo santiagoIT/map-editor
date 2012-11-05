@@ -1,5 +1,4 @@
-<div class="well">
-<h3>Navegacion</h3>
+<h4>Navegacion</h4>
 <% _.each(links,function(item,key,list){ %>
 <% var map = _.find(maps, function(m){if (m._id == item.map.mapId) return m;}); %>
 <% if (journeyActive) { %>
@@ -8,4 +7,3 @@
 <button class="btn showMap" data-mapid="<%=item.map.mapId%>"><%=map.name%></button>
 <% } %>
 <% }) %>
-</div>

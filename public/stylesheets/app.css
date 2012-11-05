@@ -5030,6 +5030,14 @@ a {
   background-repeat: no-repeat;
   width: 720px;
   height: 1280px;
+  position: relative;
+}
+.map-container #mapLinks {
+  position: absolute;
+  top: 220px;
+  right: 0px;
+  height: 1000px;
+  width: 150px;
 }
 #search-form {
   position: absolute;
