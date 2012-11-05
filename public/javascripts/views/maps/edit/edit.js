@@ -11,13 +11,15 @@ define([
     'collections/locations',
     'biz/mapStateSingleton',
     'views/maps/edit/locations',
+    'biz/imageManager',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
     ],
-    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView){
+    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView, imageManager){
 
     var View = Backbone.View.extend({
         canvasView : null,
+        template:_.template(html),
         events : {
             'click .navItem' : "onNavigateTo",
             'click .saveChanges' : "onSaveMap",
@@ -28,14 +30,13 @@ define([
             'click [name="editor-mode"]' : "onEditorModeSwitched",
             'click .editor-config' : "onEditorConfigChanged",
             'click .btnImageChange' : "onChangeMapImage",
-            'click #btnSaveNewImage' : "onSaveNewMapImage"
+            'click #btnSaveNewImage' : "onSaveNewMapImage",
+            'click #btnSaveMapIcon' : "onSaveMapIconImage"
         },
 
         jqueryMap:{},
 
         initialize : function(mapid) {
-            this.$el.html(html);
-
             var
                 self = this;
 
@@ -43,8 +44,18 @@ define([
             mapState.set(mapState.defaults);
 
             this.model = new MapModel({_id:mapid});
-            this.model.fetch();
+            this.model.fetch({success:function(model, response){
+                self.setupView(mapid);
+            }});
+        },
 
+        setupView: function(mapid) {
+            var
+                self = this;
+            console.log('setupView');
+            console.log(this);
+
+            this.render();
             var $container =  this.$('#canvasContainer');
             this.canvasView = new MapView(this.model);
             this.addChildView(this.canvasView);
@@ -94,7 +105,19 @@ define([
         },
 
         render: function() {
-            console.log('editor-view render');
+            var options = {
+                map:this.model.toJSON()
+            };
+
+            var iconName = this.model.get('linkImageName');
+            if (iconName){
+                console.log('iconName: ' + iconName);
+                options.mapIconImageUrl = imageManager.getS3Url(iconName);
+                console.log('iconUrl: ' + options.mapIconImageUrl);
+            }
+
+            this.$el.html(this.template(options));
+            return this;
         },
 
         displayMargins : function() {
@@ -187,6 +210,26 @@ define([
                     self.model.save();
                     self.$('.modal').modal('hide');
                 });
+            return false;
+        },
+
+        onSaveMapIconImage : function(){
+            var
+                $form = $('#frmSetMapIcon'),
+                self = this;
+
+            $.ajax('api/uploadmapiconimage', {
+                type:"POST",
+                data:$("input:text", $form).serializeArray(),
+                files:$("input:file", $form),
+                dataType:'json',
+                iframe:true,
+                processData:false
+            }).done(function (data) {
+                    self.model.set('linkImageName', data.linkImageName);
+                    self.model.save();
+                });
+            return false;
         }
     });
     // Our module now returns an instantiated view

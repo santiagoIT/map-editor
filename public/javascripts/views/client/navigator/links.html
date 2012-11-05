@@ -1,9 +1,12 @@
-<h4>Navegacion</h4>
 <% _.each(links,function(item,key,list){ %>
 <% var map = _.find(maps, function(m){if (m._id == item.map.mapId) return m;}); %>
 <% if (journeyActive) { %>
-<button class="btn showMap disabled" data-mapid="<%=item.map.mapId%>"><%=map.name%></button>
+<div class="mapLink showMap disabled" data-mapid="<%=item.map.mapId%>">
+    <img src="<%= getLinkIconUrl(map)%>" alt="mapIcon"/>
+</div>
 <% } else {  %>
-<button class="btn showMap" data-mapid="<%=item.map.mapId%>"><%=map.name%></button>
+<div class="mapLink showMap" data-mapid="<%=item.map.mapId%>">
+    <img src="<%= getLinkIconUrl(map)%>" alt="mapIcon"/>
+</div>
 <% } %>
 <% }) %>

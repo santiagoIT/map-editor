@@ -50,6 +50,7 @@ module.exports = function (app) {
     app.get('/api', ensureAuthenticated, api.api);
 
     app.post('/api/uploadmapimage', ensureAuthenticated, api.uploadImage);
+    app.post('/api/uploadmapiconimage', ensureAuthenticated, api.uploadMapIconImage);
 
     // app models
     restify(app, dummyWrapper, 'maps', require('./models/map'));

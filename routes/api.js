@@ -39,5 +39,34 @@ module.exports = {
             });
             reqAWS.end(buf);
         });
+    },
+
+    uploadMapIconImage:function(req,res,next) {
+        var map,
+            imageFile = req.files.image;
+        var client = knox.createClient({
+            key:process.env.AWS_ACCESS_KEY,
+            secret:process.env.AWS_SECRET_ACCESS_KEY,
+            bucket:'itworks.ec'
+        });
+
+        fs.readFile(imageFile.path, function (err, buf) {
+
+            // TODO: create a conflict-free file name
+            var reqAWS = client.put('/mapeditor/images/' + imageFile.name, {
+                'Content-Length':buf.length,
+                'Content-Type':imageFile.type
+            });
+            reqAWS.on('response', function (resAWS) {
+
+                res.statusCode = resAWS.statusCode;
+                if (200 == resAWS.statusCode) {
+                    return res.json({linkImageName:imageFile.name});
+                }
+
+                return res.send({err:'failed!!'});
+            });
+            reqAWS.end(buf);
+        });
     }
 }

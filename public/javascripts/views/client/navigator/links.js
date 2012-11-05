@@ -2,9 +2,10 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'text!views/client/navigator/links.html'
+    'text!views/client/navigator/links.html',
+    'biz/imageManager'
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone, html, imageManager) {
 
         var View = Backbone.View.extend({
             template :_.template(html),
@@ -33,23 +34,28 @@ define([
                 }
                 links = graph[0].links;
 
-                console.log('*** THE LINKS ***');
-                console.log(links);
-
                 this.$el.html(this.template({
                     links:links,
                     maps:this.maps.toJSON(),
-                    journeyActive:journey ? true : false
+                    journeyActive:journey ? true : false,
+                    getLinkIconUrl:function(map) {
+
+                        return imageManager.getS3Url(map.linkImageName);
+                    }
                 }));
             },
 
             showMap : function(el){
-                var $btn = $(el.target);
+
+                var $btn = $(el.target).parent();
                 if ($btn.hasClass('disabled')){
-                    return;
+                    return false;
                 }
                 var mapId = $btn.attr('data-mapid');
-                this.model.showMap(mapId);
+                if (mapId) {
+                    this.model.showMap(mapId);
+                }
+                return false;
             }
         });
         // Our module now returns an instantiated view

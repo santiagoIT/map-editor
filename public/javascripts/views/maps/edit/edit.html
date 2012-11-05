@@ -1,4 +1,4 @@
-<h1>MAP EDITOR</h1>
+<h1>MAP EDITOR - <%= map.name %></h1>
 <div class="row-fluid">
 
     <ul class="nav nav-tabs">
@@ -7,6 +7,7 @@
         <li><a href="#editor-mode" data-toggle="tab">Editor</a></li>
         <li><a href="#utilities" data-toggle="tab">Utilities</a></li>
         <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li><a href="#mapMetaData" data-toggle="tab">Meta Data</a></li>
     </ul>
 
 
@@ -98,6 +99,25 @@
                     <input type="checkbox" class="editor-config" name="showBlockedTiles" checked>
                     Show Blocked Tiles
                 </label>
+            </div>
+        </div>
+        <div class="tab-pane" id="mapMetaData">
+            <div class="well">
+                <% if (typeof(mapIconImageUrl) != 'undefined') {%>
+                <img src="<%=mapIconImageUrl%>" alt="mapIcon"/>
+                <% } %>
+                <form id="frmSetMapIcon">
+                    <div class="control-group">
+                        <label class="control-label" for="image">Map Icon Image File</label>
+
+                        <div class="controls">
+                            <input class="input-file" id="mapIconFile" type="file" name="image">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btnSaveMapIcon">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
