@@ -33,6 +33,9 @@ define([
                 }
                 links = graph[0].links;
 
+                console.log('*** THE LINKS ***');
+                console.log(links);
+
                 this.$el.html(this.template({
                     links:links,
                     maps:this.maps.toJSON(),
