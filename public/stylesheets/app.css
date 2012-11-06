@@ -5135,6 +5135,11 @@ a {
   width: 720px;
   height: 348px;
   z-index: 1000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .keyboard .keyGlow {
   -webkit-box-shadow: 0 0 15px #ffffff;
