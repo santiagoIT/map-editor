@@ -13,8 +13,10 @@ define([
                 'click .char':"onCharPress",
                 'click .clearContents':"onClearContents",
                 'click .deleteChar':"onDeleteChar",
-                'click #keySpace':"onSpaceChar"
+                'click #keySpace':"onSpaceChar",
+                'click #swapKeyboard':"onSwapKeyboard"
             },
+            lettersShown: true,
 
             initialize:function () {
                 this.$el.html(html);
@@ -43,10 +45,12 @@ define([
                 this.addCharToRow($row, 'J');
                 this.addCharToRow($row, 'K');
                 this.addCharToRow($row, 'L');
+                this.addCharToRow($row, '.');
 
                 // row3
                 $row = this.$el.find('#keyBoardRow3');
-                jQuery('<div/>').addClass('btnKeyLarge clickable clearContents pull-left').html('LIMPIAR').appendTo($row);
+               // jQuery('<div/>').addClass('btnKeyLarge clickable clearContents pull-left').html('LIMPIAR').appendTo($row);
+                this.addCharToRow($row, ',');
                 this.addCharToRow($row, 'Z');
                 this.addCharToRow($row, 'X');
                 this.addCharToRow($row, 'C');
@@ -54,8 +58,48 @@ define([
                 this.addCharToRow($row, 'B');
                 this.addCharToRow($row, 'N');
                 this.addCharToRow($row, 'M');
-                jQuery('<div/>').addClass('btnKeyLarge clickable deleteChar pull-left').html('BORRAR').appendTo($row);
+                this.addCharToRow($row, '?');
+                this.addCharToRow($row, '!');
+               // jQuery('<div/>').addClass('btnKeyLarge clickable deleteChar pull-left').html('BORRAR').appendTo($row);
 
+                // row4
+                $row = this.$el.find('#keyBoardRow4');
+                this.addCharToRow($row, '1');
+                this.addCharToRow($row, '2');
+                this.addCharToRow($row, '3');
+                this.addCharToRow($row, '4');
+                this.addCharToRow($row, '5');
+                this.addCharToRow($row, '6');
+                this.addCharToRow($row, '7');
+                this.addCharToRow($row, '8');
+                this.addCharToRow($row, '9');
+                this.addCharToRow($row, '0');
+
+                // row5
+                $row = this.$el.find('#keyBoardRow5');
+                this.addCharToRow($row, '!');
+                this.addCharToRow($row, '@');
+                this.addCharToRow($row, '#');
+                this.addCharToRow($row, '$');
+                this.addCharToRow($row, '%');
+                this.addCharToRow($row, '&');
+                this.addCharToRow($row, '*');
+                this.addCharToRow($row, '(');
+                this.addCharToRow($row, ')');
+                this.addCharToRow($row, '=');
+
+                // row6
+                $row = this.$el.find('#keyBoardRow6');
+                this.addCharToRow($row, '+');
+                this.addCharToRow($row, '-');
+                this.addCharToRow($row, '/');
+                this.addCharToRow($row, '=');
+                this.addCharToRow($row, ':');
+                this.addCharToRow($row, ';');
+                this.addCharToRow($row, '?');
+                this.addCharToRow($row, '<');
+                this.addCharToRow($row, '>');
+                this.addCharToRow($row, '.');
             },
 
             render:function () {
@@ -97,8 +141,17 @@ define([
                     $form.submit();
                 }
                 this.$el.parent().hide();
+            },
 
-                // TODO: submit form
+            onSwapKeyboard:function(){
+                $('.keyboardSwap').toggle();
+                this.lettersShown = !this.lettersShown;
+                var text = 'ABC...';
+                if (this.lettersShown){
+                    text = '123/@?.'
+                }
+                this.$el.find('#swapKeyboard').html(text);
+                return false;
             },
 
             getKeyboardSate:function(){

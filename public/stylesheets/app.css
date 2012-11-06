@@ -5115,6 +5115,7 @@ a {
   font-size: 22px;
   line-height: 40px;
   text-align: center;
+  margin-right: 15px;
 }
 .keyboard .btnKeyLarge {
   background-image: url('/images/keyboard/btnKeyLarge.png');
@@ -5134,20 +5135,41 @@ a {
   float: left;
   margin: 2px;
 }
+.keyboard .clearContents {
+  margin-left: 110px;
+}
+.keyboard .deleteChar {
+  margin-left: 20px;
+}
 .keyboard #keySpace {
   background-image: url('/images/keyboard/space.png');
   width: 416px;
   height: 63px;
+  margin-left: 15px;
 }
 .keyboard .spaceContainer {
-  margin: 0px auto;
+  margin-left: 15px;
   padding: 8px 0px;
-  width: 416px;
   height: 63px;
+}
+.keyboard .keyboardSwap {
+  height: 250px;
 }
 .keyboard #keyBoardRow1 {
   margin-left: 15px;
 }
 .keyboard #keyBoardRow2 {
-  margin-left: 35px;
+  margin-left: 15px;
+}
+.keyboard #keyBoardRow3 {
+  margin-left: 15px;
+}
+.keyboard #keyBoardRow4 {
+  margin-left: 15px;
+}
+.keyboard #keyBoardRow5 {
+  margin-left: 15px;
+}
+.keyboard #keyBoardRow6 {
+  margin-left: 15px;
 }
