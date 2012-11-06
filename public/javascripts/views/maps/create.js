@@ -26,12 +26,14 @@ define([
 
             saveMap:function () {
                 var self = this;
-                var persistMap = function (imageName, $form) {
+                var persistMap = function (data, $form) {
 
                     var map = new MapModel();
 
                     map.set('name', $form.find('#name').val());
-                    map.set('imageName', imageName);
+                    for(var fieldName in data) {
+                        map.set(fieldName, data[fieldName]);
+                    }
 
                     map.save();
 
@@ -58,7 +60,10 @@ define([
                     iframe:true,
                     processData:false
                 }).done(function (data) {
-                        callback(data.imagename, $form);
+                        console.log('UPLOAD IMAGE RESPONSE');
+                        console.log(data);
+
+                        callback(data, $form);
                     });
                 // TODO handle failure
             }
