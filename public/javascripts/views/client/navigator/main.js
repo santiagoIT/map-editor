@@ -117,7 +117,6 @@ define([
 
                 // destination reached?
                 if (journeyNode >= journey.length-1){
-                    console.log('dest node set!!!');
                     this.model.destinationNodeReached({mapId: entry.mapId, node:entry.to});
                     return;
                 }

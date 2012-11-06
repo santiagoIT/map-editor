@@ -13,6 +13,7 @@ define([
             tagName:'canvas',
             id:'mapCanvas',
             destinations: [],
+            finalDestinationReached:false,
 
             initialize:function (model, maps) {
 
@@ -50,8 +51,6 @@ define([
                 // clear canvas
                 this.ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
 
-
-
                 // highlight kiosk if this is our map
                 var kioskInfo = this.model.get('kioskInfo');
                 if (kioskInfo && kioskInfo.mapId === this.map.get('_id')) {
@@ -65,25 +64,31 @@ define([
                 // highlight PF
                 // path
                 if (this.path) {
-                    var
-                        tailLength = 1,
-                        alpha = 1;
+                    if (!this.finalDestinationReached && this.nodeCounter >= this.path.length) {
 
-                    if (this.nodeCounter >= this.path.length) {
+                        // finished a PF leg, did we complete journey?
+                        var
+                            journey = this.model.get('journey'),
+                            journeyNode = this.model.get('currentJourneyNode');
+
+                        // destination reached?
+                        if (journeyNode < journey.length-1){
+                            delete this.path;
+                            this.path = null;
+                        }
+                        else{
+                            this.finalDestinationReached = true;
+                            this.nodeCounter = this.path.length -2;
+                            this.showPath(columnQty, rowQty, margins);
+
+                        }
+
                         window.clearInterval(this.timerID);
-                        console.log('timer-killed');
-                        delete this.path;
-                        this.path = null;
+
                         this.model.trigger('PF_completed');
                     }
                     else {
-                        for (var i = this.nodeCounter; i >= (this.nodeCounter - tailLength); i--) {
-                            if (i < 0) {
-                                break;
-                            }
-                            this.highlight({x:this.path[i][0], y:this.path[i][1]}, alpha, columnQty, rowQty, margins);
-                            alpha -= 0.15;
-                        }
+                        this.showPath(columnQty, rowQty, margins);
                     }
                 }
 
@@ -96,6 +101,15 @@ define([
                 }
 
                 return this;
+            },
+
+            showPath:function(columnQty, rowQty, margins){
+                var
+                    alpha = 1;
+                for (var i = this.nodeCounter; i >= 0; i--) {
+                    this.highlight({x:this.path[i][0], y:this.path[i][1]}, alpha, columnQty, rowQty, margins);
+                    alpha -= 0.02;
+                }
             },
 
             highlight:function (node,alpha, columnQty, rowQty, margins) {
@@ -123,12 +137,13 @@ define([
                 this.destinations.push(entry);
                 var timerId = window.setInterval(function(){
                     entry.alpha -= 0.1;
-                    console.log('onDestinationReached- timer');
                     if (entry.alpha <= 0.2){
                         window.clearInterval(timerId);
                         // remove from list
                         index = _.indexOf(self.destinations, entry);
                         self.destinations.splice(index,1);
+                        delete self.path;
+                        self.path = null;
                         self.render();
                         return;
                     }
@@ -153,6 +168,7 @@ define([
             onPathFind:function () {
                 console.log('onPathFind');
                 this.path = null;
+                this.finalDestinationReached = false;
                 var node = this.model.get('pathFrom');
                 var target = this.model.get('pathTo');
                 if (!(node && target)) {
@@ -170,16 +186,13 @@ define([
                 var finder = new PF.AStarFinder();
                 this.path = finder.findPath(node.x, node.y, target.x, target.y, grid);
                 if (this.path) {
-                    //        this.path.splice(0, 1);
-                    //      this.path.splice(-1, 1);
-
                     // set timer
                     var self = this;
                     this.nodeCounter = 0;
                     this.timerID = window.setInterval(function () {
                         self.render();
                         self.nodeCounter++;
-                    }, 100);
+                    }, 200);
 
                 }
             },
