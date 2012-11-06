@@ -15,7 +15,18 @@ define([
             },
 
             render:function () {
+                $('.headerMenuItem').removeClass('active');
+
                 this.$el.html(html);
+                // get current hash tag
+                if(window.location.hash) {
+                    switch(window.location.hash){
+                        case '#kiosk':
+                            $('#mnuItemMaps').addClass('active');
+                            break;
+                    }
+                }
+                return this;
             }
         });
 

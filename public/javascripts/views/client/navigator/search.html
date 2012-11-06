@@ -3,9 +3,9 @@
     <form class="form-search">
         <input type="text" class="input-medium search-query span8" placeholder="Buscar">
         <% if (journeyActive){ %>
-        <button type="submit" class="btn btnSearch disabled">Buscar</button>
+        <div class="searchGlass disabled"></div>
         <%} else {%>
-        <button type="submit" class="btn btnSearch">Buscar</button>
+        <div class="searchGlass pull-left"></div>
         <%}%>
     </form>
 </div>

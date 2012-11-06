@@ -5040,15 +5040,24 @@ a {
 }
 .map-container #mapLinks {
   position: absolute;
-  top: 220px;
+  top: 420px;
   right: 0px;
-  height: 1000px;
+  height: 800px;
   width: 150px;
 }
 .map-container #mapLinks .mapLink {
   clear: both;
   margin: 10px auto;
   width: 61px;
+  cursor: pointer;
+}
+.map-container #mapTitle {
+  position: absolute;
+  top: 205px;
+  right: 14px;
+  background-image: url('/images/maps/title.png');
+  width: 172px;
+  height: 57px;
 }
 #search-form {
   position: absolute;
@@ -5059,6 +5068,21 @@ a {
   line-height: 33px;
   font-size: 27px;
   margin-left: 15px;
+  border-width: 3px;
+  border-color: #01fffe;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  float: left;
+}
+#search-form .searchGlass {
+  background-image: url('/images/common/searchGlass.png');
+  width: 24px;
+  height: 26px;
+  cursor: pointer;
+  position: relative;
+  top: 10px;
+  left: 10px;
 }
 #mapCanvas {
   position: absolute;
@@ -5077,15 +5101,27 @@ a {
   width: 175px;
   height: 129px;
 }
+.menuHeader #mnuItemDoctors.active {
+  background-image: url('/images/menu/doctors_active.png');
+  cursor: default;
+}
 .menuHeader #mnuItemServices {
   background-image: url('/images/menu/services.png');
   width: 184px;
   height: 142px;
 }
+.menuHeader #mnuItemServices.active {
+  background-image: url('/images/menu/services_active.png');
+  cursor: default;
+}
 .menuHeader #mnuItemMaps {
   background-image: url('/images/menu/maps.png');
   width: 188px;
   height: 139px;
+}
+.menuHeader #mnuItemMaps.active {
+  background-image: url('/images/menu/maps_active.png');
+  cursor: default;
 }
 .menuHeader #mnuItemHome {
   background-image: url('/images/menu/home.png');

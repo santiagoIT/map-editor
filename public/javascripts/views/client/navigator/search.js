@@ -10,7 +10,7 @@ define([
         var View = Backbone.View.extend({
             events:{
                 'submit form':'search',
-                'click .btnSearch':'search',
+                'click .searchGlass':'search',
                 'focus input' : 'showKeyboard'
             },
             template:_.template(html),

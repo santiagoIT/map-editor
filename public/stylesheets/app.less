@@ -57,16 +57,25 @@ a {
   // map floors
   #mapLinks {
     position:absolute;
-    top:220px;
+    top:420px;
     right:0px;
-    height:1000px;
+    height:800px;
     width: 150px;
 
     .mapLink {
       clear:both;
       margin: 10px auto;
       width:61px;
+      cursor: pointer;
     }
+  }
+
+  #mapTitle {
+    position:absolute;
+    top:205px;
+    right:14px;
+    background-image: url('/images/maps/title.png');
+    .size(57px, 172px);
   }
 }
 
@@ -79,6 +88,19 @@ a {
     line-height: 33px;
     font-size: 27px;
     margin-left:15px;
+    border-width: 3px;
+    border-color: #01fffe;
+    .border-radius(20px);
+    float:left;
+  }
+
+  .searchGlass {
+    background-image: url('/images/common/searchGlass.png');
+    .size(26px, 24px);
+    cursor:pointer;
+    position: relative;
+    top:10px;
+    left:10px;
   }
 }
 
@@ -100,15 +122,28 @@ a {
   #mnuItemDoctors {
     background-image: url('/images/menu/doctors.png');
     .size(129px,175px);
+    &.active {
+      background-image: url('/images/menu/doctors_active.png');
+      cursor:default;
+    }
   }
   #mnuItemServices {
     background-image: url('/images/menu/services.png');
     .size(142px,184px);
+    &.active {
+      background-image: url('/images/menu/services_active.png');
+      cursor:default;
+    }
   }
   #mnuItemMaps {
     background-image: url('/images/menu/maps.png');
     .size(139px,188px);
+    &.active {
+      background-image: url('/images/menu/maps_active.png');
+      cursor:default;
+    }
   }
+
   #mnuItemHome {
     background-image: url('/images/menu/home.png');
     .size(129px,170px);
