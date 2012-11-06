@@ -2,10 +2,9 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'text!views/client/navigator/links.html',
-    'biz/imageManager'
+    'text!views/client/navigator/links.html'
 ],
-    function ($, _, Backbone, html, imageManager) {
+    function ($, _, Backbone, html) {
 
         var View = Backbone.View.extend({
             template :_.template(html),
@@ -39,8 +38,12 @@ define([
                     maps:this.maps.toJSON(),
                     journeyActive:journey ? true : false,
                     getLinkIconUrl:function(map) {
+                        var imageName = map.linkImageName;
+                        if (!imageName){
+                            return '/images/maps/missingLink.png';
+                        }
 
-                        return imageManager.getS3Url(map.linkImageName);
+                        return '/data/images/'+map.linkImageName;
                     }
                 }));
             },
