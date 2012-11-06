@@ -66,25 +66,23 @@ define([
                 if (this.path) {
                     if (!this.finalDestinationReached && this.nodeCounter >= this.path.length) {
 
+                        window.clearInterval(this.timerID);
+
                         // finished a PF leg, did we complete journey?
                         var
                             journey = this.model.get('journey'),
                             journeyNode = this.model.get('currentJourneyNode');
 
                         // destination reached?
-                        if (journeyNode < journey.length-1){
-                            delete this.path;
-                            this.path = null;
-                        }
-                        else{
+                        if (journeyNode >= journey.length-1) {
                             this.finalDestinationReached = true;
                             this.nodeCounter = this.path.length -2;
-                            this.showPath(columnQty, rowQty, margins);
-
+                        }
+                        else {
+                            this.nodeCounter = this.path.length -1;
                         }
 
-                        window.clearInterval(this.timerID);
-
+                        this.showPath(columnQty, rowQty, margins);
                         this.model.trigger('PF_completed');
                     }
                     else {
@@ -133,7 +131,6 @@ define([
                     info:info,
                     alpha:1
                 };
-                console.log('onDestinationReached');
                 this.destinations.push(entry);
                 var timerId = window.setInterval(function(){
                     entry.alpha -= 0.1;
@@ -156,6 +153,10 @@ define([
                 if (!info) {
                     return;
                 }
+
+                delete this.path;
+                this.path = null;
+
                 var self = this;
                 this.$el.fadeOut('slow').promise().then(function () {
                     self.model.showMap(info.mapId);
