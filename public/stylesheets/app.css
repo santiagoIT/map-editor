@@ -5100,6 +5100,11 @@ a {
   height: 348px;
   z-index: 1000;
 }
+.keyboard .keyGlow {
+  -webkit-box-shadow: 0 0 15px #ffffff;
+  -moz-box-shadow: 0 0 15px #ffffff;
+  box-shadow: 0 0 15px #ffffff;
+}
 .keyboard .keyboardRow {
   clear: both;
   padding-top: 3px;

@@ -115,16 +115,29 @@ define([
                 var text = this.$focusedElement.val();
                 text += $element.text();
                 this.$focusedElement.val(text);
+
+                this.addGlowEffect($element);
+            },
+
+            addGlowEffect:function($el) {
+                // highlight key
+                $el.addClass('keyGlow');
+                setTimeout(function() {
+                    $el.removeClass('keyGlow');
+                }, 200);
             },
 
             onSpaceChar:function(el){
                 var text = this.$focusedElement.val();
                 text += ' ';
                 this.$focusedElement.val(text);
+
+                this.addGlowEffect($(el.target));
             },
 
             onClearContents:function(el){
                 this.$focusedElement.val('');
+                this.addGlowEffect($(el.target));
             },
 
             onDeleteChar:function(el){
@@ -133,6 +146,7 @@ define([
                     text = text.substring(0, text.length-1);
                     this.$focusedElement.val(text);
                 }
+                this.addGlowEffect($(el.target));
             },
 
             onInputDone : function(){
@@ -143,7 +157,7 @@ define([
                 this.$el.parent().hide();
             },
 
-            onSwapKeyboard:function(){
+            onSwapKeyboard:function(el){
                 $('.keyboardSwap').toggle();
                 this.lettersShown = !this.lettersShown;
                 var text = 'ABC...';
@@ -151,6 +165,7 @@ define([
                     text = '123/@?.'
                 }
                 this.$el.find('#swapKeyboard').html(text);
+                this.addGlowEffect($(el.target));
                 return false;
             },
 
