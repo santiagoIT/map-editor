@@ -36,4 +36,12 @@ require([
     app.setRouter(router);
   // clear loading
     $('#itworks-app').empty();
+
+    // prevent right click menu from appearing
+    window.oncontextmenu = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    };
+
 });
