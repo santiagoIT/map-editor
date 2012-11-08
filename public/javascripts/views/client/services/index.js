@@ -2,16 +2,19 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'bizClient/toIntroNavigator',
     'text!views/client/services/index.html',
     'views/client/menu/main'
 ],
-    function ($, _, Backbone,  html, MainMenuView) {
+    function ($, _, Backbone,  toIntroNavigator, html, MainMenuView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
 
                 this.$el.html(html);
                 this.setupChildViews();
+
+                this.toIntroNavigator = toIntroNavigator;
             },
 
             setupChildViews: function(){

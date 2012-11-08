@@ -2,6 +2,7 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'bizClient/toIntroNavigator',
     'text!views/client/navigator/links.html'
 ],
     function ($, _, Backbone, html) {
@@ -20,6 +21,8 @@ define([
                 // subscribe to changes
                 this.bindTo(this.model, 'change:graph change:journey', this.render);
                 this.bindTo(this.maps, 'all', this.render);
+
+                this.toIntroNavigator = toIntroNavigator;
             },
 
             render:function () {
@@ -49,6 +52,8 @@ define([
             },
 
             showMap : function(el){
+
+                this.toIntroNavigator.startCounting();
 
                 var $btn = $(el.target).parent();
                 if ($btn.hasClass('disabled')){

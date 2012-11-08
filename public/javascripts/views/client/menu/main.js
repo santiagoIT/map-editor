@@ -2,9 +2,10 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'bizClient/toIntroNavigator',
     'text!views/client/menu/main.html'
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone, toIntroNavigator, html) {
         var View = Backbone.View.extend({
 
             events:{
@@ -12,6 +13,8 @@ define([
             },
 
             initialize:function () {
+                this.toIntroNavigator = toIntroNavigator;
+                    this.toIntroNavigator.startCounting();
             },
 
             render:function () {

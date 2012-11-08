@@ -2,9 +2,11 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'bizClient/toIntroNavigator',
     'text!views/client/keyboard/main.html'
+
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone, toIntroNavigator, html) {
         var View = Backbone.View.extend({
             events:{
                 'click .navItem':"onNavigateTo",
@@ -100,6 +102,9 @@ define([
                 this.addCharToRow($row, '<');
                 this.addCharToRow($row, '>');
                 this.addCharToRow($row, '.');
+
+                this.toIntroNavigator = toIntroNavigator;
+                this.toIntroNavigator.startCounting();
             },
 
             render:function () {
@@ -125,6 +130,9 @@ define([
                 setTimeout(function() {
                     $el.removeClass('keyGlow');
                 }, 200);
+
+                // reset redirect timer
+                this.toIntroNavigator.startCounting();
             },
 
             onSpaceChar:function(el){
@@ -155,6 +163,9 @@ define([
                     $form.submit();
                 }
                 this.$el.parent().hide();
+
+                // reset redirect timer
+                this.toIntroNavigator.startCounting();
             },
 
             onSwapKeyboard:function(el){

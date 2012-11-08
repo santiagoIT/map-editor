@@ -2,10 +2,11 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'bizClient/toIntroNavigator',
     'biz/imageManager',
     'pathfinder'
 ],
-    function ($, _, Backbone, imageManager, PF) {
+    function ($, _, Backbone, toIntroNavigator, imageManager, PF) {
 
         var View = Backbone.View.extend({
             events:{
@@ -32,6 +33,8 @@ define([
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
+
+                this.toIntroNavigator = toIntroNavigator;
             },
 
             render:function () {
@@ -142,6 +145,7 @@ define([
                         delete self.path;
                         self.path = null;
                         self.render();
+                        this.toIntroNavigator.startCounting();
                         return;
                     }
                     self.render();
