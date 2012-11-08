@@ -5,7 +5,7 @@ define([
     'bizClient/toIntroNavigator',
     'text!views/client/navigator/links.html'
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone, toIntroNavigator, html) {
 
         var View = Backbone.View.extend({
             template :_.template(html),
