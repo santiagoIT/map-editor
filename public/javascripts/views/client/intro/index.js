@@ -2,7 +2,7 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'text!views/client/home/main.html'
+    'text!views/client/intro/index.html'
 ],
     function ($, _, Backbone, html) {
         var View = Backbone.View.extend({

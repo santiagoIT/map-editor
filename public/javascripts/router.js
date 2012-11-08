@@ -8,9 +8,11 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes:{
             // kiosk
-            '' : 'home',
-
+            '' : 'intro',
+            'menu':'home',
             'kiosk' : 'kiosk',
+            'services' : 'services',
+            'doctors' : 'doctors',
 
             // Default
             '*actions':'defaultAction'
@@ -18,14 +20,27 @@ define([
 
         // home
         home : function() {
-            console.log('HOME view');
             this.launchView('views/client/home/main');
+        },
+
+        // home
+        intro : function() {
+            this.launchView('views/client/intro/index');
         },
 
         // client
         kiosk : function() {
-            console.log('KIOSK view');
             this.launchView('views/client/navigator/main');
+        },
+
+        // doctors
+        doctors : function() {
+            this.launchView('views/client/doctors/index');
+        },
+
+        // services
+        services : function() {
+            this.launchView('views/client/services/index');
         },
 
         defaultAction:function (actions) {
@@ -35,7 +50,6 @@ define([
 
         initialize : function() {
             Backbone.history.start();
-            console.log('router initialized');
         },
 
         launchView : function(view, id){

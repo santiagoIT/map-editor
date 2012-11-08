@@ -4996,6 +4996,22 @@ a {
 .row {
   margin-left: 0px;
 }
+.intro-container {
+  background-image: url('/images/intro/bkgd.jpg');
+  background-repeat: no-repeat;
+  width: 720px;
+  height: 1280px;
+}
+#btnTouchHere {
+  background-image: url('/images/intro/btnTouchHere.png');
+  background-repeat: no-repeat;
+  width: 679px;
+  height: 229px;
+  cursor: pointer;
+  position: relative;
+  top: 555px;
+  left: 23px;
+}
 .home-container {
   background-image: url('/images/home/bkgd_home.jpg');
   background-repeat: no-repeat;
@@ -5065,6 +5081,7 @@ a {
 }
 #search-form input {
   height: 33px;
+  width: 655px;
   line-height: 33px;
   font-size: 27px;
   margin-left: 15px;
@@ -5078,11 +5095,11 @@ a {
 #search-form .searchGlass {
   background-image: url('/images/common/searchGlass.png');
   width: 24px;
-  height: 26px;
+  height: 25px;
   cursor: pointer;
   position: relative;
   top: 10px;
-  left: 10px;
+  left: -35px;
 }
 #mapCanvas {
   position: absolute;
@@ -5218,4 +5235,18 @@ a {
 }
 .keyboard #keyBoardRow6 {
   margin-left: 15px;
+}
+.doctors-container {
+  background-image: url('/images/common/bkgd.jpg');
+  background-repeat: no-repeat;
+  width: 720px;
+  height: 1280px;
+  position: relative;
+}
+.services-container {
+  background-image: url('/images/common/bkgd.jpg');
+  background-repeat: no-repeat;
+  width: 720px;
+  height: 1280px;
+  position: relative;
 }

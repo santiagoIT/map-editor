@@ -31,8 +31,6 @@ require([
 ], function($, _, Backbone, app, imageManager, Router) {
     var
         router = new Router();
-    console.log('the Router');
-    console.log(router);
     app.setRouter(router);
   // clear loading
     $('#itworks-app').empty();

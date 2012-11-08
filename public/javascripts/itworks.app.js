@@ -9,8 +9,6 @@ define([
 
     return {
         getRouter : function() {
-            console.log('getRouter');
-            console.log(_router);
             return _router;
         },
         setRouter : function(router){

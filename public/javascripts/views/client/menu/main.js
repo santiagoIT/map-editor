@@ -22,8 +22,16 @@ define([
                 if(window.location.hash) {
                     switch(window.location.hash){
                         case '#kiosk':
-                            $('#mnuItemMaps').addClass('active');
+                            this.$el.find('#mnuItemMaps').addClass('active');
                             break;
+                        case '#doctors':
+                            this.$el.find('#mnuItemDoctors').addClass('active');
+                            break;
+                        case '#services':
+                            this.$el.find('#mnuItemServices').addClass('active');
+                            break;
+                        default:
+                            alert('Unkown hash: ' + window.location.hash);
                     }
                 }
                 return this;
