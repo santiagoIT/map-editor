@@ -22,8 +22,6 @@ define([
 
             initialize:function () {
 
-                this.$el.html(html);
-
                 // bind events
                 this.bindTo(this.collection, 'all', this.render);
 
