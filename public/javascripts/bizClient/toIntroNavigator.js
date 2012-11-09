@@ -6,7 +6,7 @@ define([
     function ($, _, Backbone) {
 
        var
-           _secsToWait = 25, // number of seconds
+           _secsToWait = 100, // number of seconds
            _counter,
            _timerId;
 

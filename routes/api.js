@@ -18,7 +18,11 @@ module.exports = {
         var arFiles = new Array();
         for(var fieldName in req.files) {
             var entry = req.files[fieldName];
-            arFiles.push({fieldName:fieldName, name:entry.name, type: entry.type, path:entry.path});
+            if (!entry.name) {
+                continue;
+            }
+            var sanitizedName = entry.name.replace(' ', '_');
+            arFiles.push({fieldName:fieldName, name:sanitizedName, type: entry.type, path:entry.path});
         }
 
         var client = knox.createClient({
@@ -30,6 +34,9 @@ module.exports = {
         var
             statusCode = 200,
             response = {};
+
+        console.log('uploadedFileData');
+        console.log(arFiles);
 
         async.forEach(arFiles, function(item, callback){
 
@@ -62,26 +69,6 @@ module.exports = {
             }
             return res.json(response);
         });
-
-/*
-        fs.readFile(imageFile.path, function (err, buf) {
-
-            // TODO: create a conflict-free file name
-            var reqAWS = client.put('/mapeditor/images/' + imageFile.name, {
-                'Content-Length':buf.length,
-                'Content-Type':imageFile.type
-            });
-            reqAWS.on('response', function (resAWS) {
-
-                res.statusCode = resAWS.statusCode;
-                if (200 == resAWS.statusCode) {
-                    return res.json({imagename:imageFile.name});
-                }
-
-                return res.send({err:'failed!!'});
-            });
-            reqAWS.end(buf);
-        });*/
     },
 
     uploadMapIconImage:function(req,res,next) {
