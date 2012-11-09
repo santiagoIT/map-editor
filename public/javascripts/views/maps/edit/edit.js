@@ -13,7 +13,8 @@ define([
     'views/maps/edit/locations',
     'biz/imageManager',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js',
-    'libs/jquery.iframe-transport/jquery.iframe-transport'
+    'libs/jquery.iframe-transport/jquery.iframe-transport',
+    'libs/jquery-plugins/jquery-to-json'
     ],
     function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView, imageManager){
 
@@ -31,7 +32,8 @@ define([
             'click .editor-config' : "onEditorConfigChanged",
             'click .btnImageChange' : "onChangeMapImage",
             'click #btnSaveNewImage' : "onSaveNewMapImage",
-            'click #btnSaveMapIcon' : "onSaveMapIconImage"
+            'click #btnSaveMapIcon' : "onSaveMapIconImage",
+            'click #btnSaveMapMetaData' : "onSaveMapMetaData"
         },
 
         jqueryMap:{},
@@ -95,6 +97,7 @@ define([
 
             this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.displayMargins);
             this.bindTo(this.model, 'change:x change:y', this.displayGridSize);
+            this.bindTo(this.model, 'change:name', this.render);
 
             this.displayMargins();
             this.displayGridSize();
@@ -229,6 +232,15 @@ define([
                     self.model.set('linkImageName', data.linkImageName);
                     self.model.save();
                 });
+            return false;
+        },
+
+        onSaveMapMetaData : function() {
+
+            var data = $('#frmMapMetaData').toJSON();
+            this.model.set(data);
+            this.model.save();
+
             return false;
         }
     });

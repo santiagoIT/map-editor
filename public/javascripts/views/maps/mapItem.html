@@ -1,0 +1,10 @@
+    <td><%= model.name %></td>
+    <td>
+        <div class="span3">
+            <a class="thumbnail edit">
+                <img src=<%= s3Root + model.imageName %> alt="" data-id="<%= model._id %>">
+            </a>
+        </div>
+    </td>
+    <td><a class="edit" data-id="<%= model._id %>">Edit</a></td>
+    <td><a class="delete" data-id="<%= model._id %>">Delete</a></td>

@@ -60,9 +60,6 @@ define([
                     iframe:true,
                     processData:false
                 }).done(function (data) {
-                        console.log('UPLOAD IMAGE RESPONSE');
-                        console.log(data);
-
                         callback(data, $form);
                     });
                 // TODO handle failure

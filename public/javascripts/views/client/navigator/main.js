@@ -28,6 +28,7 @@ define([
         var View = Backbone.View.extend({
 
             initialize:function () {
+
                 this.model = new NavigatorModel();
                 this.searchModel = new NavigatorSearchModel();
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);

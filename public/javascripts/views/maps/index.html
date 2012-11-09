@@ -9,22 +9,7 @@
                 <th>Image</th>
             </tr>
             </thead>
-            <tbody>
-            <% _.each(maps,function(item,key,list){ %>
-            <tr>
-                <!-- use variables -->
-                <td><%= item.name %></td>
-                <td>
-                    <div class="span3">
-                        <a class="thumbnail edit">
-                            <img src=<%= s3Root + item.imageName %> alt="" data-id="<%= item._id %>">
-                        </a>
-                    </div>
-                </td>
-                <td><a class="edit" data-id="<%= item._id %>">Edit</a></td>
-                <td><a class="delete" data-id="<%= item._id %>">Delete</a></td>
-            </tr>
-            <% }) %>
+            <tbody class="theMaps">
             </tbody>
         </table>
 

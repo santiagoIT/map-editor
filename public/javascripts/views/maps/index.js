@@ -7,33 +7,72 @@ define([
     'models/mapModel',
     'collections/maps',
     'biz/imageManager',
+    'utils/extensions/updatingCollectionView',
+    'views/maps/mapItem',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
-    function ($, _, Backbone, require, html, MapModel, maps, imageManager) {
+    function ($, _, Backbone, require, html, MapModel, maps, imageManager, UpdatingCollectionView, MapItemView) {
 
         var MapsView = Backbone.View.extend({
             collection:maps,
             template : _.template(html),
             events:{
-                'click .navItem' : "onNavigateTo",
-                'click .edit':"onEditMap",
-                'click .delete' : "onConfirmDelete"
+                'click .navItem' : "onNavigateTo"
             },
 
             initialize:function () {
 
-                // bind events
-                this.bindTo(this.collection, 'all', this.render);
+                console.log('UpdatingCollectionView: ');
+                console.log(UpdatingCollectionView);
 
-                this.bindTo(this)
+
+                this._mapCollectionView = new UpdatingCollectionView({
+                    collection           : this.collection,
+                    childViewConstructor : MapItemView,
+                    childViewTagName     : 'tr'
+                });
+
+                // bind events
+        //        this.bindTo(this.collection, 'reset', this.render);
+        //        this.bindTo(this.collection, 'remove', this.removeMap);
 
                 // fetch data
                 this.collection.fetch();
             },
 
-            render:function () {
-                // reset select
-                this.$el.html(this.template({s3Root: imageManager.getS3Root(), maps:this.collection.toJSON()}));
+
+
+            render:function (eventName) {
+//                console.log('Event name');
+//                console.log(eventName);
+//
+//                // We keep track of the rendered state of the view
+//                this._rendered = true;
+//
+//                // reset select
+//                this.$el.html(this.template({s3Root: imageManager.getS3Root(), maps:this.collection.toJSON()}));
+
+
+                $(this.el).empty();
+                this.$el.html(html);
+
+                // And here I use the template to render this object,
+                // then take the rendered template
+                // and append it to this view's element.
+              //  $.tmpl(this.template, this.model.toJSON()).appendTo(this.el);
+
+                this._mapCollectionView.el = this.$('.theMaps');
+                this._mapCollectionView.render();
+            },
+
+            removeMap:function(map) {
+                console.log('map erased:');
+                console.log(map);
+
+                var viewToRemove = _(this._donutViews).select(function(cv) { return cv.model === model; })[0];
+                this._donutViews = _(this._donutViews).without(viewToRemove);
+
+                if (this._rendered) $(viewToRemove.el).remove();
             },
 
             onEditMap:function (el) {
