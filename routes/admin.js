@@ -6,40 +6,41 @@ var
     exec = require('child_process').exec,
     fs = require('fs'),
     path = require("path"),
+    async = require('async'),
     http = require('http');
 
 // App variables
-var S3ROOT = 'https://s3.amazonaws.com/itworks.ec/mapeditor/images/';
+var S3ROOT = 'https//s3.amazonaws.com/itworks.ec/mapeditor/images/';
 
 // Function to download file
-var download_file = function(DOWNLOAD_DIR, file_url) {
-
-
-    var options = {
-        host: url.parse(file_url).host,
-        port: 8080,
-        path: url.parse(file_url).pathname
-    };
+var download_file = function(DOWNLOAD_DIR, file_url, callback) {
 
     var file_name = url.parse(file_url).pathname.split('/').pop();
 
     var fullName = path.join(DOWNLOAD_DIR, file_name);
     // if file exists, delete it
     if (fs.existsSync(fullName)){
-        if (!fs.unlinkSync(fullName)){
-            throw new Error('Failed to delete: ' + fullName);
+        var err = fs.unlinkSync(fullName);
+        if (err){
+            return callback(err);
         }
     }
 
     var file = fs.createWriteStream(fullName);
-
-    http.get(options, function(res) {
+    http.get(file_url, function(res) {
         res.on('data', function(data) {
-            file.write(data);
-        }).on('end', function() {
+            file.write(data);})
+            .on('end', function() {
+                console.log('FINISHED: ' + file_url);
                 file.end();
+                callback();
+            })
+            .on('error', function(e) {
+                console.log("ERROR: " + e.message);
+                file.end();
+                callback(e);
             });
-    });
+    })
 };
 
 module.exports = {
@@ -51,30 +52,38 @@ module.exports = {
         res.render('admin/localSetup', { title: 'Local Server Setup' });
     },
 
-    localSetupPost : function(req, res) {
+    localSetupPost : function(req, res, next) {
 
         var
-            downloadPath = path.join(process.cwd(), '/public/data/images');
+            downloadPath = path.join(process.env.mapEditorRoot, '/public/data/images');
         // make sure directory exists
-        var exists = fs.existsSync(downloadPath);
-        if (!exists){
+        if (!fs.existsSync(downloadPath)) {
             fs.mkdirSync(downloadPath);
         }
 
         // loop through maps
+        var arClonedImages = new Array();
+
         MapModel.find(function (err, entries) {
             if (!err) {
-
-                for(var i in entries){
-                    var map = entries[i];
-                    download_file(downloadPath, S3ROOT + map.imageName);
+                if (entries && entries.length > 0)
+                {
+                    async.forEach(entries, function(item, callback){
+                        arClonedImages.push(item.imageName);
+                        download_file(downloadPath, S3ROOT + item.imageName, callback);
+                    }, function(err){
+                        console.log(arClonedImages);
+                        if (err) {
+                            return res.send(err);
+                        }
+                        res.redirect('/admin/localSetupSuccess');
+                    });
                 }
-            } else {
-                throw err;
+            }
+            else {
+                return next(err);
             }
         });
-        // foreach map download image
-        res.redirect('/admin/localSetupSuccess');
     },
 
     localSetupSuccess : function(req, res) {

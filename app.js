@@ -13,6 +13,10 @@ var express = require('express')
 // mock heroku environment if we are running locally
 herokuShim.setupEnvironment(__dirname + '/.env');
 
+// set root folder name
+process.env.mapEditorRoot = __dirname;
+console.log('process.env.mapEditorRoot: ' + process.env.mapEditorRoot);
+
 // mongodb
 var DB = require('./datastore');
 DB.startup(process.env.MONGODB_CONNSTR);
