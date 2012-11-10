@@ -17,11 +17,11 @@ define([
             },
 
             initialize:function () {
-                this.bindTo(tunnels, 'reset', this.render);
-                tunnels.fetch();
+                // load maps synchronously
+                maps.fetch({async:false});
 
-                this.bindTo(maps, 'reset', this.render);
-                maps.fetch();
+                this.bindTo(tunnels, 'reset', this.render);
+                tunnels.fetch({ cache: false });
             },
 
             render:function () {
@@ -34,9 +34,7 @@ define([
 
                 require(['biz/deleteConfirm'], function (lib) {
                     lib('Tunnel: ' + model.get('name'), function (model) {
-                        model.destroy({success:function () {
-                            // self.collection.remove(model);
-                        }});
+                        model.destroy();
                     }, model);
                 });
                 return false;

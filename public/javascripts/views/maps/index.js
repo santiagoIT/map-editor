@@ -22,6 +22,7 @@ define([
 
             initialize:function () {
 
+                // setup collections view
                 this._mapCollectionView = new UpdatingCollectionView({
                     collection           : this.collection,
                     childViewConstructor : MapItemView,

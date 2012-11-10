@@ -19,11 +19,11 @@ define([
 
             initialize:function () {
 
-                this.bindTo(this.collection, 'all', this.render);
-                this.collection.fetch();
+                // load maps synchronously
+                maps.fetch({async:false});
 
-                this.bindTo(maps, 'all', this.render);
-                maps.fetch();
+                this.bindTo(this.collection, 'all', this.render);
+                this.collection.fetch({ cache: false });
             },
 
             render:function () {
@@ -38,9 +38,7 @@ define([
 
                 require(['biz/deleteConfirm'], function (lib) {
                     lib('Location: ' + model.get('name'), function (model) {
-                        model.destroy({success:function () {
-                            // self.collection.remove(model);
-                        }});
+                        model.destroy();
                     }, model);
                 });
                 return false;
