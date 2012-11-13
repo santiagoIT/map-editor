@@ -18,7 +18,6 @@ define([
 
             events:{
                 'click':"onCanvasClick",
-                ''
                 'mousemove':"onCanvasMouseMove",
                 'mousedown':"onCanvasMouseDown",
                 'mouseup':"onCanvasMouseUp",
