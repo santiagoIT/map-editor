@@ -4,9 +4,10 @@ define([
     'backbone',
     'bizClient/toIntroNavigator',
     'biz/imageManager',
-    'pathfinder'
+    'pathfinder',
+    'biz/mapIcons'
 ],
-    function ($, _, Backbone, toIntroNavigator, imageManager, PF) {
+    function ($, _, Backbone, toIntroNavigator, imageManager, PF, mapIcons) {
 
         var View = Backbone.View.extend({
             events:{
@@ -59,8 +60,7 @@ define([
                 if (kioskInfo && kioskInfo.mapId === this.map.get('_id')) {
                     var node = kioskInfo.node;
                     if (node) {
-                        this.ctx.fillStyle = "rgb(19,159,119)";
-                        this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
+                        mapIcons.drawKiosk(this.ctx, node.x * columnWidth + margins.left+columnWidth*0.5, node.y * rowHeight + margins.top+rowHeight*0.5);
                     }
                 }
 
@@ -96,8 +96,7 @@ define([
                 // highlight reached destinations
                 if (this.destinations.length > 0){
                     _.each(this.destinations, function(entry){
-                        self.ctx.fillStyle = "rgba(255,0,0," + entry.alpha + ")";
-                        self.ctx.fillRect(entry.info.node.x * columnWidth + margins.left, entry.info.node.y * rowHeight + margins.top, columnWidth, rowHeight);
+                        mapIcons.drawTarget(self.ctx, entry.info.node.x * columnWidth + margins.left+columnWidth*0.5, entry.info.node.y * rowHeight + margins.top+rowHeight*0.5);
                     });
                 }
 

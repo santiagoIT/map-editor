@@ -63,6 +63,8 @@ define([
                     return false;
                 }
 
+                this.keyboardView.hideKeyboard();
+
                 this.searchModel.set('haveSearched', true);
 
                 var searchFor = this.$('.search-query').val();

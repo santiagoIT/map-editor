@@ -10,7 +10,7 @@ define([
         var View = Backbone.View.extend({
             events:{
                 'click .navItem':"onNavigateTo",
-                'click #hideKeyboard':"onHideKeyboard",
+                'click #hideKeyboard':"hideKeyboard",
                 'click #inputDone':"onInputDone",
                 'click .char':"onCharPress",
                 'click .clearContents':"onClearContents",
@@ -111,7 +111,7 @@ define([
                 return this;
             },
 
-            onHideKeyboard:function(){
+            hideKeyboard:function(){
                 this.$el.parent().hide();
             },
 

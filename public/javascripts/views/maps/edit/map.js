@@ -6,9 +6,10 @@ define([
     'collections/locations',
     'biz/mapStateSingleton',
     'biz/kioskHelper',
-    'biz/imageManager'
+    'biz/imageManager',
+    'biz/mapIcons'
 ],
-    function ($, _, Backbone, PF, locations, mapState, kioskHelper, imageManager) {
+    function ($, _, Backbone, PF, locations, mapState, kioskHelper, imageManager, mapIcons) {
 
         var MapView = Backbone.View.extend({
             tagName:'canvas',
@@ -47,7 +48,6 @@ define([
                 var imageName = this.model.get('imageName');
                 if (imageName && imageName.length > 0){
                     this.onImageNameChanged(this.model, imageName);
-
                 }
             },
 
@@ -103,14 +103,13 @@ define([
                     markerNode = mapState.get('markerNode'),
                     kioskInfo = kioskHelper.getKioskLocation();
                 if (markerNode) {
-                    this.ctx.fillStyle = "rgba(0,0,255,0.5)";
-                    this.ctx.fillRect(markerNode.x * columnWidth + margins.left, markerNode.y * rowHeight + margins.top, columnWidth, rowHeight);
+
+                    mapIcons.drawKiosk(this.ctx, markerNode.x * columnWidth + margins.left + columnWidth*0.5, markerNode.y * rowHeight + margins.top+rowHeight*0.5);
                 }
                 // pathfinding target?
                 var target = mapState.get('targetNode');
                 if (target) {
-                    this.ctx.fillStyle = "rgba(0,255,0,0.5)";
-                    this.ctx.fillRect(target.x * columnWidth + margins.left, target.y * rowHeight + margins.top, columnWidth, rowHeight);
+                    mapIcons.drawTarget(this.ctx, target.x * columnWidth + margins.left + columnWidth*0.5, target.y * rowHeight + margins.top+rowHeight*0.5);
                 }
 
                 // blocked nodes

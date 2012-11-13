@@ -44,8 +44,6 @@ define([
                         if (!map) {
                             return '/images/maps/missingLink.png';
                         }
-                        console.log('@getLinkIconUrl');
-                        console.log(map);
 
                         var imageName = map.linkImageName;
                         if (!imageName){
