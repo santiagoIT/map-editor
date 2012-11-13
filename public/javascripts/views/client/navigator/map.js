@@ -145,7 +145,7 @@ define([
                         delete self.path;
                         self.path = null;
                         self.render();
-                        this.toIntroNavigator.startCounting();
+                        self.toIntroNavigator.startCounting();
                         return;
                     }
                     self.render();
@@ -220,6 +220,13 @@ define([
                     self.$el.attr('height', this.height).attr('width', this.width);
                     self.render();
                 }
+                image.onerror = function() {
+                    var fallbackUrl = 'images/common/missingMap.png';
+                    // fallback to local image
+                    image.src = fallbackUrl;
+                    // set background
+                    self.$el.css('background-image', 'url("' + fallbackUrl + '")'); // Set source path
+                };
                 image.src = url;
             }
         });

@@ -41,6 +41,12 @@ define([
                     maps:this.maps.toJSON(),
                     journeyActive:journey ? true : false,
                     getLinkIconUrl:function(map) {
+                        if (!map) {
+                            return '/images/maps/missingLink.png';
+                        }
+                        console.log('@getLinkIconUrl');
+                        console.log(map);
+
                         var imageName = map.linkImageName;
                         if (!imageName){
                             return '/images/maps/missingLink.png';
