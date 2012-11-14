@@ -21,6 +21,9 @@ define(function () {
 
 
     var fnNodeToCoordinates = function(node, rowHeight, columnWidth, margins) {
+        if (!node) {
+            return {x:0, y:0};
+        }
         return {
             x : node[0] * columnWidth + margins.left+columnWidth*0.5,
             y : node[1] * rowHeight + margins.top+rowHeight*0.5
