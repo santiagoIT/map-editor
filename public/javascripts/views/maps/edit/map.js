@@ -123,10 +123,9 @@ define([
                 }
 
                 // path
-                if (this.path) {
-                    for (var key in this.path) {
-                        this.highlight({x:this.path[key][0], y:this.path[key][1]});
-                    }
+                if (this.path && this.path.length > 0) {
+
+                    mapIcons.drawPath(this.ctx, this.path.length-1, this.path, rowHeight, columnWidth, margins);
                 }
 
                 // hotspots
@@ -193,7 +192,6 @@ define([
                     y:y
                 };
             },
-
 
             onCanvasClick:function (e) {
 

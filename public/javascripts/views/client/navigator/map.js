@@ -55,19 +55,10 @@ define([
                 // clear canvas
                 this.ctx.clearRect(0, 0, this.$el.width(), this.$el.height());
 
-                // highlight kiosk if this is our map
-                var kioskInfo = this.model.get('kioskInfo');
-                if (kioskInfo && kioskInfo.mapId === this.map.get('_id')) {
-                    var node = kioskInfo.node;
-                    if (node) {
-                        mapIcons.drawKiosk(this.ctx, node.x * columnWidth + margins.left+columnWidth*0.5, node.y * rowHeight + margins.top+rowHeight*0.5);
-                    }
-                }
-
                 // highlight PF
                 // path
                 if (this.path) {
-                    if (!this.finalDestinationReached && this.nodeCounter >= this.path.length) {
+                    if (!this.finalDestinationReached && this.nodeCounter >= this.path.length-1) {
 
                         window.clearInterval(this.timerID);
 
@@ -79,17 +70,23 @@ define([
                         // destination reached?
                         if (journeyNode >= journey.length-1) {
                             this.finalDestinationReached = true;
-                            this.nodeCounter = this.path.length -2;
                         }
-                        else {
-                            this.nodeCounter = this.path.length -1;
-                        }
+                        this.nodeCounter = this.path.length -1;
 
                         this.showPath(columnQty, rowQty, margins);
                         this.model.trigger('PF_completed');
                     }
                     else {
                         this.showPath(columnQty, rowQty, margins);
+                    }
+                }
+
+                // highlight kiosk if this is our map
+                var kioskInfo = this.model.get('kioskInfo');
+                if (kioskInfo && kioskInfo.mapId === this.map.get('_id')) {
+                    var node = kioskInfo.node;
+                    if (node) {
+                        mapIcons.drawKiosk(this.ctx, node.x * columnWidth + margins.left+columnWidth*0.5, node.y * rowHeight + margins.top+rowHeight*0.5);
                     }
                 }
 
@@ -104,12 +101,10 @@ define([
             },
 
             showPath:function(columnQty, rowQty, margins){
-                var
-                    alpha = 1;
-                for (var i = this.nodeCounter; i >= 0; i--) {
-                    this.highlight({x:this.path[i][0], y:this.path[i][1]}, alpha, columnQty, rowQty, margins);
-                    alpha -= 0.02;
-                }
+                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
+                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
+
+                mapIcons.drawPath(this.ctx, this.nodeCounter, this.path, rowHeight, columnWidth, margins);
             },
 
             highlight:function (node,alpha, columnQty, rowQty, margins) {
@@ -133,22 +128,18 @@ define([
                     info:info,
                     alpha:1
                 };
+                this.toIntroNavigator.startCounting();
                 this.destinations.push(entry);
                 var timerId = window.setInterval(function(){
-                    entry.alpha -= 0.1;
-                    if (entry.alpha <= 0.2){
-                        window.clearInterval(timerId);
-                        // remove from list
-                        index = _.indexOf(self.destinations, entry);
-                        self.destinations.splice(index,1);
-                        delete self.path;
-                        self.path = null;
-                        self.render();
-                        self.toIntroNavigator.startCounting();
-                        return;
-                    }
+                    window.clearInterval(timerId);
+                    // remove from list
+                    index = _.indexOf(self.destinations, entry);
+                    self.destinations.splice(index,1);
+                    delete self.path;
+                    self.path = null;
                     self.render();
-                },250);
+                    self.toIntroNavigator.startCounting();
+                },10000);
             },
 
             onTransitionTo:function () {
@@ -195,7 +186,9 @@ define([
                     this.nodeCounter = 0;
                     this.timerID = window.setInterval(function () {
                         self.render();
-                        self.nodeCounter++;
+                        if (self.nodeCounter < self.path.length-1) {
+                            self.nodeCounter++;
+                        }
                     }, 200);
 
                 }
