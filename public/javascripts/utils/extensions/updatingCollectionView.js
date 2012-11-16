@@ -21,7 +21,6 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
         },
 
         onCollectionReset : function() {
-          console.log('please please please');
             console.log(this.collection.toJSON());
             this.collection.forEach(function(mapModel){
                 console.log('one');
@@ -30,7 +29,6 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
         },
     
         add : function(model) {
-            console.log('OMG something added');
             var childView = new this._childViewConstructor({
                 tagName : this._childViewTagName,
                 model : model

@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/mapItem.html',
+    'text!views/admin/doctors/doctorItem.html',
     'biz/imageManager',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
@@ -13,7 +13,7 @@ define([
             template : _.template(html),
             tagName:'tr',
             events:{
-                'click .edit':"onEditMap",
+                'click .edit':"onEditModel",
                 'click .delete' : "onConfirmDelete"
             },
 
@@ -32,10 +32,10 @@ define([
                 return this;
             },
 
-            onEditMap:function (el) {
+            onEditModel:function (el) {
                 var id = $(el.target).attr('data-id');
                 require(['itworks.app'], function (app) {
-                    app.getRouter().navigate('map_edit/' + id, {trigger:true});
+                    app.getRouter().navigate('doctors_edit/' + id, {trigger:true});
                 });
                 return false;
             },
@@ -45,11 +45,11 @@ define([
                 if (this.model){
                     var self = this;
                     var model = this.model;
-                        require(['biz/deleteConfirm'], function(lib){
-                            lib('Map: ' + self.model.get('name'), function(model){
-                                model.destroy();
-                            }, self.model);
-                        });
+                    require(['biz/deleteConfirm'], function(lib){
+                        lib('Doctor: ' + self.model.get('firstName') + ' ' + self.model.get('lastName'), function(model){
+                            model.destroy();
+                        }, self.model);
+                    });
                 }
             }
         });

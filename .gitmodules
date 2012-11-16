@@ -16,3 +16,6 @@
 [submodule "submodules/pathfinding"]
 	path = submodules/pathfinding
 	url = https://github.com/qiao/PathFinding.js.git
+[submodule "submodules/bootstrap-wysihtml5"]
+	path = submodules/bootstrap-wysihtml5
+	url = https://github.com/jhollingworth/bootstrap-wysihtml5

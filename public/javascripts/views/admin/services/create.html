@@ -1,0 +1,38 @@
+<link rel="stylesheet" type="text/css" href="/javascripts/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css"></link>
+
+<div class="row-fluid">
+    <div class="well">
+        <form id="frmNewModel" enctype="multipart/form-data">
+            <fieldset>
+                <legend>New Service</legend>
+                <div class="control-group">
+                    <label class="control-label" for="title">Title</label>
+
+                    <div class="controls">
+                        <input type="text" class="input-block-level" id="title" name="title">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="imageUrl">Image</label>
+
+                    <div class="controls">
+                        <input class="input-file" id="imageUrl" type="file" name="imageUrl">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Description</label>
+
+                    <div class="controls span12">
+                        <textarea class="field span12" placeholder="Enter content ..." name="description" rows="20"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                    <button class="btn navItem" data-navitem="services">Cancel</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+

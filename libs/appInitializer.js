@@ -26,6 +26,11 @@ module.exports = function (rootPath) {
     source = path.join(rootPath, '/submodules/bootstrap/docs/assets/js');
     createSymlink(dest, source);
 
+    // bootstrap-wysihtml5 js
+    dest =  path.join(rootPath, '/public/javascripts/bootstrap-wysihtml5');
+    source = path.join(rootPath, '/submodules/bootstrap-wysihtml5/');
+    createSymlink(dest, source);
+
     // backbone
     dest =  path.join(rootPath, '/public/javascripts/libs/backbone/backbone-min.js');
     source = path.join(rootPath, '/submodules/backbone/backbone-min.js');

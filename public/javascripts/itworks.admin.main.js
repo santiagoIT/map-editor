@@ -9,12 +9,14 @@
 require.config({
     paths: {
         bootstrap: 'bootstrap/bootstrap.min',
+        bootstrap_wysihtml5: 'bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2',
         Underscore: 'libs/underscore/underscore',
         backbone: 'libs/backbone/backbone',
         pathfinder : 'libs/pathfinding/pathfinding'
     },
     shim: {
-        'backbone' : ['Underscore']
+        'backbone' : ['Underscore'],
+        'bootstrap_wysihtml5' : ['bootstrap', 'bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0']
     }
 });
 

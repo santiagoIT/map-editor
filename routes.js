@@ -56,6 +56,8 @@ module.exports = function (app) {
     restify(app, dummyWrapper, 'maps', require('./models/map'));
     restify(app, dummyWrapper, 'locations', require('./models/location'));
     restify(app, dummyWrapper, 'tunnels', require('./models/tunnel'));
+    restify(app, dummyWrapper, 'services', require('./models/service'));
+    restify(app, dummyWrapper, 'doctors', require('./models/doctor'));
 
     // tests
     app.get('/test/1', test.test1);

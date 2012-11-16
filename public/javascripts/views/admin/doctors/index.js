@@ -3,18 +3,18 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/index.html',
-    'models/mapModel',
-    'collections/maps',
+    'text!views/admin/doctors/index.html',
+    'models/doctorModel',
+    'collections/doctors',
     'biz/imageManager',
     'utils/extensions/updatingCollectionView',
-    'views/maps/mapItem',
+    'views/admin/doctors/doctorItem',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
-    function ($, _, Backbone, require, html, MapModel, maps, imageManager, UpdatingCollectionView, MapItemView) {
+    function ($, _, Backbone, require, html, DoctorModel, doctors, imageManager, UpdatingCollectionView, DoctorItemView) {
 
-        var MapsView = Backbone.View.extend({
-            collection:maps,
+        var View = Backbone.View.extend({
+            collection:doctors,
             template : _.template(html),
             events:{
                 'click .navItem' : "onNavigateTo"
@@ -25,7 +25,7 @@ define([
                 // setup collections view
                 this._mapCollectionView = new UpdatingCollectionView({
                     collection           : this.collection,
-                    childViewConstructor : MapItemView,
+                    childViewConstructor : DoctorItemView,
                     childViewTagName     : 'tr'
                 });
 
@@ -36,11 +36,11 @@ define([
             render:function (eventName) {
 
                 this.$el.html(html);
-                this._mapCollectionView.el = this.$('.theMaps');
+                this._mapCollectionView.el = this.$('.doctorsContainer');
                 this._mapCollectionView.render();
             }
         });
         // Our module now returns an instantiated view
         // Sometimes you might return an un-instantiated view e.g. return projectListView
-        return MapsView;
+        return View;
     });

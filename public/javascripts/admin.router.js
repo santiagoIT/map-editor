@@ -24,6 +24,16 @@ define([
             'tunnels_create' : 'tunnels_create',
             'tunnels_edit/:id' : 'tunnels_edit',
 
+            // services
+            'services' : 'services',
+            'services_edit/:id' : 'services_edit',
+            'services_create' : 'services_create',
+
+            // doctors
+            'doctors' : 'doctors',
+            'doctors_edit/:id' : 'doctors_edit',
+            'doctors_create' : 'doctors_create',
+
             // Default
             '*actions':'defaultAction'
         },
@@ -44,6 +54,7 @@ define([
             this.launchView('views/maps/edit/edit', id);
         },
 
+        // locations
         locations : function(){
             this.launchView('views/locations/index');
         },
@@ -54,6 +65,32 @@ define([
 
         locations_edit : function(id){
             this.launchView('views/locations/edit', id);
+        },
+
+        // services
+        services : function(){
+            this.launchView('views/admin/services/index');
+        },
+
+        services_create : function(){
+            this.launchView('views/admin/services/create');
+        },
+
+        services_edit : function(id){
+            this.launchView('views/admin/services/edit', id);
+        },
+
+        // doctors
+        doctors : function(){
+            this.launchView('views/admin/doctors/index');
+        },
+
+        doctors_create : function(){
+            this.launchView('views/admin/doctors/create');
+        },
+
+        doctors_edit : function(id){
+            this.launchView('views/admin/doctors/edit', id);
         },
 
         // tunnels
