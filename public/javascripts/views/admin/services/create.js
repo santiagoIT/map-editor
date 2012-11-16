@@ -6,10 +6,11 @@ define([
     'text!views/admin/services/create.html',
     'models/serviceModel',
     'collections/services',
+    'biz/imageUploader',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
     'bootstrap_wysihtml5'
 ],
-    function ($, _, Backbone, require, html, ServiceModel, services) {
+    function ($, _, Backbone, require, html, ServiceModel, services, imageUploader) {
 
         var View = Backbone.View.extend({
             collection:services,
@@ -30,7 +31,13 @@ define([
 
             saveModel:function () {
                 var self = this;
-                var persistModel = function (data, $form) {
+                var persistModel = function (err, data, $form) {
+
+                    if (err) {
+                        alert('Failed to upload images!');
+                        console.log(err);
+                        return;
+                    }
 
                     var service = new ServiceModel();
 
@@ -49,24 +56,9 @@ define([
                     });
                 }
 
-                this.uploadImage($('#frmNewModel'), persistModel);
+                imageUploader.uploadImages($('#frmNewModel'), persistModel);
 
                 return false;
-            },
-
-            uploadImage:function ($form, callback) {
-
-                $.ajax('api/uploadmapimage', {
-                    type:"POST",
-                    data:$("input:text", $form).serializeArray(),
-                    files:$("input:file", $form),
-                    dataType: 'json',
-                    iframe:true,
-                    processData:false
-                }).done(function (data) {
-                        callback(data, $form);
-                    });
-                // TODO handle failure
             }
         });
         // Our module now returns an instantiated view

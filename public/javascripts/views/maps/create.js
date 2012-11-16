@@ -6,9 +6,10 @@ define([
     'text!views/maps/create.html',
     'models/mapModel',
     'collections/maps',
+    'biz/imageUploader',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
-    function ($, _, Backbone, require, html, MapModel, maps) {
+    function ($, _, Backbone, require, html, MapModel, maps, imageUploader) {
 
         var View = Backbone.View.extend({
             collection:maps,
@@ -26,7 +27,13 @@ define([
 
             saveMap:function () {
                 var self = this;
-                var persistMap = function (data, $form) {
+                var persistMap = function (err, data, $form) {
+
+                    if (err) {
+                        alert('Failed to upload images!');
+                        console.log(err);
+                        return;
+                    }
 
                     var map = new MapModel();
 
@@ -44,25 +51,9 @@ define([
                         app.getRouter().navigate('maps', {trigger:true});
                     });
                 }
-
-                this.uploadImage($('#frmNewMap'), persistMap);
+                imageUploader.uploadImages($('#frmNewMap'), persistMap);
 
                 return false;
-            },
-
-            uploadImage:function ($form, callback) {
-
-                $.ajax('api/uploadmapimage', {
-                    type:"POST",
-                    data:$("input:text", $form).serializeArray(),
-                    files:$("input:file", $form),
-                    dataType: 'json',
-                    iframe:true,
-                    processData:false
-                }).done(function (data) {
-                        callback(data, $form);
-                    });
-                // TODO handle failure
             }
         });
         // Our module now returns an instantiated view

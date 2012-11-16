@@ -6,16 +6,17 @@ define([
     'text!views/admin/doctors/create.html',
     'models/doctorModel',
     'collections/doctors',
+    'biz/imageUploader',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
     'libs/jquery-plugins/jquery-to-json'
 ],
-    function ($, _, Backbone, require, html, TheModel, services) {
+    function ($, _, Backbone, require, html, TheModel, services, imageUploader) {
 
         var View = Backbone.View.extend({
             collection:services,
             events:{
                 'click #btnSave':"saveModel",
-                'click .navItem' : "onNavigateTo"
+                'click .navItem':"onNavigateTo"
             },
 
             initialize:function () {
@@ -29,18 +30,38 @@ define([
 
             saveModel:function () {
                 var
-                    newEntry = new TheModel(),
+                    $form = $('#frmModel'),
                     self = this;
-                var data = $('#frmModel').toJSON();
-                newEntry.set(data);
-                newEntry.save({success:function(model, response, options){
-                    self.collection.add(newEntry);
 
-                    // go to maps view
-                    require(['itworks.app'], function (app) {
-                        app.getRouter().navigate('services', {trigger:true});
-                    });
-                }});
+                var persistModel = function (err, data, $form) {
+                    if (err) {
+                        alert('Failed to upload images!');
+                        console.log(err);
+                        return;
+                    }
+
+                    var
+                        data2 = $form.toJSON(),
+                        newEntry = new TheModel();
+                    newEntry.set(data);
+                    newEntry.set(data2);
+
+                    newEntry.save([],
+                        {
+                            success:function (model, response, options) {
+
+                                self.collection.add(newEntry);
+                                // go to maps view
+                                require(['itworks.app'], function (app) {
+                                    app.getRouter().navigate('doctors', {trigger:true});
+                                });
+                            },
+                            error:function(model, xhr, options){
+                            }
+                        });
+                }
+
+                imageUploader.uploadImages($form, persistModel);
 
                 return false;
             }

@@ -6,7 +6,9 @@ define([
         defaults:{
             // grid layout
             firstName:'',
-            lastName:''
+            lastName:'',
+            speciality:'',
+            details:''
         },
         urlRoot:'api/doctors',
         idAttribute: "_id"
