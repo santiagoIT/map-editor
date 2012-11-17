@@ -43,28 +43,28 @@ define([
         },
 
         maps : function(){
-            this.launchView('views/maps/index');
+            this.launchView('views/admin/maps/index');
         },
 
         maps_create : function(){
-            this.launchView('views/maps/create');
+            this.launchView('views/admin/maps/create');
         },
 
         map_edit:function (id) {
-            this.launchView('views/maps/edit/edit', id);
+            this.launchView('views/admin/maps/edit/edit', id);
         },
 
         // locations
         locations : function(){
-            this.launchView('views/locations/index');
+            this.launchView('views/admin/locations/index');
         },
 
         locations_create : function(){
-            this.launchView('views/locations/create');
+            this.launchView('views/admin/locations/create');
         },
 
         locations_edit : function(id){
-            this.launchView('views/locations/edit', id);
+            this.launchView('views/admin/locations/edit', id);
         },
 
         // services
@@ -95,15 +95,15 @@ define([
 
         // tunnels
         tunnels : function(){
-            this.launchView('views/tunnels/index');
+            this.launchView('views/admin/tunnels/index');
         },
 
         tunnels_create : function(){
-            this.launchView('views/tunnels/create');
+            this.launchView('views/admin/tunnels/create');
         },
 
         tunnels_edit : function(id){
-            this.launchView('views/tunnels/edit', id);
+            this.launchView('views/admin/tunnels/edit', id);
         },
 
         defaultAction:function (actions) {

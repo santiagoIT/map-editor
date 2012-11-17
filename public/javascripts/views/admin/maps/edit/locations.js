@@ -3,8 +3,8 @@ define([
     'Underscore',
     'backbone',
     'collections/locations',
-    'text!views/maps/edit/locations.html',
-    'views/maps/edit/location',
+    'text!views/admin/maps/edit/locations.html',
+    'views/admin/maps/edit/location',
     'biz/mapStateSingleton'
 ], function ($, _, Backbone, locations, html, LocationView, mapState) {
     var View = Backbone.View.extend({

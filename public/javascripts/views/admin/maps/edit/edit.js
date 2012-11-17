@@ -2,15 +2,15 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'views/maps/edit/map',
-    'views/maps/edit/nodeinfo',
+    'views/admin/maps/edit/map',
+    'views/admin/maps/edit/nodeinfo',
     'require',
-    'text!views/maps/edit/edit.html',
+    'text!views/admin/maps/edit/edit.html',
     'models/mapModel',
     'collections/maps',
     'collections/locations',
     'biz/mapStateSingleton',
-    'views/maps/edit/locations',
+    'views/admin/maps/edit/locations',
     'biz/imageManager',
     'views/utils/changeImage',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js',
@@ -212,9 +212,6 @@ define([
 
                 self.model.set(data);
                 self.model.save();
-
-                console.log('response: ', data);
-                console.log('saved model: ', self.model.toJSON());
             }
 
             imageChanger(folder, name, callback);

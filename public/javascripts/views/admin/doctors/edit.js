@@ -5,16 +5,19 @@ define([
     'require',
     'text!views/admin/doctors/edit.html',
     'models/doctorModel',
+    'biz/imageManager',
+    'views/utils/changeImage',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
     'libs/jquery-plugins/jquery-to-json'
 ],
-    function ($, _, Backbone, require, html, TheModel) {
+    function ($, _, Backbone, require, html, TheModel, imageManager, imageChanger) {
 
         var View = Backbone.View.extend({
             template:_.template(html),
             events:{
                 'click #btnSave':"saveModel",
-                'click .navItem' : "onNavigateTo"
+                'click .navItem' : "onNavigateTo",
+                'click .btnChangeImage' : "onChangeImage"
             },
 
             initialize:function (id) {
@@ -30,8 +33,35 @@ define([
                     model:this.model.toJSON()
                 };
 
+                var imageUrl = this.model.get('imageUrl');
+                if (imageUrl){
+                    options.imageUrl = imageManager.getS3Url(imageUrl);
+                }
+
                 this.$el.html(this.template(options));
                 return this;
+            },
+
+            onChangeImage : function(el) {
+                var
+                    $el = $(el.target),
+                    self = this,
+                    folder = $el.attr('data-folder'),
+                    name = $el.attr('data-name');
+
+                var callback = function (err, data, $form) {
+                    if (err) {
+                        alert('Failed to change image!');
+                        console.log(err);
+                        return;
+                    }
+
+                    self.model.set(data);
+                    self.model.save();
+                    self.$el.find('#imgDoctor').attr('src', imageManager.getS3Url(self.model.get('imageUrl')));
+                }
+
+                imageChanger(folder, name, callback);
             },
 
             saveModel:function () {

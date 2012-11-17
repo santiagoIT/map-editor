@@ -2,7 +2,7 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'text!views/maps/edit/location.html',
+    'text!views/admin/maps/edit/location.html',
     'biz/mapStateSingleton'
 ], function ($, _, Backbone, html, mapState) {
     var View = Backbone.View.extend({

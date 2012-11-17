@@ -3,47 +3,51 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/tunnels/index.html',
-    'collections/tunnels',
+    'text!views/admin/locations/index.html',
+    'collections/locations',
     'collections/maps'
 ],
-    function ($, _, Backbone, require, html, tunnels, maps) {
+    function ($, _, Backbone, require, html, locations, maps) {
 
         var View = Backbone.View.extend({
+            collection:locations,
             events:{
                 'click .navItem':"onNavigateTo",
-                'click .delete' : "deleteItem",
-                'click .edit' : "editItem"
+                'click .delete' : "deleteLocation",
+                'click .edit' : "editLocation"
             },
 
             initialize:function () {
+
                 // load maps synchronously
                 maps.fetch({async:false});
 
-                this.bindTo(tunnels, 'reset', this.render);
-                tunnels.fetch({ cache: false });
+                this.bindTo(this.collection, 'all', this.render);
+                this.collection.fetch({ cache: false });
             },
 
             render:function () {
-                this.$el.html(_.template(html,{items:tunnels.toJSON(), maps:maps.toJSON()}));
+
+                this.$el.html(_.template(html,{locations:this.collection.toJSON(), maps:maps.toJSON()}));
             },
 
-            deleteItem : function(el){
+            deleteLocation : function(el){
+
                 var id = $(el.target).attr('data-id');
-                var model = tunnels.get(id);
+                var model = locations.get(id);
 
                 require(['biz/deleteConfirm'], function (lib) {
-                    lib('Tunnel: ' + model.get('name'), function (model) {
+                    lib('Location: ' + model.get('name'), function (model) {
                         model.destroy();
                     }, model);
                 });
                 return false;
             },
 
-            editItem:function(el){
+            editLocation:function(el){
                 var id = $(el.target).attr('data-id');
                 require(['itworks.app'], function (app) {
-                    app.getRouter().navigate('tunnels_edit/'+id, {trigger:true});
+                    app.getRouter().navigate('locations_edit/'+id, {trigger:true});
                 });
             }
         });

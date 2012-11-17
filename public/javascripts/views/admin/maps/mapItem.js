@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/mapItem.html',
+    'text!views/admin/maps/mapItem.html',
     'biz/imageManager',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],

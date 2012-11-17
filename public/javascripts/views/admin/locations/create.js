@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/locations/create.html',
+    'text!views/admin/locations/create.html',
     'models/locationModel'
 ],
     function ($, _, Backbone, require, html, LocationModel) {

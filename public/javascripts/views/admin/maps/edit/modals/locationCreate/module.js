@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'text!views/maps/edit/modals/locationCreate/html.html'
+    'text!views/adminmaps/edit/modals/locationCreate/html.html'
 ],
     function ($, html) {
         return function (map, node, callback) {

@@ -13,10 +13,11 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="imageUrl">Image</label>
-
-                    <div class="controls">
-                        <input class="input-file" id="imageUrl" type="file" name="imageUrl">
+                    <% if (typeof(imageUrl) != 'undefined') {%>
+                    <img id="imgService" src="<%=imageUrl%>" alt="mapIcon"/>
+                    <% } %>
+                    <div>
+                        <button class="btn btn-small btn-primary btnChangeImage" data-folder="services" data-name="imageUrl">Change image</button>
                     </div>
                 </div>
                 <div class="control-group">

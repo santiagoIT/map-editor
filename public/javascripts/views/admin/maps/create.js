@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/create.html',
+    'text!views/admin/maps/create.html',
     'models/mapModel',
     'collections/maps',
     'biz/imageUploader',

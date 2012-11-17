@@ -6,17 +6,19 @@ define([
     'text!views/admin/services/edit.html',
     'models/serviceModel',
     'biz/imageManager',
+    'views/utils/changeImage',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
     'libs/jquery-plugins/jquery-to-json',
     'bootstrap_wysihtml5'
 ],
-    function ($, _, Backbone, require, html, ServiceModel, imageManager) {
+    function ($, _, Backbone, require, html, ServiceModel, imageManager, imageChanger) {
 
         var View = Backbone.View.extend({
             template:_.template(html),
             events:{
                 'click #btnSave':"saveModel",
-                'click .navItem' : "onNavigateTo"
+                'click .navItem' : "onNavigateTo",
+                'click .btnChangeImage' : "onChangeImage"
             },
 
             initialize:function (id) {
@@ -40,6 +42,28 @@ define([
                 this.$el.html(this.template(options));
                 this.$el.find('textarea[name="description"]').wysihtml5();
                 return this;
+            },
+
+            onChangeImage : function(el) {
+                var
+                    $el = $(el.target),
+                    self = this,
+                    folder = $el.attr('data-folder'),
+                    name = $el.attr('data-name');
+
+                var callback = function (err, data, $form) {
+                    if (err) {
+                        alert('Failed to change image!');
+                        console.log(err);
+                        return;
+                    }
+
+                    self.model.set(data);
+                    self.model.save();
+                    self.$el.find('#imgService').attr('src', imageManager.getS3Url(self.model.get('imageUrl')));
+                }
+
+                imageChanger(folder, name, callback);
             },
 
             saveModel:function () {

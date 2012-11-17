@@ -3,12 +3,12 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/maps/index.html',
+    'text!views/admin/maps/index.html',
     'models/mapModel',
     'collections/maps',
     'biz/imageManager',
     'utils/extensions/updatingCollectionView',
-    'views/maps/mapItem',
+    'views/admin/maps/mapItem',
     'libs/jquery.iframe-transport/jquery.iframe-transport'
 ],
     function ($, _, Backbone, require, html, MapModel, maps, imageManager, UpdatingCollectionView, MapItemView) {

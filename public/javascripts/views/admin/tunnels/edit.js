@@ -3,8 +3,8 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/locations/edit.html',
-    'models/locationModel',
+    'text!views/admin/tunnels/edit.html',
+    'models/tunnelModel',
     'collections/maps',
     'libs/jquery-plugins/jquery-to-json'
 ],
@@ -40,7 +40,7 @@ define([
                 this.model.save(null, {
                     success:function(){
                         require(['itworks.app'], function (app) {
-                            app.getRouter().navigate('locations', {trigger:true});
+                            app.getRouter().navigate('tunnels', {trigger:true});
                         });
                     }
                 });

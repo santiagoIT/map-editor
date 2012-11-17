@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/tunnels/create.html',
+    'text!views/admin/tunnels/create.html',
     'models/tunnelModel',
     'collections/maps',
     'libs/jquery-plugins/jquery-to-json'

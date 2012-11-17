@@ -17,6 +17,14 @@
                         <input type="text" class="input-block-level" id="lastName" name="lastName" value="<%= model.lastName %>">
                     </div>
                 </div>
+                <div class="control-group">
+                    <% if (typeof(imageUrl) != 'undefined') {%>
+                    <img id="imgDoctor" src="<%=imageUrl%>" alt="mapIcon"/>
+                    <% } %>
+                    <div>
+                        <button class="btn btn-small btn-primary btnChangeImage" data-folder="doctors" data-name="imageUrl">Change image</button>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
                     <button class="btn navItem" data-navitem="services">Cancel</button>
