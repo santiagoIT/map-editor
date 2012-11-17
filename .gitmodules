@@ -19,3 +19,6 @@
 [submodule "submodules/bootstrap-wysihtml5"]
 	path = submodules/bootstrap-wysihtml5
 	url = https://github.com/jhollingworth/bootstrap-wysihtml5
+[submodule "submodules/backbone.paginator"]
+	path = submodules/backbone.paginator
+	url = https://github.com/addyosmani/backbone.paginator.git
