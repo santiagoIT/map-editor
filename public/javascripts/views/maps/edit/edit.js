@@ -12,11 +12,12 @@ define([
     'biz/mapStateSingleton',
     'views/maps/edit/locations',
     'biz/imageManager',
+    'views/utils/changeImage',
     'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
     'libs/jquery-plugins/jquery-to-json'
     ],
-    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView, imageManager){
+    function($, _, Backbone, MapView, NodeInfoView, require, html, MapModel, maps, locations, mapState, LocationView, imageManager, imageChanger){
 
     var View = Backbone.View.extend({
         canvasView : null,
@@ -30,9 +31,7 @@ define([
             'click #btnClearAll' : "clearAll",
             'click [name="editor-mode"]' : "onEditorModeSwitched",
             'click .editor-config' : "onEditorConfigChanged",
-            'click .btnImageChange' : "onChangeMapImage",
-            'click #btnSaveNewImage' : "onSaveNewMapImage",
-            'click #btnSaveMapIcon' : "onSaveMapIconImage",
+            'click .btnChangeImage' : "onChangeImage",
             'click #btnSaveMapMetaData' : "onSaveMapMetaData"
         },
 
@@ -54,10 +53,8 @@ define([
         setupView: function(mapid) {
             var
                 self = this;
-            console.log('setupView');
-            console.log(this);
-
             this.render();
+
             var $container =  this.$('#canvasContainer');
             this.canvasView = new MapView(this.model);
             this.addChildView(this.canvasView);
@@ -97,7 +94,8 @@ define([
 
             this.bindTo(this.model, 'change:top change:left change:bottom change:right', this.displayMargins);
             this.bindTo(this.model, 'change:x change:y', this.displayGridSize);
-            this.bindTo(this.model, 'change:name', this.render);
+            this.bindTo(this.model, 'change:name', this.displayName);
+            this.bindTo(this.model, 'change:linkImageName', this.displayLinkImage);
 
             this.displayMargins();
             this.displayGridSize();
@@ -114,9 +112,7 @@ define([
 
             var iconName = this.model.get('linkImageName');
             if (iconName){
-                console.log('iconName: ' + iconName);
                 options.mapIconImageUrl = imageManager.getS3Url(iconName);
-                console.log('iconUrl: ' + options.mapIconImageUrl);
             }
 
             this.$el.html(this.template(options));
@@ -130,6 +126,14 @@ define([
             this.jqueryMap.$marginLeft.val(this.model.get('left'));
             this.jqueryMap.$marginBottom.val(this.model.get('bottom'));
             this.jqueryMap.$marginRight.val(this.model.get('right'));
+        },
+
+        displayName : function() {
+            this.$el.find('#mapName').html(this.model.get('name'));
+        },
+
+        displayLinkImage : function() {
+            this.$el.find('#imgMapIcon').attr("src", imageManager.getS3Url(this.model.get('linkImageName')));
         },
 
         displayGridSize : function() {
@@ -192,47 +196,28 @@ define([
             }
         },
 
-        onChangeMapImage : function(){
-            this.$('.modal').modal('show');
-        },
-
-        onSaveNewMapImage : function(){
+        onChangeImage : function(el) {
             var
-                $form = $('#frmChangeImage'),
-                self = this;
+                $el = $(el.target),
+                self = this,
+                folder = $el.attr('data-folder'),
+                name = $el.attr('data-name');
 
-            $.ajax('api/uploadmapimage', {
-                type:"POST",
-                data:$("input:text", $form).serializeArray(),
-                files:$("input:file", $form),
-                dataType:'json',
-                iframe:true,
-                processData:false
-            }).done(function (data) {
-                    self.model.set('imageName', data.imagename);
-                    self.model.save();
-                    self.$('.modal').modal('hide');
-                });
-            return false;
-        },
+            var callback = function (err, data, $form) {
+                if (err) {
+                    alert('Failed to change image!');
+                    console.log(err);
+                    return;
+                }
 
-        onSaveMapIconImage : function(){
-            var
-                $form = $('#frmSetMapIcon'),
-                self = this;
+                self.model.set(data);
+                self.model.save();
 
-            $.ajax('api/uploadmapiconimage', {
-                type:"POST",
-                data:$("input:text", $form).serializeArray(),
-                files:$("input:file", $form),
-                dataType:'json',
-                iframe:true,
-                processData:false
-            }).done(function (data) {
-                    self.model.set('linkImageName', data.linkImageName);
-                    self.model.save();
-                });
-            return false;
+                console.log('response: ', data);
+                console.log('saved model: ', self.model.toJSON());
+            }
+
+            imageChanger(folder, name, callback);
         },
 
         onSaveMapMetaData : function() {

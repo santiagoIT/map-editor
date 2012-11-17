@@ -3,7 +3,7 @@ define([
     'Underscore',
     'backbone',
     'require',
-    'text!views/home.html'
+    'text!views/admin/home.html'
 ], function ($, _, Backbone, require, html) {
     var View = Backbone.View.extend({
         events:{

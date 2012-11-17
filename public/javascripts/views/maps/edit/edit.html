@@ -1,4 +1,4 @@
-<h1>MAP EDITOR - <%= map.name %></h1>
+<h1>MAP EDITOR - <span id="mapName"><%= map.name %></span></h1>
 <div class="row-fluid">
 
     <ul class="nav nav-tabs">
@@ -9,7 +9,6 @@
         <li><a href="#settings" data-toggle="tab">Settings</a></li>
         <li><a href="#mapMetaData" data-toggle="tab">Meta Data</a></li>
     </ul>
-
 
     <div class="tab-content">
         <div class="tab-pane active" id="gridSize">
@@ -104,20 +103,11 @@
         <div class="tab-pane" id="mapMetaData">
             <div class="well">
                 <% if (typeof(mapIconImageUrl) != 'undefined') {%>
-                <img src="<%=mapIconImageUrl%>" alt="mapIcon"/>
+                <img id="imgMapIcon" src="<%=mapIconImageUrl%>" alt="mapIcon"/>
                 <% } %>
-                <form id="frmSetMapIcon">
-                    <div class="control-group">
-                        <label class="control-label" for="image">Map Icon Image File</label>
-
-                        <div class="controls">
-                            <input class="input-file" id="mapIconFile" type="file" name="image">
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary" id="btnSaveMapIcon">Save</button>
-                    </div>
-                </form>
+                <div>
+                    <button class="btn btn-small btn-primary btnChangeImage" data-folder="mapIcons" data-name="linkImageName">Change image</button>
+                </div>
                 <form id="frmMapMetaData">
                     <div class="control-group">
                         <label class="control-label" for="name">Name</label>
@@ -140,7 +130,7 @@
         <div id="canvasContainer">
         </div>
         <div>
-            <button class="btn btn-small btn-primary btnImageChange">Change image</button>
+            <button class="btn btn-small btn-primary btnChangeImage" data-folder="maps" data-name="imageName">Change image</button>
         </div>
     </div>
 </div>
@@ -160,27 +150,5 @@
 <div class="row-fluid">
     <div class="span12">
         <button class="btn btn-primary navItem" data-navitem="maps">Go Back</button>
-    </div>
-</div>
-
-<div class="modal hide">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Change map image</h3>
-    </div>
-    <div class="modal-body">
-        <form id="frmChangeImage">
-            <div class="control-group">
-                <label class="control-label" for="image">Image File</label>
-
-                <div class="controls">
-                    <input class="input-file" id="image" type="file" name="image">
-                </div>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary" id="btnSaveNewImage">Save</button>
-                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-            </div>
-        </form>
     </div>
 </div>

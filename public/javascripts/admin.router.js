@@ -39,7 +39,7 @@ define([
         },
 
         admin : function(){
-            this.launchView('views/home');
+            this.launchView('views/admin/home');
         },
 
         maps : function(){
