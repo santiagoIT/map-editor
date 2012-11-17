@@ -41,8 +41,8 @@ module.exports = function (rootPath) {
     createSymlink(dest, source);
 
     // backbone paginator
-    dest =  path.join(rootPath, '/public/javascripts/backbone.paginator');
-    source = path.join(rootPath, '/submodules/backbone.paginator/dest');
+    dest =  path.join(rootPath, '/public/javascripts/libs/backbone.paginator');
+    source = path.join(rootPath, '/submodules/backbone.paginator/dist/');
     createSymlink(dest, source);
 
     // underscore
