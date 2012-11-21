@@ -25,10 +25,14 @@ require([
     'itworks.app',
     'biz/imageManager',
     'router',
+    'config',
     'bootstrap',
     'domReady!',
     'utils/extensions/view'
-], function($, _, Backbone, app, imageManager, Router) {
+], function($, _, Backbone, app, imageManager, Router, config) {
+
+    console.log('config', config);
+
     var
         router = new Router();
     app.setRouter(router);
@@ -36,10 +40,11 @@ require([
     $('#itworks-app').empty();
 
     // prevent right click menu from appearing
-    window.oncontextmenu = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
-    };
-
+    if (!config.enableRightClick) {
+        window.oncontextmenu = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        };
+    }
 });

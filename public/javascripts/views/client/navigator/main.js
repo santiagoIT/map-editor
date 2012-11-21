@@ -6,7 +6,7 @@ define([
     'collections/maps',
     'collections/tunnels',
     'models/navigator',
-    'models/navigator.search',
+    'models/searchModel',
     'text!views/client/navigator/main.html',
     'views/client/navigator/links',
     'views/client/navigator/search',
@@ -17,7 +17,7 @@ define([
     'views/client/keyboard/main',
     'bootstrap'
 ],
-    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, NavigatorSearchModel, html,
+    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, SearchModel, html,
         LinkView,
         SearchView,
         MapView,
@@ -30,7 +30,7 @@ define([
             initialize:function () {
 
                 this.model = new NavigatorModel();
-                this.searchModel = new NavigatorSearchModel();
+                this.searchModel = new SearchModel();
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);
                 this.bindTo(this.model, 'PF_completed', this.pathFindingComplete);
 

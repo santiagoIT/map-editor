@@ -2,7 +2,12 @@ extends layout
 
 block head
     script(src='javascripts/require-jquery.js', data-main="javascripts/itworks.main.js")
-
+    script(type="text/javascript")
+        define('config', function() {
+            return {
+                enableRightClick: #{enableRightClick}
+            };
+        });
 block content
     div#itworks-app  Loading...
 -#

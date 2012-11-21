@@ -5,26 +5,26 @@ define([
     var Model = Backbone.Model.extend({
         defaults:{
             // links
-            links:null, // page subset
+            pageResults:null, // page subset
             results:null, // all results
             haveSearched : false,
             showResults : false,
 
             // paging
-            page: 0,
-            itemsPerPage: 5
+            page: 0, // current page
+            itemsPerPage: 10
         },
 
         initialize:function () {
         },
 
-        getLinksAsJson:function () {
-            var links = this.get('links');
-            if (!links) {
+        getDataAsJson:function () {
+            var data = this.get('pageResults');
+            if (!data) {
                 return [];
             }
 
-            var arJson = _.map(links, function (l) {
+            var arJson = _.map(data, function (l) {
                 return l.toJSON();
             })
             return arJson;
@@ -64,9 +64,8 @@ define([
             }
             var total = results.length;
             var itemsPerPage = this.get('itemsPerPage');
-            var pageCount = Math.floor(total/itemsPerPage);
+            var pageCount = Math.ceil(total/itemsPerPage);
 
-            console.log('total: ', total, 'pageCount: ', pageCount);
             return pageCount;
         },
 
@@ -85,10 +84,12 @@ define([
             }
 
             return {
-              currentPage : currentPage,
-              pageCount: pageCount,
-              btnPreviousClass : btnPreviousClass,
-              btnNextClass : btnNextClass
+                currentPage : currentPage,
+                pageCount: pageCount,
+                btnPreviousClass : btnPreviousClass,
+                btnNextClass : btnNextClass,
+                data: this.getDataAsJson(),
+                haveSearched : this.get('haveSearched')
             };
         }
     });

@@ -128,7 +128,7 @@ textarea {
   clear: both;
 }
 .hide-text {
-  font: a;
+  font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -4995,6 +4995,30 @@ a {
 }
 .row {
   margin-left: 0px;
+}
+.modal {
+  background-color: transparent;
+  background-image: url('/images/common/bkgdModal.png');
+  width: 720px;
+  height: 485px;
+  color: #ffffff;
+}
+.modal .modal-header {
+  margin-top: 35px;
+}
+.modal a {
+  color: #fff;
+}
+.modal .pagination ul > li > a,
+.modal .pagination ul > li > span {
+  color: #08C;
+}
+.modal .searchResults {
+  height: 270px;
+}
+.modal .close {
+  color: white;
+  opacity: 0.6;
 }
 .intro-container {
   background-image: url('/images/intro/bkgd.jpg');

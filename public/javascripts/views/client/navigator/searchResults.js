@@ -22,7 +22,7 @@ define([
                 this.searchModel = searchModel;
 
                 // subscribe
-                this.bindTo(this.searchModel, 'change:links', this.render);
+                this.bindTo(this.searchModel, 'change:pageResults', this.render);
                 this.bindTo(this.searchModel, 'change:page', this.getResultsPage);
             },
 
@@ -35,7 +35,6 @@ define([
 
                 // get all results
                 var results = this.searchModel.get('results');
-                console.log('ALL RESULTS: ', results);
 
                 //TODO: sort
 
@@ -45,31 +44,23 @@ define([
 
                 var subset = results.slice(page*itemsPerPage, page*itemsPerPage+itemsPerPage);
 
-                this.searchModel.set('links', subset);
-                console.log('subset: ', subset);
+                this.searchModel.set('pageResults', subset);
                 var alreadyShowing = this.searchModel.get('showResults');
 
                 if (!alreadyShowing) {
-                    console.log('SHOW MODAL');
                     this.searchModel.set('showResults', true);
                 }
             },
 
             render:function () {
 
-                console.log("RENDER SEARCH RESULTS");
-
                 var
                     journey = this.model.get('journey');
                 var model = {
-                    links:this.searchModel.getLinksAsJson(),
-                    pagination : this.searchModel.getPaginationViewModel(),
-                    haveSearched:this.searchModel.get('haveSearched'),
+                    search : this.searchModel.getPaginationViewModel(),
                     journeyActive:journey ? true : false
                 };
                 this.$el.html(this.template(model));
-
-                console.log('search view options: ', model);
 
                 return this;
             },
@@ -121,8 +112,6 @@ define([
                     var loc = self.locations.get(locationId);
                     self.model.navigateTo(loc);
                 });
-
-                console.log('$modal', $modal);
 
                 return false;
             }

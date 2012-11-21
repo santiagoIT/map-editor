@@ -1,7 +1,7 @@
-<% if (haveSearched) { %>
-<% if (_.size(links) > 0) { %>
-<ul class="nav nav-list">
-    <% _.each(links,function(item,key,list){ %>
+<% if (search.haveSearched) { %>
+<% if (_.size(search.data) > 0) { %>
+<ul class="nav nav-list searchResults">
+    <% _.each(search.data,function(item,key,list){ %>
     <li class="navItem">
         <% if (journeyActive){ %>
         <a href="#" data-loc-id="<%= item._id %>" class="btnGoToLocation disabled"><%= item.name %></a>
@@ -11,18 +11,18 @@
     </li>
     <% }) %>
 </ul>
-<% if (pagination.pageCount > 1) { %>
+<% if (search.pageCount > 1) { %>
 <div class="pagination">
     <ul>
-        <li class="<%=pagination.btnPreviousClass%>"><a class="btnPaginationPrev" href="#"><--</a></li>
-        <% for (var i=0; i < pagination.pageCount; i++) { %>
-            <% if (pagination.currentPage == i) { %>
+        <li class="<%=search.btnPreviousClass%>"><a class="btnPaginationPrev" href="#"><--</a></li>
+        <% for (var i=0; i < search.pageCount; i++) { %>
+            <% if (search.currentPage == i) { %>
                 <li class="active"><a class="btnPagination" href="#"><%= i+1 %></a></li>
             <% } else { %>
                 <li><a class="btnPagination" href="#"><%= i+1 %></a></li>
             <%}%>
         <%}%>
-        <li class="<%=pagination.btnNextClass%>"><a class="btnPaginationNext"  href="#">--></a></li>
+        <li class="<%=search.btnNextClass%>"><a class="btnPaginationNext"  href="#">--></a></li>
     </ul>
 </div>
 <%}%>

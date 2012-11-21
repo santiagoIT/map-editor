@@ -83,14 +83,6 @@ define([
                 // pagination (trigger a page change!)
                 this.searchModel.set('page', -1);
                 this.searchModel.set('page', 0);
-//                var itemsPerPage = this.searchModel.get('itemsPerPage');
-//
-//                var subset = results.splice(page*itemsPerPage, itemsPerPage);
-//
-//                this.searchModel.set('links', subset);
-
-
-
 
                 return false;
             }

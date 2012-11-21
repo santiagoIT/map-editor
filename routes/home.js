@@ -1,6 +1,15 @@
 module.exports = {
     index : function(req, res) {
-        res.render('index', { title: 'Map Editor' });
+        var
+            enableRightClick = 0;
+        if (process.env['ENABLE_RIGHTCLICK']){
+            enableRightClick = 1;
+        }
+        res.render('index',
+            {
+                title: 'Kiosk',
+                enableRightClick:enableRightClick
+            });
     },
 
     // app.get('/about', ...
