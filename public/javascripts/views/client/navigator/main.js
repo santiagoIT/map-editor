@@ -12,7 +12,7 @@ define([
     'views/client/navigator/search',
     'views/client/navigator/map',
     'views/client/navigator/tunnelTransition',
-    'views/client/navigator/searchResults',
+    'views/client/navigator/searchModalFrame',
     'views/client/menu/main',
     'views/client/keyboard/main',
     'bootstrap'
@@ -22,7 +22,7 @@ define([
         SearchView,
         MapView,
         tunnelTransition,
-        SearchResultsView,
+        SearchModalFrameView,
         MainMenuView,
         KeyboardView) {
         var View = Backbone.View.extend({
@@ -70,9 +70,11 @@ define([
                 this.addChildView(searchView);
 
                 // search results view
-                var searchResultsView = new SearchResultsView(this.model, this.searchModel, locations);
+                var searchResultsView = new SearchModalFrameView(this.model, this.searchModel, locations);
                 searchResultsView.setElement(this.$el.find('#searchResults')[0]);
                 this.addChildView(searchResultsView);
+                // search results must be added after view has been added to DOM
+                searchResultsView.prepareSearchResults();
 
                 // map view
                 var mapView = new MapView(this.model, maps);

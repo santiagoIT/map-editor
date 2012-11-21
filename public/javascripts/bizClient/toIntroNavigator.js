@@ -35,6 +35,8 @@ define([
             _counter = _secsToWait;
 
             require(['itworks.app'], function (app) {
+                // hide any modals
+                $('.modal').modal('hide');
                 app.getRouter().navigate('', {trigger:true});
             });
         };

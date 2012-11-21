@@ -74,9 +74,23 @@ define([
                     var pattern = new RegExp(searchFor, "gi");
                     return pattern.test(loc.get("name"));
                 });
-                this.searchModel.set('links', results);
 
-                this.searchModel.set('showResults', true);
+                // store all results
+                this.searchModel.set('results', results);
+
+                //TODO: sort
+
+                // pagination (trigger a page change!)
+                this.searchModel.set('page', -1);
+                this.searchModel.set('page', 0);
+//                var itemsPerPage = this.searchModel.get('itemsPerPage');
+//
+//                var subset = results.splice(page*itemsPerPage, itemsPerPage);
+//
+//                this.searchModel.set('links', subset);
+
+
+
 
                 return false;
             }
