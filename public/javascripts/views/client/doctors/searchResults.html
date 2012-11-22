@@ -7,7 +7,7 @@
 <% _.each(search.data,function(item,key,list){ %>
 <div class="searchRow">
     <div class="search-left pull-left"><%=item.firstName%> <%=item.lastName%></div>
-    <div class="search-left pull-right">TODO</div>
+    <div class="search-left pull-right"><%=item.speciality%></div>
 </div>
 <% }) %>
 <% if (search.pageCount > 1) { %>

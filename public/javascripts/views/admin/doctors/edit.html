@@ -18,6 +18,13 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label" for="speciality">Especialidad</label>
+
+                    <div class="controls">
+                        <input type="text" class="input-block-level" id="speciality" name="speciality" value="<%= model.speciality %>">
+                    </div>
+                </div>
+                <div class="control-group">
                     <% if (typeof(imageUrl) != 'undefined') {%>
                     <img id="imgDoctor" src="<%=imageUrl%>" alt="mapIcon"/>
                     <% } %>
@@ -27,7 +34,7 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
-                    <button class="btn navItem" data-navitem="services">Cancel</button>
+                    <button class="btn navItem" data-navitem="doctors">Cancel</button>
                 </div>
             </fieldset>
         </form>
