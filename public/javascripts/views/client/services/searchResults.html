@@ -1,0 +1,33 @@
+<div class="searchRow">
+    <div class="search-left pull-left">Servicio</div>
+    <div class="search-left pull-right">Ubicacion</div>
+</div>
+
+<% if (_.size(search.data) > 0) { %>
+    <% _.each(search.data,function(item,key,list){ %>
+    <div class="searchRow">
+        <div class="search-left pull-left"><%=item.title%></div>
+        <div class="search-left pull-right"><%=item.floorDescription%></div>
+    </div>
+    <% }) %>
+<% if (search.pageCount > 1) { %>
+<div class="pagination">
+    <ul>
+        <li class="<%=search.btnPreviousClass%>"><a class="btnPaginationPrev" href="#"><--</a></li>
+        <% for (var i=0; i < search.pageCount; i++) { %>
+        <% if (search.currentPage == i) { %>
+        <li class="active"><a class="btnPagination" href="#"><%= i+1 %></a></li>
+        <% } else { %>
+        <li><a class="btnPagination" href="#"><%= i+1 %></a></li>
+        <%}%>
+        <%}%>
+        <li class="<%=search.btnNextClass%>"><a class="btnPaginationNext"  href="#">--></a></li>
+    </ul>
+</div>
+<%}%>
+<% } else { %>
+<div class="searchRow">
+    <div class="search-left pull-left">No se encontro ningun resultado</div>
+</div>
+<% } %>
+

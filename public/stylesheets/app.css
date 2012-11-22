@@ -4987,6 +4987,13 @@ a.badge:hover {
 .affix {
   position: fixed;
 }
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 a {
   cursor: pointer;
 }
@@ -4996,27 +5003,27 @@ a {
 .row {
   margin-left: 0px;
 }
-.modal {
+.modal-client {
   background-color: transparent;
   background-image: url('/images/common/bkgdModal.png');
   width: 720px;
   height: 485px;
   color: #ffffff;
 }
-.modal .modal-header {
+.modal-client .modal-header {
   margin-top: 35px;
 }
-.modal a {
+.modal-client a {
   color: #fff;
 }
-.modal .pagination ul > li > a,
-.modal .pagination ul > li > span {
+.modal-client .pagination ul > li > a,
+.modal-client .pagination ul > li > span {
   color: #08C;
 }
-.modal .searchResults {
+.modal-client .searchResults {
   height: 270px;
 }
-.modal .close {
+.modal-client .close {
   color: white;
   opacity: 0.6;
 }
@@ -5114,16 +5121,15 @@ a {
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
-  float: left;
 }
 #search-form .searchGlass {
   background-image: url('/images/common/searchGlass.png');
   width: 24px;
   height: 25px;
   cursor: pointer;
-  position: relative;
+  position: absolute;
   top: 10px;
-  left: -35px;
+  right: 15px;
 }
 #mapCanvas {
   position: absolute;
@@ -5267,10 +5273,65 @@ a {
   height: 1280px;
   position: relative;
 }
+.doctors-container #doctorsTitle {
+  position: absolute;
+  top: 205px;
+  right: 14px;
+  background-image: url('/images/doctors/title.png');
+  width: 211px;
+  height: 48px;
+}
+.doctors-container .searchRow {
+  clear: both;
+}
+.doctors-container .searchResults {
+  position: absolute;
+  width: 650px;
+  height: 800px;
+  top: 300px;
+  left: 20px;
+}
 .services-container {
   background-image: url('/images/common/bkgd.jpg');
   background-repeat: no-repeat;
   width: 720px;
   height: 1280px;
   position: relative;
+  color: #fff;
+}
+.services-container #serviceTitle {
+  position: absolute;
+  top: 215px;
+  right: 14px;
+  background-image: url('/images/services/title.png');
+  width: 212px;
+  height: 55px;
+}
+.services-container .searchRow {
+  clear: both;
+}
+.services-container .searchResults {
+  position: absolute;
+  width: 650px;
+  height: 800px;
+  top: 300px;
+  left: 20px;
+}
+.indexBar {
+  position: absolute;
+  width: 20px;
+  height: 750px;
+  right: 15px;
+  top: 300px;
+  color: #fff;
+  font-size: 25px;
+  line-height: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.indexBar .indexChar {
+  cursor: pointer;
 }

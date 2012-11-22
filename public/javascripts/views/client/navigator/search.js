@@ -40,9 +40,6 @@ define([
                     journeyActive:journey ? true : false
                 };
                 this.$el.html(this.template(model));
-
-                console.log('journeyActive');
-                console.log(model);
             },
 
             launchJorneyManager : function(a1, a2, a3) {

@@ -47,12 +47,9 @@ define([
                         console.log('failled!');
                         console.log(err);
                     });
-                console.log('launch child views');
             },
 
             setupChildViews: function(){
-                console.log('setup child views');
-
                 // keyboard view
                 this.keyboardView = new KeyboardView();
                 var $keyboard = this.$el.find('.keyboard');

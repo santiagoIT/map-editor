@@ -1,5 +1,9 @@
 @import "../../submodules/bootstrap/less/bootstrap.less";
 
+body {
+  .user-select(none);
+}
+
 a {
     cursor: pointer;
 }
@@ -12,8 +16,7 @@ a {
   margin-left: 0px;
 }
 
-// modals
-.modal {
+.modal-client {
   background-color: transparent;
   background-image: url('/images/common/bkgdModal.png');
   .size(485px, 720px);
@@ -139,16 +142,15 @@ a {
     border-width: 3px;
     border-color: #01fffe;
     .border-radius(20px);
-    float:left;
   }
 
   .searchGlass {
     background-image: url('/images/common/searchGlass.png');
     .size(25px, 24px);
     cursor:pointer;
-    position: relative;
+    position: absolute;
     top:10px;
-    left:-35px;
+    right:15px;
   }
 }
 
@@ -299,6 +301,25 @@ a {
   background-repeat:no-repeat;
   .size(1280px,720px);
   position:relative;
+
+  #doctorsTitle {
+    position:absolute;
+    top:205px;
+    right:14px;
+    background-image: url('/images/doctors/title.png');
+    .size(48px, 211px);
+  }
+
+  .searchRow {
+    clear: both;
+  }
+
+  .searchResults {
+    position:absolute;
+    .size(800px, 650px);
+    top:300px;
+    left:20px;
+  }
 }
 
 // services
@@ -307,6 +328,43 @@ a {
   background-repeat:no-repeat;
   .size(1280px,720px);
   position:relative;
+  color:#fff;
+
+  #serviceTitle {
+    position:absolute;
+    top:215px;
+    right:14px;
+    background-image: url('/images/services/title.png');
+    .size(55px, 212px);
+  }
+
+  .searchRow {
+    clear: both;
+  }
+
+  .searchResults {
+    position:absolute;
+    .size(800px, 650px);
+    top:300px;
+    left:20px;
+  }
+}
+
+// index bar
+.indexBar {
+  position: absolute;
+  width:20px;
+  height:750px;
+  right:15px;
+  top:300px;
+  color:#fff;
+  font-size:25px;
+  line-height: 30px;
+  .user-select(none);
+
+  .indexChar {
+    cursor:pointer;
+  }
 }
 
 

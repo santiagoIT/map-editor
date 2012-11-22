@@ -6,7 +6,8 @@ define([
         defaults:{
             // grid layout
             title:'',
-            description:''
+            description:'',
+            'floorDescription' :''
         },
         urlRoot:'api/services',
         idAttribute: "_id"

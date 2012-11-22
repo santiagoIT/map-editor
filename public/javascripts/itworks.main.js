@@ -31,8 +31,6 @@ require([
     'utils/extensions/view'
 ], function($, _, Backbone, app, imageManager, Router, config) {
 
-    console.log('config', config);
-
     var
         router = new Router();
     app.setRouter(router);
