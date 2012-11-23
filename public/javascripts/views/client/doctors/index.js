@@ -6,14 +6,17 @@ define([
     'models/searchModel',
     'collections/doctors',
     'text!views/client/doctors/index.html',
+    'text!views/client/doctors/searchResults.html',
+    'text!views/client/doctors/modalSearchResultPopup.html',
     'views/client/menu/main',
     'views/client/common/indexBar',
     'views/client/common/search',
     'views/client/keyboard/main',
-    'views/client/doctors/searchResults'
+    'views/client/common/searchResults',
+    'views/client/common/modalSearchResultPopup'
 ],
-    function ($, _, Backbone,  toIntroNavigator, SearchModel, doctors, html,
-              MainMenuView, IndexBarView, SearchView, KeyboardView, SearchResultsView) {
+    function ($, _, Backbone,  toIntroNavigator, SearchModel, doctors, html, htmlResults, htmlModalPopUp,
+              MainMenuView, IndexBarView, SearchView, KeyboardView, SearchResultsView, ModalPopUpView) {
         var View = Backbone.View.extend({
             collection : doctors,
             initialize:function () {
@@ -60,9 +63,15 @@ define([
                 this.bindTo(this.searchView, 'searchTermEntered', this.searchTermEntered, this);
 
                 // search results
-                this.searchResultsView = new SearchResultsView(this.searchModel);
+                this.searchResultsView = new SearchResultsView(this.searchModel, htmlResults);
                 this.searchResultsView.setElement(this.$el.find('.searchResults')[0]);
                 this.addChildView(this.searchResultsView);
+                this.bindTo(this.searchResultsView, 'searchResultClicked', this.searchResultClicked, this);
+
+                // modal pop-up
+                this.modalPopUpView = new ModalPopUpView(htmlModalPopUp);
+                this.modalPopUpView.setElement(this.$el.find('.modalPopUpContainer')[0]);
+                this.addChildView(this.modalPopUpView);
             },
 
             searchIndexChanged : function(char) {
@@ -76,6 +85,12 @@ define([
                 });
 
                 this.searchModel.set('results', results);
+            },
+
+            searchResultClicked : function (id) {
+                // find model
+                var model = this.collection.get(id);
+                this.modalPopUpView.showModal(model);
             },
 
             searchTermEntered : function (searchTerm) {

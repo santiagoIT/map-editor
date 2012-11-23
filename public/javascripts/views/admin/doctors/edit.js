@@ -8,7 +8,8 @@ define([
     'biz/imageManager',
     'views/utils/changeImage',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
-    'libs/jquery-plugins/jquery-to-json'
+    'libs/jquery-plugins/jquery-to-json',
+    'bootstrap_wysihtml5'
 ],
     function ($, _, Backbone, require, html, TheModel, imageManager, imageChanger) {
 
@@ -19,16 +20,21 @@ define([
                 'click .navItem' : "onNavigateTo",
                 'click .btnChangeImage' : "onChangeImage"
             },
+            modelLoaded : false,
 
             initialize:function (id) {
                 var self = this;
                 this.model = new TheModel({_id:id});
                 this.model.fetch({success:function(model, response){
+                    self.modelLoaded = true;
                     self.render();
                 }});
             },
 
             render:function () {
+                if (!this.modelLoaded) {
+                    return this;
+                }
                 var options = {
                     model:this.model.toJSON()
                 };
@@ -39,6 +45,11 @@ define([
                 }
 
                 this.$el.html(this.template(options));
+                var $textArea = this.$el.find('textarea[name="details"]');
+                if ($textArea.length > 0) {
+                    $textArea.wysihtml5();
+                }
+
                 return this;
             },
 

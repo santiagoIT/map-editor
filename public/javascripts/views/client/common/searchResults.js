@@ -1,21 +1,21 @@
 define([
     'jquery',
     'Underscore',
-    'backbone',
-    'text!views/client/services/searchResults.html'
+    'backbone'
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone) {
 
         var View = Backbone.View.extend({
             events:{
                 'click .btnPaginationNext': 'showNextPage',
                 'click .btnPaginationPrev': 'showPrevPage',
-                'click .btnPagination': 'showPage'
+                'click .btnPagination': 'showPage',
+                'click .clickable' : 'onSearchResultClicked'
             },
-            template:_.template(html),
 
-            initialize:function (searchModel) {
+            initialize:function (searchModel, html) {
 
+                this.template = _.template(html);
                 this.searchModel = searchModel;
 
                 // subscribe
@@ -43,6 +43,16 @@ define([
                 var subset = results.slice(page*itemsPerPage, page*itemsPerPage+itemsPerPage);
 
                 this.searchModel.set('pageResults', subset);
+            },
+
+            onSearchResultClicked : function(event) {
+                event.preventDefault();
+                var
+                    $el = $(event.target),
+                    $row = $el.closest('.searchRow'),
+                    id = $row.attr('data-id');
+                // trigger event
+               this.trigger('searchResultClicked', id);
             },
 
             render:function () {

@@ -40,15 +40,9 @@ define([
                     }
 
                     var service = new ServiceModel();
-
-                    service.set('title', $form.find('#title').val());
-                    service.set('floorDescription', $form.find('#floorDescription').val());
-                    service.set('description', $form.find('textarea[name="description"]').val());
-                    for(var fieldName in data) {
-                        service.set(fieldName, data[fieldName]);
-                    }
+                    service.set(data);
+                    service.set($form.toJSON());
                     service.save();
-
                     self.collection.add(service);
 
                     // go to maps view

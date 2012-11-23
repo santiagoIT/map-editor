@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="/javascripts/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css"></link>
 <div class="row-fluid">
     <div class="well">
         <form id="frmModel" enctype="multipart/form-data">
@@ -22,6 +23,13 @@
 
                     <div class="controls">
                         <input type="text" class="input-block-level" id="speciality" name="speciality" value="<%= model.speciality %>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Details</label>
+
+                    <div class="controls span12">
+                        <textarea class="field span12" placeholder="Enter content ..." name="details" rows="20"><%= model.details %></textarea>
                     </div>
                 </div>
                 <div class="control-group">

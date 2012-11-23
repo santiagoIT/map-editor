@@ -8,7 +8,8 @@ define([
     'collections/doctors',
     'biz/imageUploader',
     'libs/jquery.iframe-transport/jquery.iframe-transport',
-    'libs/jquery-plugins/jquery-to-json'
+    'libs/jquery-plugins/jquery-to-json',
+    'bootstrap_wysihtml5'
 ],
     function ($, _, Backbone, require, html, TheModel, services, imageUploader) {
 
@@ -20,11 +21,11 @@ define([
             },
 
             initialize:function () {
-
+                this.$el.html(html);
+                this.$el.find('textarea[name="details"]').wysihtml5();
             },
 
             render:function () {
-                this.$el.html(html);
                 return this;
             },
 
@@ -41,10 +42,9 @@ define([
                     }
 
                     var
-                        data2 = $form.toJSON(),
                         newEntry = new TheModel();
                     newEntry.set(data);
-                    newEntry.set(data2);
+                    newEntry.set($form.toJSON());
 
                     newEntry.save([],
                         {

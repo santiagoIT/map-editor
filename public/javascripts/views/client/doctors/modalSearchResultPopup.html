@@ -1,0 +1,11 @@
+<div class="modal-client modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Doctor</h3>
+    </div>
+    <div class="modal-body">
+        <% if (model) { %>
+        <h1><%=model.firstName%> <%=model.lastName%></h1>
+        <% } %>
+    </div>
+</div>

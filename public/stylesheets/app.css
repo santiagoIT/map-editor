@@ -4997,6 +4997,9 @@ body {
 a {
   cursor: pointer;
 }
+.clickable {
+  cursor: pointer;
+}
 .kioskContainer {
   width: 720px;
 }
@@ -5197,9 +5200,6 @@ a {
   clear: both;
   padding-top: 3px;
   padding-left: 3px;
-}
-.keyboard .clickable {
-  cursor: pointer;
 }
 .keyboard .btnKey {
   background-image: url('/images/keyboard/btnKey.png');

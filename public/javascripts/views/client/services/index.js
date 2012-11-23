@@ -6,14 +6,17 @@ define([
     'models/searchModel',
     'collections/services',
     'text!views/client/services/index.html',
+    'text!views/client/services/searchResults.html',
+    'text!views/client/services/modalSearchResultPopup.html',
     'views/client/menu/main',
     'views/client/common/indexBar',
     'views/client/common/search',
     'views/client/keyboard/main',
-    'views/client/services/searchResults'
+    'views/client/common/searchResults',
+    'views/client/common/modalSearchResultPopup'
 ],
-    function ($, _, Backbone,  toIntroNavigator, SearchModel, services, html,
-              MainMenuView, IndexBarView, SearchView, KeyboardView, SearchResultsView) {
+    function ($, _, Backbone,  toIntroNavigator, SearchModel, services, html, htmlResults, htmlModalPopUp,
+              MainMenuView, IndexBarView, SearchView, KeyboardView, SearchResultsView, ModalPopUpView) {
         var View = Backbone.View.extend({
 
             collection : services,
@@ -62,9 +65,15 @@ define([
                 this.bindTo(this.searchView, 'searchTermEntered', this.searchTermEntered, this);
 
                 // search results
-                this.searchResultsView = new SearchResultsView(this.searchModel);
+                this.searchResultsView = new SearchResultsView(this.searchModel, htmlResults);
                 this.searchResultsView.setElement(this.$el.find('.searchResults')[0]);
                 this.addChildView(this.searchResultsView);
+                this.bindTo(this.searchResultsView, 'searchResultClicked', this.searchResultClicked, this);
+
+                // modal pop-up
+                this.modalPopUpView = new ModalPopUpView(htmlModalPopUp);
+                this.modalPopUpView.setElement(this.$el.find('.modalPopUpContainer')[0]);
+                this.addChildView(this.modalPopUpView);
             },
 
             searchIndexChanged : function(char) {
@@ -78,6 +87,13 @@ define([
                 });
 
                 this.searchModel.set('results', results);
+            },
+
+            searchResultClicked : function (id) {
+
+                // find model
+                var model = this.collection.get(id);
+                this.modalPopUpView.showModal(model);
             },
 
             searchTermEntered : function (searchTerm) {
