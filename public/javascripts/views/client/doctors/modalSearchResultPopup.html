@@ -1,11 +1,19 @@
 <div class="modal-client modal hide fade">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Doctor</h3>
+        <div class="pull-right">
+            <img src="/images/doctors/logoHM.png">
+        </div>
     </div>
     <div class="modal-body">
         <% if (model) { %>
-        <h1><%=model.firstName%> <%=model.lastName%></h1>
+        <div class="pull-left doctor-popup-left-colum">
+            <img src="<%= imageUrl %>" alt=" data-id="<%= model._id %>">
+        </div>
+        <div class="pull-right doctor-popup-right-colum">
+            <h4><%=model.firstName%> <%=model.lastName%></h4>
+            <p><%=model.details%></p>
+        </div>
         <% } %>
     </div>
 </div>

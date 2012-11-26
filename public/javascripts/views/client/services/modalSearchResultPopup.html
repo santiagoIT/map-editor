@@ -2,16 +2,21 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <% if (model) { %>
+        <div class="pull-left">
         <h3><%=model.title%></h3>
+        </div>
         <% } %>
+        <div class="pull-right">
+        <img src="/images/services/icon.png" />
+        </div>
     </div>
     <div class="modal-body">
         <% if (model) { %>
         <div>
             <div class="pull-left">
-                <img src="<%= '/data/images/'+ model.imageUrl %> alt=" data-id="<%= model._id %>">
+                <img src="<%= imageUrl %>" alt=" data-id="<%= model._id %>">
             </div>
-            <div class="pull-right">
+            <div class="pull-left">
                 <p><%=model.description%><p>
             </div>
         </div>

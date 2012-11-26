@@ -10,12 +10,10 @@ define([
                 this.template = _.template(html);
             },
 
-            showModal:function(model) {
+            showModal:function(options) {
 
-                this.model = model;
+                this.viewOptions = options;
                 this.render();
-
-                console.log('modal model 11', model);
 
                 var self = this;
                 // show modal
@@ -26,15 +24,14 @@ define([
             },
 
             render:function () {
-                var options = {
-                    model : null
-                };
 
-                if (this.model) {
-                    options.model = this.model.toJSON();
+                if (!this.viewOptions){
+                    this.viewOptions = {
+                        model : null
+                    };
                 }
 
-                this.$el.html(this.template(options));
+                this.$el.html(this.template(this.viewOptions));
 
                 return this;
             }

@@ -92,8 +92,14 @@ define([
             searchResultClicked : function (id) {
 
                 // find model
-                var model = this.collection.get(id);
-                this.modalPopUpView.showModal(model);
+                var options = {
+                    model : this.collection.get(id).toJSON(),
+                    imageUrl : '/images/services/default.png'
+                };
+                if (options.model.imageUrl){
+                    options.imageUrl = '/data/images/'+ options.model.imageUrl;
+                }
+                this.modalPopUpView.showModal(options);
             },
 
             searchTermEntered : function (searchTerm) {

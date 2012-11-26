@@ -5015,6 +5015,10 @@ a {
 }
 .modal-client .modal-header {
   margin-top: 35px;
+  border-bottom: none;
+}
+.modal-client .modal-body {
+  width: 680px;
 }
 .modal-client a {
   color: #fff;
@@ -5291,6 +5295,14 @@ a {
   height: 800px;
   top: 300px;
   left: 20px;
+}
+.doctors-container .doctor-popup-left-colum {
+  width: 250px;
+  height: 300px;
+}
+.doctors-container .doctor-popup-right-colum {
+  width: 300px;
+  height: 300px;
 }
 .services-container {
   background-image: url('/images/common/bkgd.jpg');
