@@ -12,7 +12,7 @@ var
 function ensureAuthenticated(req, res, next) {
 
     // no auth if running locally
-    if (process.env['heroku']){
+    if (!process.env['heroku']){
         return next();
     }
 
