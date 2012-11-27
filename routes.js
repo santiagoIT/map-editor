@@ -10,9 +10,11 @@ var
     ;
 
 function ensureAuthenticated(req, res, next) {
-    // TODO: remove once in production
-    return next();
-    // END TODO
+
+    // no auth if running locally
+    if (process.env['heroku']){
+        return next();
+    }
 
     if (req.isAuthenticated()) {
         return next();
@@ -34,7 +36,7 @@ module.exports = function (app) {
     app.get('/login', home.login);
     app.post('/login', passport.authenticate('local',
         {
-            successRedirect:'/',
+            successRedirect:'/admin',
             failureRedirect:'/login'
         })
     );

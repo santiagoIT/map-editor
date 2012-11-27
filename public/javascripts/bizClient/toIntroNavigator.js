@@ -7,7 +7,7 @@ define([
     function ($, _, Backbone, modalHtml) {
 
        var
-           _secsToWait = 12,//100, // number of seconds
+           _secsToWait = 100, // number of seconds
            _counter,
            _timerId,
            _$modal = null,

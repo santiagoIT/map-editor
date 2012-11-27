@@ -22,14 +22,16 @@ passport.use(new LocalStrategy({
 
 // serialize user on login
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user);
 });
 
 // deserialize user on logout
 passport.deserializeUser(function(id, done) {
-    User.findById(id, function (err, user) {
-        done(err, user);
-    });
+    done(null, id);
+
+//    User.findById(id, function (err, user) {
+//        done(err, user);
+//    });
 });
 
 // connect to database
@@ -42,7 +44,6 @@ module.exports = {
         mongoose.connection.on('open', function() {
             console.log('We have connected to mongodb: ' + dbToUse);
         });
-
     },
 
     // save a user

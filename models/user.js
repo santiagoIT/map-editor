@@ -25,23 +25,36 @@ UserSchema
     .set(function (password) {
         this._password = password;
   //      var salt = this.salt = bcrypt.genSaltSync(10);
-  //      this.hash = bcrypt.hashSync(password, salt);
+    //    this.hash = bcrypt.hashSync(password, salt);
     });
 
 UserSchema.method('verifyPassword', function(password, callback) {
-    //bcrypt.compare(password, this.hash, callback);
+    console.log('verifyPassword ..', password, this.hash);
+//    bcrypt.compare(password, this.hash, callback);
 });
 
 UserSchema.static('authenticate', function(email, password, callback) {
-    this.findOne({ email: email }, function(err, user) {
-        if (err) { return callback(err); }
-        if (!user) { return callback(null, false); }
-        user.verifyPassword(password, function(err, passwordCorrect) {
-            if (err) { return callback(err); }
-            if (!passwordCorrect) { return callback(null, false); }
-            return callback(null, user);
-        });
-    });
+
+    if (email != 'hm@itworks.ec' && password != '123'){
+        return callback(null, false);
+    }
+    var user = {
+        name : { first: 'Admin', last: 'Istrator' }
+        , email: 'hm@itworks.ec'
+        , password: 'asdsdssdsd'
+    };
+
+    return callback(null, user);
+//
+//    this.findOne({ email: email }, function(err, user) {
+//        if (err) { return callback(err); }
+//        if (!user) { return callback(null, false); }
+//        user.verifyPassword(password, function(err, passwordCorrect) {
+//            if (err) { return callback(err); }
+//            if (!passwordCorrect) { return callback(null, false); }
+//            return callback(null, user);
+//        });
+//    });
 });
 
 module.exports = mongoose.model('User', UserSchema);

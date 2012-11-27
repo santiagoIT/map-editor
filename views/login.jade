@@ -1,17 +1,17 @@
 title Login to MapEditor
-
-div
-  div#header
-    h2 Map Editor
-    p Log In
-
-  div
-    form(action='/login', method='POST')
-      #login.center
-        label(for='email') Email: 
-        input(type='text', name='email', placeholder='email@email.com')
-      #password.center
-        label(for='password') Password: 
-        input(type='password', name='password', placeholder='password')
-      #submit.button
-        input(type='submit', value='Log Me In!') Login
+link(rel='stylesheet', href='/stylesheets/app.css')
+.container
+    .row
+        div
+          div#header
+            h2 Map Editor
+          div
+            form(action='/login', method='POST')
+              #login.center
+                label(for='email') Email:
+                input(type='text', name='email', placeholder='email@email.com')
+              #password.center
+                label(for='password') Password:
+                input(type='password', name='password', placeholder='password')
+              #submit.button
+                input(type='submit', value='Log In!') Login

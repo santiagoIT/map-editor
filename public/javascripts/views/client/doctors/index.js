@@ -77,7 +77,7 @@ define([
             searchIndexChanged : function(char) {
                 var charLower = char.toLowerCase();
                 var results = this.collection.filter(function (service) {
-                    var name = service.get("title");
+                    var name = service.get("lastName");
                     if (name && (name[0] == char || name[0] == charLower)) {
                         return true;
                     }
