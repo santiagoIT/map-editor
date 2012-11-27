@@ -37,7 +37,8 @@ define([
 
                     var map = new MapModel();
 
-                    map.set('name', $form.find('#name').val());
+                    map.set($form.toJSON());
+                    //map.set('name', $form.find('#name').val());
                     for(var fieldName in data) {
                         map.set(fieldName, data[fieldName]);
                     }

@@ -13,6 +13,7 @@ var NodeSchema = new Schema({
 var MapSchema = new Schema({
     'id':ObjectId,
     'name':{ type:String, index:true, default:'' },
+    'shortName':{ type:String, index:true, default:'??' },
     'linkImageName':{ type:String, default:'' }, // image to appear in the map links sections
     'floor':{type:Number, default:1}, // floor number so links can be sorted by floor
     'imageName':String,
