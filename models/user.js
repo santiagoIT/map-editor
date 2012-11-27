@@ -35,7 +35,7 @@ UserSchema.method('verifyPassword', function(password, callback) {
 
 UserSchema.static('authenticate', function(email, password, callback) {
 
-    if (email != 'hm@itworks.ec' && password != '123'){
+    if (email != 'touch@hm.com' && password != 'metro2012'){
         return callback(null, false);
     }
     var user = {
