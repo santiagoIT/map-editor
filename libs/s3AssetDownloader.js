@@ -8,7 +8,7 @@ var
     ServiceModel = require('../models/service');
 
 var
-    S3ROOT = 'https//s3.amazonaws.com/itworks.ec/mapeditor/images/',
+    S3ROOT = 'http://s3.amazonaws.com/itworks.ec/mapeditor/images/',
     downloadDirectory = 'tmp',
     arAssetList = new Array();
 
@@ -45,7 +45,7 @@ var downloadFile = function(storedPath, callback) {
 
     // obtain final path and create if it does not exist!
     var fullPath = path.join(downloadDirectory, storedPath);
-    var fileUrl = path.join(S3ROOT, storedPath);
+    var fileUrl = S3ROOT + storedPath;
 
     // targetDir
     var targetDir = path.dirname(fullPath);
@@ -65,6 +65,15 @@ var downloadFile = function(storedPath, callback) {
     }
 
     var file = fs.createWriteStream(fullPath);
+    var request = http.get(fileUrl, function(response) {
+        console.log('DOWNLOADED: ' + fileUrl + ' to: ' + fullPath);
+        response.pipe(file);
+        callback();
+    });
+
+/*
+
+    var file = fs.createWriteStream(fullPath);
     http.get(fileUrl, function(res) {
         res.on('data', function(data) {
             file.write(data);})
@@ -78,7 +87,7 @@ var downloadFile = function(storedPath, callback) {
                 file.end();
                 callback(e);
             });
-    })
+    })*/
 };
 
 var fnProcessMaps = function(callback) {
@@ -106,7 +115,6 @@ module.exports = {
         }
         // get list of all used assets
         async.parallel([fnProcessMaps, fnProcessServices, fnProcessDoctors], function(err, results){
-            console.log('arAssetList', arAssetList);
 
             // copy locally
             async.forEach(arAssetList, function(item, callback) {
