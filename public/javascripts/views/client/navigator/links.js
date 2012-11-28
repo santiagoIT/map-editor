@@ -57,6 +57,13 @@ define([
 
             showMap : function(el){
 
+                // do nothing if pathfinding is active.
+                var
+                    journey = this.model.get('journey');
+                if (journey){
+                    return false;
+                }
+
                 this.toIntroNavigator.startCounting();
 
                 var $btn = $(el.target).parent();
@@ -65,6 +72,7 @@ define([
                 }
                 var mapId = $btn.attr('data-mapid');
                 if (mapId) {
+                    // TODO: clear pathfinding results!
                     this.model.showMap(mapId);
                 }
                 return false;
