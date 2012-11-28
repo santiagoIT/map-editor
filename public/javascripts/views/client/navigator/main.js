@@ -9,6 +9,7 @@ define([
     'models/navigator',
     'models/searchModel',
     'text!views/client/navigator/main.html',
+    'text!views/client/services/modalSearchResultPopup.html',
     'views/client/navigator/links',
     'views/client/navigator/search',
     'views/client/navigator/map',
@@ -16,16 +17,18 @@ define([
     'views/client/navigator/searchModalFrame',
     'views/client/menu/main',
     'views/client/keyboard/main',
+    'views/client/common/modalSearchResultPopup',
     'bootstrap'
 ],
-    function ($, _, Backbone, locations, maps, tunnels, locations, NavigatorModel, SearchModel, html,
+    function ($, _, Backbone, locations, maps, tunnels, locations, NavigatorModel, SearchModel, html, htmlLocationPopup,
         LinkView,
         SearchView,
         MapView,
         tunnelTransition,
         SearchModalFrameView,
         MainMenuView,
-        KeyboardView) {
+        KeyboardView,
+        ModalPopUpView) {
         var View = Backbone.View.extend({
 
             initialize:function () {
@@ -79,15 +82,43 @@ define([
                 var mapView = new MapView(this.model, maps, locations);
                 this.addChildView(mapView);
                 this.$el.find('#mapHolder').append(mapView.el);
+                this.bindTo(mapView, 'displayLocationInfo', this.onDisplayLocationInfo, this);
 
                 // header menu
                 var mainMenuView = new MainMenuView();
                 mainMenuView.setElement(this.$el.find('#menuHeader')[0]);
                 this.addChildView(mainMenuView);
+
+                // location popup
+                // modal pop-up
+                this.locationPopUpView = new ModalPopUpView(htmlLocationPopup);
+                this.locationPopUpView.setElement(this.$el.find('.locationPopUpContainer')[0]);
+                this.addChildView(this.locationPopUpView);
+            },
+
+            onDisplayLocationInfo : function(location) {
+
+                var self = this;
+                var options = {
+                    model : location.toJSON(),
+                    imageUrl : '/images/services/default.png',
+                    navigateTo: function($el, options) {
+                        var $modal = $el.closest('.modal');
+                        $modal.modal('hide');
+                        $modal.on('hidden', function () {
+                            self.model.navigateTo(location);
+                        });
+                    }
+                };
+                if (options.model.imageUrl){
+                    options.imageUrl = '/data/images/'+ options.model.imageUrl;
+                }
+                console.log('location', options);
+                this.locationPopUpView.showModal(options);
             },
 
             render:function () {
-
+                return this;
             },
 
             navigationChanged : function(model){

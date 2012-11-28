@@ -296,10 +296,8 @@ define([
                         this.closestHotSpot = closestHotSpot.hotspot;
                         this.render();
                     }else {
-                        this.model.navigateTo(closestHotSpot.hotspot);
+                        this.trigger('displayLocationInfo', closestHotSpot.hotspot);
                     }
-
-
                 }
             }
         });
