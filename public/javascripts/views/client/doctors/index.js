@@ -57,6 +57,7 @@ define([
                 this.addChildView(this.keyboardView);
 
                 // search view
+                this.searchModel.set('itemsPerPage', 35);
                 this.searchView = new SearchView(this.keyboardView, this.searchModel);
                 this.searchView.setElement(this.$el.find('.searchContainer')[0]);
                 this.addChildView(this.searchView);

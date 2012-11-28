@@ -78,6 +78,7 @@ define([
                         return map.get('shortName');
                     }
                 }
+                this.searchModel.set('itemsPerPage', 35);
                 this.searchResultsView = new SearchResultsView(this.searchModel, htmlResults, renderOptions);
                 this.searchResultsView.setElement(this.$el.find('.searchResults')[0]);
                 this.addChildView(this.searchResultsView);

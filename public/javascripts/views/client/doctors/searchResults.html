@@ -2,7 +2,7 @@
     <div class="search-left pull-left"><h4>Doctor</h4></div>
     <div class="search-left pull-right"><h4>Especialidad</h4></div>
 </div>
-
+<div class="searchResultsLarge">
 <% if (_.size(search.data) > 0) { %>
 <% _.each(search.data,function(item,key,list){ %>
 <div class="searchRow" data-id="<%=item._id%>">
@@ -10,6 +10,7 @@
     <div class="search-left pull-right clickable"><%=item.speciality%></div>
 </div>
 <% }) %>
+</div>
 <% if (search.pageCount > 1) { %>
 <div class="pagination">
     <ul>

@@ -5039,6 +5039,9 @@ a {
   color: white;
   opacity: 0.6;
 }
+.searchResultsLarge {
+  height: 860px;
+}
 .intro-container {
   background-image: url('/images/intro/bkgd.jpg');
   background-repeat: no-repeat;
