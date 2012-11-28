@@ -50,6 +50,8 @@ define([
                 this.ctx = this.el.getContext('2d');
 
                 this.toIntroNavigator = toIntroNavigator;
+
+                this.$el.addClass('clickable');
             },
 
             render:function () {
