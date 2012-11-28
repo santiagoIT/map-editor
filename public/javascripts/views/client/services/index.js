@@ -92,6 +92,10 @@ define([
             searchIndexChanged : function(char) {
                 var charLower = char.toLowerCase();
                 var results = this.collection.filter(function (service) {
+                    if (!service.get('includeInSearch')){
+                        return false;
+                    }
+
                     var name = service.get("name");
                     if (name && (name[0] == char || name[0] == charLower)) {
                         return true;
@@ -117,7 +121,7 @@ define([
 
             searchTermEntered : function (searchTerm) {
                 var results = this.collection.filter(function (loc) {
-                    if (!loc.includeInSearch){
+                    if (!loc.get('includeInSearch')){
                         return false;
                     }
 
