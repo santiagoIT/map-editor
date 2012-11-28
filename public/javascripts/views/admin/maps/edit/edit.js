@@ -217,11 +217,20 @@ define([
             imageChanger(folder, name, callback);
         },
 
-        onSaveMapMetaData : function() {
+        onSaveMapMetaData : function(event) {
+
+            event.preventDefault();
 
             var data = $('#frmMapMetaData').toJSON();
-            this.model.set(data);
-            this.model.save();
+            this.model.save(data,
+                {
+                    success: function(model, response, options){
+                        alert('Your changes have been saved!');
+                    },
+                    error:function(model, xhr, options) {
+                        alert('Error ocurred!');
+                    }
+                });
 
             return false;
         }
