@@ -4,20 +4,29 @@ define([
     'backbone',
     'bizClient/toIntroNavigator',
     'biz/imageManager',
+    'biz/kioskHelper',
     'pathfinder',
-    'biz/mapIcons'
+    'biz/mapIcons',
+    'models/mapModel'
 ],
-    function ($, _, Backbone, toIntroNavigator, imageManager, PF, mapIcons) {
+    function ($, _, Backbone, toIntroNavigator, imageManager, kioskHelper, PF, mapIcons, MapModel) {
 
         var View = Backbone.View.extend({
             events:{
+                'click' : "onCanvasClick"
             },
             tagName:'canvas',
             id:'mapCanvas',
             destinations: [],
             finalDestinationReached:false,
 
-            initialize:function (model, maps) {
+            initialize:function (model, maps, locations) {
+
+                // options
+                this.settings = {
+                    mapsShowHotspots : kioskHelper.getValueFromLocalStorage('mapsShowHotspots', "false"),
+                    mapsShowClosestClickTarget : kioskHelper.getValueFromLocalStorage('mapsShowClosestClickTarget', "false")
+                }
 
                 imageManager.setRunLocally(true);
 
@@ -27,10 +36,15 @@ define([
                 if (mapId) {
                     this.onCurrentMapChanged();
                 }
+                this.mapModel = new MapModel({_id:mapId});
+                this.mapModel.fetch({async:false});
+
                 this.bindTo(this.model, 'change:currentMapId', this.onCurrentMapChanged);
                 this.bindTo(this.model, 'change:transitionTo', this.onTransitionTo);
                 this.bindTo(this.model, 'change:pathFind', this.onPathFind);
                 this.bindTo(this.model, 'destinationNodeReached', this.onDestinationReached);
+
+                this.hotspots = locations.where({mapId:mapId});
 
                 // get canvas context
                 this.ctx = this.el.getContext('2d');
@@ -78,6 +92,21 @@ define([
                     }
                     else {
                         this.showPath(columnQty, rowQty, margins);
+                    }
+                }
+
+                // show hotspots
+                if (this.settings.mapsShowHotspots === 'true' && this.hotspots.length>0) {
+                    _.each(this.hotspots, function(hotspot) {
+                        var node = hotspot.get('node');
+                        mapIcons.drawHotspot(self.ctx, node.x * columnWidth + margins.left+columnWidth*0.5, node.y * rowHeight + margins.top+rowHeight*0.5);
+                    });
+                }
+
+                if (this.settings.mapsShowClosestClickTarget === 'true' && this.closestHotSpot) {
+                    var node = this.closestHotSpot.get('node');
+                    if (node) {
+                        mapIcons.drawTarget(this.ctx, node.x * columnWidth + margins.left+columnWidth*0.5, node.y * rowHeight + margins.top+rowHeight*0.5);
                     }
                 }
 
@@ -220,6 +249,58 @@ define([
                     self.$el.css('background-image', 'url("' + fallbackUrl + '")'); // Set source path
                 };
                 image.src = url;
+            },
+
+            onCanvasClick : function(event) {
+                var node = mapIcons.getNodeFromMouseCoordinates(this.mapModel, this.$el, event.pageX, event.pageY);
+                if (!node || !this.hotspots) {
+                    return;
+                }
+
+                // abort if PF underway...
+                var journey = this.model.get('journey');
+                if (journey) {
+                    return;
+                }
+
+                // check all nodes and find the closest one
+                var closestHotSpot = null;
+                _.each(this.hotspots, function(hotspot) {
+                    // deltas
+                    var
+                        dX = Math.abs(hotspot.get('node').x - node.x),
+                        dY = Math.abs(hotspot.get('node').y - node.y);
+
+                    if (!closestHotSpot) {
+                        closestHotSpot = {
+                            hotspot:hotspot,
+                            dX : dX,
+                            dY : dY
+                        };
+                        return;
+                    }
+
+                    // build sum
+                    if ((dX + dY) < (closestHotSpot.dX+closestHotSpot.dY)) {
+                        closestHotSpot = {
+                            hotspot:hotspot,
+                            dX : dX,
+                            dY : dY
+                        };
+                    }
+                });
+
+                if (closestHotSpot) {
+                    if (this.settings.mapsShowClosestClickTarget === 'true') {
+                        console.log('pathfinding skipped. Set "mapsShowClosestClickTarget" to off.');
+                        this.closestHotSpot = closestHotSpot.hotspot;
+                        this.render();
+                    }else {
+                        this.model.navigateTo(closestHotSpot.hotspot);
+                    }
+
+
+                }
             }
         });
         // Our module now returns an instantiated view

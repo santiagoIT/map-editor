@@ -2,7 +2,9 @@ define(function () {
     var
         imgKioskSrc = '/images/common/kiosk.png',
         imgTargetSrc = '/images/common/target.png',
+        imgHotspotSrc = '/images/common/hotspot.png',
         imgKioskWidth, imgKioskHeight,
+        imgHotspotWidth, imgHotspotHeight,
         imgTargetWidth, imgTargetHeight;
 
     var imgKiosk = new Image();
@@ -19,6 +21,12 @@ define(function () {
     }
     imgTarget.src = imgTargetSrc;
 
+    var imgHotspot = new Image();
+    imgHotspot.onload = function () {
+        imgHotspotWidth = this.width;
+        imgHotspotHeight = this.height;
+    }
+    imgHotspot.src = imgHotspotSrc;
 
     var fnNodeToCoordinates = function(node, rowHeight, columnWidth, margins) {
         if (!node) {
@@ -39,6 +47,10 @@ define(function () {
             ctx.drawImage(imgTarget, x-imgTargetWidth*0.5, y-imgTargetHeight*0.5);
         },
 
+        drawHotspot : function(ctx, x, y) {
+            ctx.drawImage(imgHotspot, x-imgHotspotWidth*0.5, y-imgHotspotHeight*0.5);
+        },
+
         drawPath : function(ctx, startIndex, path, rowHeight, columnWidth, margins) {
 
             var lastNode = fnNodeToCoordinates(path[startIndex], rowHeight, columnWidth, margins);
@@ -52,6 +64,30 @@ define(function () {
                 ctx.lineTo(pt.x,pt.y);
             }
             ctx.stroke();
+        },
+
+        getNodeFromMouseCoordinates : function (map, $el, clickX, clickY) {
+            var columnQty = map.get('x');
+            var rowQty = map.get('y');
+            var margins = map.getMargins();
+            var rowHeight = ($el.height() - (margins.top + margins.bottom)) / rowQty;
+            var columnWidth = ($el.width() - (margins.left + margins.right)) / columnQty;
+
+            var x1 = clickX - ($el.offset().left + margins.left);
+            var y1 = clickY - ($el.offset().top + margins.top);
+
+            var x = Math.floor(x1 / columnWidth);
+            var y = Math.floor(y1 / rowHeight);
+
+            // in bounds?
+            if (y >= rowQty || x >= columnQty || x1 < 0 || y1 < 0) {
+                return null;
+            }
+
+            return {
+                x:x,
+                y:y
+            };
         }
     };
 });

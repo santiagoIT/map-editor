@@ -29,6 +29,9 @@ define([
             'doctors_edit/:id' : 'doctors_edit',
             'doctors_create' : 'doctors_create',
 
+            // settings
+            'settings' : 'settings',
+
             // Default
             '*actions':'defaultAction'
         },
@@ -99,6 +102,10 @@ define([
 
         tunnels_edit : function(id){
             this.launchView('views/admin/tunnels/edit', id);
+        },
+
+        settings : function() {
+            this.launchView('views/admin/settings/index');
         },
 
         defaultAction:function (actions) {

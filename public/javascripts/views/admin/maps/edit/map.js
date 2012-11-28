@@ -169,30 +169,6 @@ define([
                 this.ctx.fillRect(node.x * columnWidth + margins.left, node.y * rowHeight + margins.top, columnWidth, rowHeight);
             },
 
-            getMatrixPosition:function (clickX, clickY) {
-                var columnQty = this.model.get('x');
-                var rowQty = this.model.get('y');
-                var margins = this.model.getMargins();
-                var rowHeight = (this.$el.height() - (margins.top + margins.bottom)) / rowQty;
-                var columnWidth = (this.$el.width() - (margins.left + margins.right)) / columnQty;
-
-                var x1 = clickX - (this.$el.offset().left + margins.left);
-                var y1 = clickY - (this.$el.offset().top + margins.top);
-
-                var x = Math.floor(x1 / columnWidth);
-                var y = Math.floor(y1 / rowHeight);
-
-                // in bounds?
-                if (y >= rowQty || x >= columnQty || x1 < 0 || y1 < 0) {
-                    return null;
-                }
-
-                return {
-                    x:x,
-                    y:y
-                };
-            },
-
             onCanvasClick:function (e) {
 
                 var
@@ -200,26 +176,26 @@ define([
 
                 switch (mapState.get('editorMode')) {
                     case 'markerLocation':
-                        node = this.getMatrixPosition(e.pageX, e.pageY);
+                        node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                         if (node) {
                             mapState.set('markerNode', {x:node.x, y:node.y});
                         }
                         break;
 
                     case 'pathfinding':
-                        node = this.getMatrixPosition(e.pageX, e.pageY);
+                        node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                         if (node) {
                             mapState.set('targetNode', node);
                         }
                         break;
 
                     case 'nodeInfo':
-                        node = this.getMatrixPosition(e.pageX, e.pageY);
+                        node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                         mapState.set('selectedNode', node);
                         break;
 
                     case 'setKioskLocation':
-                        node = this.getMatrixPosition(e.pageX, e.pageY);
+                        node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                         kioskHelper.setKioskLocation(this.model.get('_id'), node);
                         this.render();
                         break;
@@ -229,7 +205,7 @@ define([
             onCanvasMouseMove:function (e) {
                 if (mapState.get('editorMode') === 'toggleNode') {
                     if (this._mouseDown !== undefined) {
-                        var node = this.getMatrixPosition(e.pageX, e.pageY);
+                        var node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                         if (node) {
                             if (this._mouseDown) {
                                 this.model.clearNode(node.x, node.y);
@@ -244,7 +220,7 @@ define([
 
             onCanvasMouseDown:function (e) {
                 if (mapState.get('editorMode') === 'toggleNode') {
-                    var node = this.getMatrixPosition(e.pageX, e.pageY);
+                    var node = mapIcons.getNodeFromMouseCoordinates(this.model, this.$el, e.pageX, e.pageY);
                     if (node) {
                         this._mouseDown = this.model.toggleNode(node.x, node.y);
                     }

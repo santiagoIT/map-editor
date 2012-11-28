@@ -1,0 +1,31 @@
+<div class="row-fluid">
+    <div class="well">
+        <form>
+            <fieldset>
+                <legend>Edit Settings</legend>
+                <div class="control-group">
+                    <label class="checkbox">
+                        <% if (mapsShowHotspots == "true") { %>
+                        <input type="checkbox" name="mapsShowHotspots" value="<%=mapsShowHotspots%>" checked="true">Show Locations in Map
+                        <% } else { %>
+                        <input type="checkbox" name="mapsShowHotspots" value="<%=mapsShowHotspots%>">Show Locations in Map
+                        <% } %>
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="checkbox">
+                        <% if (mapsShowClosestClickTarget == "true") { %>
+                        <input type="checkbox" name="mapsShowClosestClickTarget" value="<%=mapsShowClosestClickTarget%>" checked="true">Show Closest Location On Click
+                        <% } else { %>
+                        <input type="checkbox" name="mapsShowClosestClickTarget" value="<%=mapsShowClosestClickTarget%>">Show Closest Location On Click
+                        <% } %>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Save</button>
+                    <button class="btn navItem" data-navitem="">Cancel</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

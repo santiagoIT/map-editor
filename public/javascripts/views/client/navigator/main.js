@@ -5,6 +5,7 @@ define([
     'collections/locations',
     'collections/maps',
     'collections/tunnels',
+    'collections/locations',
     'models/navigator',
     'models/searchModel',
     'text!views/client/navigator/main.html',
@@ -17,7 +18,7 @@ define([
     'views/client/keyboard/main',
     'bootstrap'
 ],
-    function ($, _, Backbone, locations, maps, tunnels, NavigatorModel, SearchModel, html,
+    function ($, _, Backbone, locations, maps, tunnels, locations, NavigatorModel, SearchModel, html,
         LinkView,
         SearchView,
         MapView,
@@ -41,7 +42,8 @@ define([
                 var def1 = locations.fetch();
                 var def2 = maps.fetch();
                 var def3 = tunnels.fetch();
-                $.when(def1,def2, def3).done(function(){
+                var def4 = locations.fetch();
+                $.when(def1,def2, def3, def4).done(function(){
                     self.setupChildViews();
                 }).fail(function(err){
                         console.log('failled!');
@@ -74,7 +76,7 @@ define([
                 searchResultsView.prepareSearchResults();
 
                 // map view
-                var mapView = new MapView(this.model, maps);
+                var mapView = new MapView(this.model, maps, locations);
                 this.addChildView(mapView);
                 this.$el.find('#mapHolder').append(mapView.el);
 
