@@ -5009,8 +5009,8 @@ a {
 .modal-client {
   background-color: transparent;
   background-image: url('/images/common/bkgdModal.png');
-  width: 720px;
-  height: 485px;
+  width: 680px;
+  height: 456px;
   color: #ffffff;
 }
 .modal-client .modal-header {
