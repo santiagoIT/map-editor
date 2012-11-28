@@ -5012,6 +5012,11 @@ a {
   width: 680px;
   height: 456px;
   color: #ffffff;
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  left: 41%;
 }
 .modal-client .modal-header {
   margin-top: 35px;
