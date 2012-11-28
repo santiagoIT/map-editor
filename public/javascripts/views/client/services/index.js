@@ -111,7 +111,16 @@ define([
                 // find model
                 var options = {
                     model : this.collection.get(id).toJSON(),
-                    imageUrl : '/images/services/default.png'
+                    imageUrl : '/images/services/default.png',
+                    navigateTo: function($el, options) {
+                        var $modal = $el.closest('.modal');
+                        $modal.modal('hide');
+                        $modal.on('hidden', function () {
+                            require(['itworks.app'], function (app) {
+                                app.getRouter().navigate('kiosk/'+id, {trigger:true, id:'santi'});
+                            });
+                        });
+                    }
                 };
                 if (options.model.imageUrl){
                     options.imageUrl = '/data/images/'+ options.model.imageUrl;

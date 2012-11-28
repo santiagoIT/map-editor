@@ -31,7 +31,8 @@ define([
         ModalPopUpView) {
         var View = Backbone.View.extend({
 
-            initialize:function () {
+            // id represents location to which to navigate to
+            initialize:function (locationId) {
 
                 this.model = new NavigatorModel();
                 this.searchModel = new SearchModel();
@@ -48,6 +49,12 @@ define([
                 var def4 = locations.fetch();
                 $.when(def1,def2, def3, def4).done(function(){
                     self.setupChildViews();
+                    if (locationId) {
+                        var location = locations.get(locationId);
+                        if (location) {
+                            self.model.navigateTo(location);
+                        }
+                    }
                 }).fail(function(err){
                         console.log('failled!');
                         console.log(err);

@@ -11,6 +11,7 @@ define([
             '' : 'intro',
             'menu':'home',
             'kiosk' : 'kiosk',
+            'kiosk/:id' : 'kiosk',
             'services' : 'services',
             'doctors' : 'doctors',
 
@@ -29,8 +30,8 @@ define([
         },
 
         // client
-        kiosk : function() {
-            this.launchView('views/client/navigator/main');
+        kiosk : function(id) {
+            this.launchView('views/client/navigator/main', id);
         },
 
         // doctors

@@ -23,7 +23,9 @@ define([
                 this.$el.html(html);
                 // get current hash tag
                 if(window.location.hash) {
-                    switch(window.location.hash){
+                    var hashRoot = window.location.hash.split('/')[0];
+
+                    switch(hashRoot){
                         case '#kiosk':
                             this.$el.find('#mnuItemMaps').addClass('active');
                             break;
