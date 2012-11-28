@@ -6,8 +6,8 @@
 <% if (_.size(search.data) > 0) { %>
     <% _.each(search.data,function(item,key,list){ %>
     <div class="searchRow" data-id="<%=item._id%>">
-        <div class="search-left pull-left clickable"><%=item.title%></div>
-        <div class="search-left pull-right clickable"><%=item.floorDescription%></div>
+        <div class="search-left pull-left clickable"><%=item.name%></div>
+        <div class="search-left pull-right clickable"><%=getMapShortNameFor(item)%></div>
     </div>
     <% }) %>
 <% if (search.pageCount > 1) { %>

@@ -8,6 +8,8 @@ var LocationSchema = new Schema({
     'id':ObjectId,
     'name' : {type: String},
     'description' :  {type: String},
+    'imageUrl' : {type: String},
+    'includeInSearch' : {type: Boolean, default: true},
 
     // map node
     'mapId' : ObjectId,

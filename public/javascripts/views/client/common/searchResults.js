@@ -13,10 +13,11 @@ define([
                 'click .clickable' : 'onSearchResultClicked'
             },
 
-            initialize:function (searchModel, html) {
+            initialize:function (searchModel, html, renderOptions) {
 
                 this.template = _.template(html);
                 this.searchModel = searchModel;
+                this.renderOptions = renderOptions;
 
                 // subscribe
                 this.bindTo(this.searchModel, 'change:pageResults', this.render);
@@ -57,10 +58,13 @@ define([
 
             render:function () {
 
-                var data = {
+                var options = {
                     search : this.searchModel.getPaginationViewModel()
                 };
-                this.$el.html(this.template(data));
+                if (this.renderOptions){
+                    _.extend(options,this.renderOptions);
+                }
+                this.$el.html(this.template(options));
 
                 return this;
             },

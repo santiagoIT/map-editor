@@ -1,0 +1,19 @@
+<td><%= model.name %></td>
+<td>
+    <% if (model.includeInSearch) { %>
+    <input disabled="disabled" type="checkbox" name="includeInSearch" checked="true">
+    <% } else { %>
+    <input disabled="disabled" type="checkbox" name="includeInSearch">
+    <% } %>
+</td>
+<td><%= model.description %></td>
+<td><%= mapName %></td>
+<td>
+    <div class="span3">
+        <a class="thumbnail edit">
+            <img src=<%= s3Root + model.imageUrl %> alt="" data-id="<%= model._id %>">
+        </a>
+    </div>
+</td>
+<td><a class="edit" data-id="<%= model._id %>">Edit</a></td>
+<td><a class="delete" data-id="<%= model._id %>">Delete</a></td>

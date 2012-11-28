@@ -5,7 +5,7 @@ var
     http = require('http'),
     MapModel = require('../models/map'),
     DoctorModel = require('../models/doctor'),
-    ServiceModel = require('../models/service');
+    LocationModel = require('../models/location');
 
 var
     S3ROOT = 'http://s3.amazonaws.com/itworks.ec/mapeditor/images/',
@@ -70,24 +70,6 @@ var downloadFile = function(storedPath, callback) {
         response.pipe(file);
         callback();
     });
-
-/*
-
-    var file = fs.createWriteStream(fullPath);
-    http.get(fileUrl, function(res) {
-        res.on('data', function(data) {
-            file.write(data);})
-            .on('end', function() {
-                console.log('DOWNLOADED: ' + fileUrl);
-                file.end();
-                callback();
-            })
-            .on('error', function(e) {
-                console.log("ERROR: " + e.message);
-                file.end();
-                callback(e);
-            });
-    })*/
 };
 
 var fnProcessMaps = function(callback) {
@@ -95,7 +77,7 @@ var fnProcessMaps = function(callback) {
 }
 
 var fnProcessServices = function(callback) {
-    fnProcessGenericCollection(callback, ServiceModel, ['imageUrl']);
+    fnProcessGenericCollection(callback, LocationModel, ['imageUrl']);
 }
 
 var fnProcessDoctors = function(callback) {

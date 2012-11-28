@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="/javascripts/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css"></link>
+<div class="row-fluid">
 <div class="well">
     <form>
         <fieldset>
@@ -9,10 +11,14 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="description">Description</label>
-                <div class="controls">
-                    <input type="text" class="input-xlarge" id="description" name="description" value="<%=model.description%>">
-                </div>
+                <label class="checkbox">
+                    <% if (model.includeInSearch) { %>
+                        <input type="checkbox" name="includeInSearch" value="<%=model.includeInSearch%>" checked="true">Include in Search
+                    <% } else { %>
+                        <input type="checkbox" name="includeInSearch" value="<%=model.includeInSearch%>">Include in Search
+                    <% } %>
+
+                </label>
             </div>
             <div class="control-group">
                 <span>Location</span>
@@ -41,10 +47,26 @@
                     </select>
                 </label>
             </div>
+            <div class="control-group">
+                <% if (typeof(imageUrl) != 'undefined') {%>
+                <img id="imgLocation" src="<%=imageUrl%>" alt="mapIcon"/>
+                <% } %>
+                <div>
+                    <button class="btn btn-small btn-primary btnChangeImage" data-folder="locations" data-name="imageUrl">Change image</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Description</label>
+
+                <div class="controls span12">
+                    <textarea class="field span12" placeholder="Enter content ..." name="description" rows="20"><%= model.description %></textarea>
+                </div>
+            </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary" id="btnSubmit">Save</button>
                 <button class="btn navItem" data-navitem="locations">Cancel</button>
             </div>
         </fieldset>
     </form>
+</div>
 </div>

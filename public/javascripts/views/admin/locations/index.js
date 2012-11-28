@@ -5,16 +5,17 @@ define([
     'require',
     'text!views/admin/locations/index.html',
     'collections/locations',
-    'collections/maps'
+    'collections/maps',
+    'biz/imageManager',
+    'utils/extensions/updatingCollectionView',
+    'views/admin/locations/locationItem'
 ],
-    function ($, _, Backbone, require, html, locations, maps) {
+    function ($, _, Backbone, require, html, locations, maps, imageManager,UpdatingCollectionView, LocationItemView) {
 
         var View = Backbone.View.extend({
             collection:locations,
             events:{
-                'click .navItem':"onNavigateTo",
-                'click .delete' : "deleteLocation",
-                'click .edit' : "editLocation"
+                'click .navItem':"onNavigateTo"
             },
 
             initialize:function () {
@@ -22,33 +23,23 @@ define([
                 // load maps synchronously
                 maps.fetch({async:false});
 
-                this.bindTo(this.collection, 'all', this.render);
+                // setup collections view
+                this._collectionView = new UpdatingCollectionView({
+                    collection           : this.collection,
+                    childViewConstructor : LocationItemView,
+                    childViewTagName     : 'tr',
+                    childViewOptions     : {
+                        maps : maps
+                    }
+                });
+
                 this.collection.fetch({ cache: false });
             },
 
             render:function () {
-
-                this.$el.html(_.template(html,{locations:this.collection.toJSON(), maps:maps.toJSON()}));
-            },
-
-            deleteLocation : function(el){
-
-                var id = $(el.target).attr('data-id');
-                var model = locations.get(id);
-
-                require(['biz/deleteConfirm'], function (lib) {
-                    lib('Location: ' + model.get('name'), function (model) {
-                        model.destroy();
-                    }, model);
-                });
-                return false;
-            },
-
-            editLocation:function(el){
-                var id = $(el.target).attr('data-id');
-                require(['itworks.app'], function (app) {
-                    app.getRouter().navigate('locations_edit/'+id, {trigger:true});
-                });
+                this.$el.html(html);
+                this._collectionView.el = this.$('.servicesContainer');
+                this._collectionView.render();
             }
         });
         // Our module now returns an instantiated view

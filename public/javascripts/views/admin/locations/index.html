@@ -6,40 +6,17 @@
             <thead>
             <tr>
                 <th>Name</th>
+                <th>Searchable</th>
                 <th>Description</th>
-                <th>MapId</th>
+                <th>Map</th>
+                <th>Image</th>
             </tr>
             </thead>
-            <tbody>
-            <% _.each(locations,function(item,key,list){ %>
-            <tr>
-                <% var map = _.find(maps, function(m){if (m._id == item.mapId) return m;}); if (!map){map = {name:'---'};}%>
-                <!-- use variables -->
-                <td><%= item.name %></td>
-                <td><%= item.description %></td>
-                <td><%= map.name %></td>
-                <td><a class="edit" data-id="<%= item._id %>">Edit</a></td>
-                <td><a class="delete" data-id="<%= item._id %>">Delete</a></td>
-            </tr>
-            <% }) %>
+            <tbody class="servicesContainer">
             </tbody>
         </table>
     </div>
 </div>
 <div class="row-fluid">
     <button class="btn navItem" data-navitem="">Go Back</button>
-</div>
-
-<div class="modal hide" id="deleteLocation">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Modal header</h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete location?</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">No</a>
-        <a href="#" id="btnDeleteLocation" class="btn btn-primary">Yes</a>
-    </div>
 </div>

@@ -35,7 +35,7 @@ define([
             var self = this;
             var node = mapState.get('selectedNode') || {x:0, y:0};
             // load location creator
-            require(['views/maps/edit/modals/locationCreate/module', 'models/locationModel'], function(module, LocationModel) {
+            require(['views/admin/maps/edit/modals/locationCreate/module', 'models/locationModel'], function(module, LocationModel) {
 
                 module(self.model, node, function($form){
                     var location = new LocationModel();

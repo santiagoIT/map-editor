@@ -4,7 +4,8 @@ define([
     'backbone',
     'bizClient/toIntroNavigator',
     'models/searchModel',
-    'collections/services',
+    'collections/locations',
+    'collections/maps',
     'text!views/client/services/index.html',
     'text!views/client/services/searchResults.html',
     'text!views/client/services/modalSearchResultPopup.html',
@@ -15,13 +16,16 @@ define([
     'views/client/common/searchResults',
     'views/client/common/modalSearchResultPopup'
 ],
-    function ($, _, Backbone,  toIntroNavigator, SearchModel, services, html, htmlResults, htmlModalPopUp,
+    function ($, _, Backbone,  toIntroNavigator, SearchModel, locations, maps, html, htmlResults, htmlModalPopUp,
               MainMenuView, IndexBarView, SearchView, KeyboardView, SearchResultsView, ModalPopUpView) {
         var View = Backbone.View.extend({
 
-            collection : services,
+            collection : locations,
 
             initialize:function () {
+
+                // load maps synchronously
+                maps.fetch({async:false});
 
                 this.searchModel = new SearchModel();
                 this.toIntroNavigator = toIntroNavigator;
@@ -65,7 +69,16 @@ define([
                 this.bindTo(this.searchView, 'searchTermEntered', this.searchTermEntered, this);
 
                 // search results
-                this.searchResultsView = new SearchResultsView(this.searchModel, htmlResults);
+                var renderOptions = {
+                    getMapShortNameFor : function(location){
+                        var map = maps.get(location.mapId);
+                        if (!map){
+                            return '--';
+                        }
+                        return map.get('shortName');
+                    }
+                }
+                this.searchResultsView = new SearchResultsView(this.searchModel, htmlResults, renderOptions);
                 this.searchResultsView.setElement(this.$el.find('.searchResults')[0]);
                 this.addChildView(this.searchResultsView);
                 this.bindTo(this.searchResultsView, 'searchResultClicked', this.searchResultClicked, this);
@@ -79,7 +92,7 @@ define([
             searchIndexChanged : function(char) {
                 var charLower = char.toLowerCase();
                 var results = this.collection.filter(function (service) {
-                    var name = service.get("title");
+                    var name = service.get("name");
                     if (name && (name[0] == char || name[0] == charLower)) {
                         return true;
                     }
@@ -104,9 +117,12 @@ define([
 
             searchTermEntered : function (searchTerm) {
                 var results = this.collection.filter(function (loc) {
+                    if (!loc.includeInSearch){
+                        return false;
+                    }
 
                     var pattern = new RegExp(searchTerm, "gi");
-                    return pattern.test(loc.get("title"));
+                    return pattern.test(loc.get("name"));
                 });
                 this.searchModel.set('results', results);
             },

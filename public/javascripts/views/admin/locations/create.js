@@ -4,9 +4,12 @@ define([
     'backbone',
     'require',
     'text!views/admin/locations/create.html',
-    'models/locationModel'
+    'models/locationModel',
+    'biz/imageUploader',
+    'libs/jquery.iframe-transport/jquery.iframe-transport',
+    'bootstrap_wysihtml5'
 ],
-    function ($, _, Backbone, require, html, LocationModel) {
+    function ($, _, Backbone, require, html, LocationModel, imageUploader) {
 
         var View = Backbone.View.extend({
             events:{
@@ -18,10 +21,11 @@ define([
 
             initialize:function () {
                 this.$el.html(html);
+                this.$el.find('textarea[name="description"]').wysihtml5();
             },
 
             render:function () {
-
+                return this;
             },
 
             onSubmit : function (el) {

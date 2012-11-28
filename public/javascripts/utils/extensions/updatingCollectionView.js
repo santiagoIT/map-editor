@@ -10,7 +10,8 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
     
             this._childViewConstructor = options.childViewConstructor;
             this._childViewTagName = options.childViewTagName;
-    
+            this._childViewOptions = options.childViewOptions;
+
             this._myModelViews = [];
     
             this.collection.each(this.add);
@@ -21,18 +22,20 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
         },
 
         onCollectionReset : function() {
-            console.log(this.collection.toJSON());
             this.collection.forEach(function(mapModel){
-                console.log('one');
                 this.add(mapModel);
             }, this);
         },
     
         add : function(model) {
-            var childView = new this._childViewConstructor({
+            var options = {
                 tagName : this._childViewTagName,
                 model : model
-            });
+            };
+            if (this._childViewOptions) {
+                _.extend(options, this._childViewOptions);
+            }
+            var childView = new this._childViewConstructor(options);
     
             this._myModelViews.push(childView);
     

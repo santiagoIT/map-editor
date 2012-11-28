@@ -24,11 +24,6 @@ define([
             'tunnels_create' : 'tunnels_create',
             'tunnels_edit/:id' : 'tunnels_edit',
 
-            // services
-            'services' : 'services',
-            'services_edit/:id' : 'services_edit',
-            'services_create' : 'services_create',
-
             // doctors
             'doctors' : 'doctors',
             'doctors_edit/:id' : 'doctors_edit',

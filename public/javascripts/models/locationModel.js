@@ -6,12 +6,14 @@ define([
         defaults:{
             // grid layout
             name:'',
+            includeInSearch : true,
             description:'',
             node : {
                 x : 0,
                 y : 0
             }
         },
+
         urlRoot:'api/locations',
         idAttribute: "_id"
     });

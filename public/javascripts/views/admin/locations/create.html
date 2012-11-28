@@ -9,9 +9,18 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="description">Description</label>
+                <label class="control-label">Description</label>
+
+                <div class="controls span12">
+                    <textarea class="field span12" placeholder="Enter content ..." name="description" rows="20"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="imageUrl">Image</label>
+
                 <div class="controls">
-                    <input type="text" class="input-xlarge" id="description" name="description">
+                    <input class="input-file" id="imageUrl" type="file" name="imageUrl">
+                    <input type="hidden" name="path_imageUrl" value="services">
                 </div>
             </div>
             <div class="form-actions">
