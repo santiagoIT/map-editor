@@ -103,7 +103,16 @@ define([
                 var results = this.collection.filter(function (loc) {
 
                     var pattern = new RegExp(searchTerm, "gi");
-                    return pattern.test(loc.get("lastName"));
+                    var check = pattern.test(loc.get("lastName"));
+                    if (check){
+                        return true;
+                    }
+                    check = pattern.test(loc.get("speciality"));
+                    if (check){
+                        return true;
+                    }
+
+                    return false;
                 });
                 this.searchModel.set('results', results);
             },
