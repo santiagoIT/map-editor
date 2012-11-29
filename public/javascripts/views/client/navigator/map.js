@@ -236,7 +236,6 @@ define([
                             }
                         }
                     }, 200);
-                    console.log('interval set: ', this.timerID);
                 }
             },
 

@@ -7,7 +7,10 @@
         </div>
         <% } %>
         <div class="pull-right">
-        <img src="/images/services/icon.png" />
+            <a class="genericCallback" href="#">
+                <img src="/images/services/icon.png" data-callback="navigateTo" />
+            </a>
+
         </div>
     </div>
     <div class="modal-body">
@@ -19,9 +22,6 @@
             <div class="pull-left">
                 <p><%=model.description%><p>
             </div>
-        </div>
-        <div>
-            <button class="btn btn-primary genericCallback" data-callback="navigateTo">Navigate To</button>
         </div>
         <% } %>
     </div>

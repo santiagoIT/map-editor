@@ -39,6 +39,7 @@ define([
             },
 
             triggerCallback : function(event) {
+                event.preventDefault();
                 var $el = $(event.target);
                 var fnName = $el.attr('data-callback');
                 if (fnName && this.viewOptions[fnName]) {
