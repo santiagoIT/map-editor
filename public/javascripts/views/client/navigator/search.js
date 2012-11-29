@@ -45,7 +45,6 @@ define([
             launchJorneyManager : function(a1, a2, a3) {
                 var
                     journey = this.model.get('journey');
-                console.log(journey);
                 if (journey) {
                     journeyManager.continueJourney(this.model);
                 }

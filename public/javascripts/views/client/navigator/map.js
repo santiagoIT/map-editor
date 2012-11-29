@@ -32,6 +32,7 @@ define([
 
                 this.model = model;
                 this.maps = maps;
+                this.locations = locations;
                 var mapId = this.model.get('currentMapId');
                 if (mapId) {
                     this.onCurrentMapChanged();
@@ -76,7 +77,9 @@ define([
                 if (this.path) {
                     if (!this.finalDestinationReached && this.nodeCounter >= this.path.length-1) {
 
+                        console.log('interval cleared: ', this.timerID);
                         window.clearInterval(this.timerID);
+                        delete this.timerID;
 
                         // finished a PF leg, did we complete journey?
                         var
@@ -161,8 +164,10 @@ define([
                 };
                 this.toIntroNavigator.startCounting();
                 this.destinations.push(entry);
-                var timerId = window.setInterval(function(){
-                    window.clearInterval(timerId);
+                    this.destinationReachedTimerId = window.setInterval(function(){
+                    console.log('interval cleared - onDestinationReached', self.destinationReachedTimerId);
+                    window.clearInterval(self.destinationReachedTimerId);
+                    delete self.destinationReachedTimerId;
                     // remove from list
                     index = _.indexOf(self.destinations, entry);
                     self.destinations.splice(index,1);
@@ -170,7 +175,8 @@ define([
                     self.path = null;
                     self.render();
                     self.toIntroNavigator.startCounting();
-                },10000);
+                },10*1000);
+                console.log('interval set - onDestinationReached', this.destinationReachedTimerId);
             },
 
             onTransitionTo:function () {
@@ -200,6 +206,14 @@ define([
                 if (!(node && target)) {
                     return;
                 }
+
+                // clear previous this.destinationReachedTimerId timer
+                if (this.destinationReachedTimerId){
+                    console.log('interval cleared - onDestinationReached', this.destinationReachedTimerId);
+                    window.clearInterval(this.destinationReachedTimerId);
+                    delete this.destinationReachedTimerId;
+                }
+
                 var mapId = this.model.get('currentMapId');
                 var map = this.maps.get(mapId);
 
@@ -212,16 +226,23 @@ define([
                 var finder = new PF.AStarFinder();
                 this.path = finder.findPath(node.x, node.y, target.x, target.y, grid);
                 if (this.path) {
+                    if (this.timerID) {
+                        console.log('interval cleared: ', this.timerID);
+                        window.clearInterval(this.timerID);
+                        delete this.timerID;
+                    }
                     // set timer
                     var self = this;
                     this.nodeCounter = 0;
                     this.timerID = window.setInterval(function () {
                         self.render();
-                        if (self.nodeCounter < self.path.length-1) {
-                            self.nodeCounter++;
+                        if (self.path) {
+                            if (self.nodeCounter < self.path.length-1) {
+                                self.nodeCounter++;
+                            }
                         }
                     }, 200);
-
+                    console.log('interval set: ', this.timerID);
                 }
             },
 
@@ -251,6 +272,8 @@ define([
                     self.$el.css('background-image', 'url("' + fallbackUrl + '")'); // Set source path
                 };
                 image.src = url;
+                // reset hotspots
+                this.hotspots = this.locations.where({mapId:id});
             },
 
             onCanvasClick : function(event) {

@@ -60,7 +60,6 @@ define(function () {
                     })
                 }
             }
-            console.log('fetching...');
             return cached;
         },
 

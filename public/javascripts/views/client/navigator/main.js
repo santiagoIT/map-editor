@@ -120,7 +120,6 @@ define([
                 if (options.model.imageUrl){
                     options.imageUrl = '/data/images/'+ options.model.imageUrl;
                 }
-                console.log('location', options);
                 this.locationPopUpView.showModal(options);
             },
 
