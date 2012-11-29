@@ -135,8 +135,24 @@ define([
                         return false;
                     }
 
+                    // check name
                     var pattern = new RegExp(searchTerm, "gi");
-                    return pattern.test(loc.get("name"));
+                    if (pattern.test(loc.get("name"))) {
+                        return true;
+                    }
+
+                    // check map
+                    var map = maps.get(loc.get('mapId'));
+                    if (map){
+                        if (pattern.test(map.get('shortName'))) {
+                            return true;
+                        }
+                        if (pattern.test(map.get('name'))) {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 });
                 this.searchModel.set('results', results);
             },
