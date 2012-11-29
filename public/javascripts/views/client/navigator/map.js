@@ -77,7 +77,6 @@ define([
                 if (this.path) {
                     if (!this.finalDestinationReached && this.nodeCounter >= this.path.length-1) {
 
-                        console.log('interval cleared: ', this.timerID);
                         window.clearInterval(this.timerID);
                         delete this.timerID;
 
@@ -165,7 +164,6 @@ define([
                 this.toIntroNavigator.startCounting();
                 this.destinations.push(entry);
                     this.destinationReachedTimerId = window.setInterval(function(){
-                    console.log('interval cleared - onDestinationReached', self.destinationReachedTimerId);
                     window.clearInterval(self.destinationReachedTimerId);
                     delete self.destinationReachedTimerId;
                     // remove from list
@@ -176,7 +174,6 @@ define([
                     self.render();
                     self.toIntroNavigator.startCounting();
                 },10*1000);
-                console.log('interval set - onDestinationReached', this.destinationReachedTimerId);
             },
 
             onTransitionTo:function () {
@@ -198,7 +195,6 @@ define([
             },
 
             onPathFind:function () {
-                console.log('onPathFind');
                 this.path = null;
                 this.finalDestinationReached = false;
                 var node = this.model.get('pathFrom');
@@ -209,7 +205,6 @@ define([
 
                 // clear previous this.destinationReachedTimerId timer
                 if (this.destinationReachedTimerId){
-                    console.log('interval cleared - onDestinationReached', this.destinationReachedTimerId);
                     window.clearInterval(this.destinationReachedTimerId);
                     delete this.destinationReachedTimerId;
                 }
@@ -227,7 +222,6 @@ define([
                 this.path = finder.findPath(node.x, node.y, target.x, target.y, grid);
                 if (this.path) {
                     if (this.timerID) {
-                        console.log('interval cleared: ', this.timerID);
                         window.clearInterval(this.timerID);
                         delete this.timerID;
                     }
@@ -252,6 +246,14 @@ define([
                 if (!this.map) {
                     return;
                 }
+
+                // clear any remaining state
+                if (this.path) {
+                    delete this.path;
+                    this.path = null;
+                }
+                this.destinations = [];
+
                 var imageName = this.map.get('imageName');
                 var url = imageManager.getUrl(imageName);
                 // set background
