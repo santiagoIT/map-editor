@@ -18,16 +18,20 @@ define([
         initialize:function () {
         },
 
-        getDataAsJson:function () {
+        setJsonResults : function(arJson) {
+            // sort
+            if (this.fnSort) {
+                arJson = this.fnSort(arJson);
+            }
+            this.set('results', arJson);
+        },
+
+        getData:function () {
             var data = this.get('pageResults');
             if (!data) {
                 return [];
             }
-
-            var arJson = _.map(data, function (l) {
-                return l.toJSON();
-            })
-            return arJson;
+            return data;
         },
 
         showPage : function(page) {
@@ -88,7 +92,7 @@ define([
                 pageCount: pageCount,
                 btnPreviousClass : btnPreviousClass,
                 btnNextClass : btnNextClass,
-                data: this.getDataAsJson(),
+                data: this.getData(),
                 haveSearched : this.get('haveSearched')
             };
         }

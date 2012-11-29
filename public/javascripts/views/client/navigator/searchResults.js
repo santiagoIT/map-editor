@@ -36,13 +36,21 @@ define([
                 // get all results
                 var results = this.searchModel.get('results');
 
-                //TODO: sort
+                //var arJson = results.toJSON();
+                var arJson = _.map(results, function(e) {
+                    return e.toJSON();
+                });
+
+                // sort
+                if (this.searchModel.fnSort) {
+                    arJson = this.searchModel.fnSort(arJson);
+                }
 
                 // pagination
                 var page = this.searchModel.get('page');
                 var itemsPerPage = this.searchModel.get('itemsPerPage');
 
-                var subset = results.slice(page*itemsPerPage, page*itemsPerPage+itemsPerPage);
+                var subset = arJson.slice(page*itemsPerPage, page*itemsPerPage+itemsPerPage);
 
                 this.searchModel.set('pageResults', subset);
                 var alreadyShowing = this.searchModel.get('showResults');

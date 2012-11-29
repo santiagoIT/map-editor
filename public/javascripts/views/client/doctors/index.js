@@ -24,6 +24,17 @@ define([
                 this.$el.html(html);
 
                 this.searchModel = new SearchModel();
+                this.searchModel.fnSort = function(arEntries) {
+                    arEntries.sort(function(a,b){
+                        var n1 = a.lastName;
+                        var n2 = b.lastName;
+                        if (n1 < n2) {
+                            return -1;
+                        }
+                        return 1;
+                    });
+                    return arEntries;
+                };
                 this.toIntroNavigator = toIntroNavigator;
 
                 // fetch data, proceed only when promises complete
@@ -85,7 +96,10 @@ define([
                     return false;
                 });
 
-                this.searchModel.set('results', results);
+                var arJson = _.map(results, function(entry) {
+                    return entry.toJSON();
+                });
+                this.searchModel.set('results', arJson);
             },
 
             searchResultClicked : function (id) {
@@ -115,11 +129,17 @@ define([
 
                     return false;
                 });
-                this.searchModel.set('results', results);
+                var arJson = _.map(results, function(entry) {
+                    return entry.toJSON();
+                });
+                this.searchModel.set('results', arJson);
             },
 
             showAll : function() {
-                this.searchModel.set('results', this.collection);
+                var arJson = _.map(this.collection.models, function(entry) {
+                    return entry.toJSON();
+                });
+                this.searchModel.setJsonResults(arJson);
             },
 
             render:function () {

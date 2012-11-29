@@ -36,6 +36,17 @@ define([
 
                 this.model = new NavigatorModel();
                 this.searchModel = new SearchModel();
+                this.searchModel.fnSort = function(arEntries) {
+                    arEntries.sort(function(a,b){
+                        var n1 = a.name;
+                        var n2 = b.name;
+                        if (n1 < n2) {
+                            return -1;
+                        }
+                        return 1;
+                    });
+                    return arEntries;
+                };
                 this.bindTo(this.model, 'change:navigating', this.navigationChanged);
                 this.bindTo(this.model, 'PF_completed', this.pathFindingComplete);
 

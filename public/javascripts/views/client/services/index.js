@@ -28,6 +28,17 @@ define([
                 maps.fetch({async:false});
 
                 this.searchModel = new SearchModel();
+                this.searchModel.fnSort = function(arEntries) {
+                    arEntries.sort(function(a,b){
+                        var n1 = a.name;
+                        var n2 = b.name;
+                        if (n1 < n2) {
+                            return -1;
+                        }
+                        return 1;
+                    });
+                    return arEntries;
+                };
                 this.toIntroNavigator = toIntroNavigator;
 
                 this.$el.html(html);
@@ -104,7 +115,11 @@ define([
                     return false;
                 });
 
-                this.searchModel.set('results', results);
+                var arJson = _.map(results, function(entry) {
+                   return entry.toJSON();
+                });
+
+                this.searchModel.setJsonResults(arJson);
             },
 
             searchResultClicked : function (id) {
@@ -154,7 +169,10 @@ define([
 
                     return false;
                 });
-                this.searchModel.set('results', results);
+                var arJson = _.map(results, function(entry) {
+                    return entry.toJSON();
+                });
+                this.searchModel.setJsonResults(arJson);
             },
 
             render:function () {
@@ -162,7 +180,10 @@ define([
             },
 
             showAllLocations : function() {
-                this.searchModel.set('results', this.collection);
+                var arJson = _.map(this.collection.models, function(entry) {
+                    return entry.toJSON();
+                });
+                this.searchModel.setJsonResults(arJson);
             }
         });
 

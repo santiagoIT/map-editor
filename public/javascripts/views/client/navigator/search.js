@@ -52,7 +52,6 @@ define([
             },
 
             search:function (el) {
-
                 var
                     journey = this.model.get('journey');
                 if (journey) {
@@ -73,8 +72,6 @@ define([
 
                 // store all results
                 this.searchModel.set('results', results);
-
-                //TODO: sort
 
                 // pagination (trigger a page change!)
                 this.searchModel.set('page', -1);

@@ -35,8 +35,6 @@ define([
                 // get all results
                 var results = this.searchModel.get('results');
 
-                //TODO: sort
-
                 // pagination
                 var page = this.searchModel.get('page');
                 var itemsPerPage = this.searchModel.get('itemsPerPage');
@@ -64,6 +62,7 @@ define([
                 if (this.renderOptions){
                     _.extend(options,this.renderOptions);
                 }
+
                 this.$el.html(this.template(options));
 
                 return this;
