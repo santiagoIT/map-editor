@@ -1,25 +1,25 @@
 <div class="modal-client modal hide fade">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <% if (model) { %>
-        <div class="pull-left">
-        <h3><%=model.name%></h3>
-        </div>
-        <% } %>
-        <div class="pull-right">
-            <a class="genericCallback" href="#">
-                <img src="/images/services/icon.png" data-callback="navigateTo" />
-            </a>
-
-        </div>
     </div>
     <div class="modal-body">
-        <% if (model) { %>
-        <div>
+        <div class="modalRow">
+            <% if (model) { %>
+            <div class="pull-left">
+                <h2><%=model.name%></h2>
+            </div>
+            <div class="pull-right serviceNavigator">
+                <a class="genericCallback" href="#">
+                    <img src="/images/services/icon.png" data-callback="navigateTo" />
+                </a>
+
+            </div>
+        </div>
+        <div class="modalRow">
             <div class="pull-left">
                 <img src="<%= imageUrl %>" alt=" data-id="<%= model._id %>">
             </div>
-            <div class="pull-left">
+            <div class="pull-right serviceDescription">
                 <p><%=model.description%><p>
             </div>
         </div>
