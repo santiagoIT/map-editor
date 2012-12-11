@@ -5321,7 +5321,6 @@ a {
   width: 480px;
   height: 280px;
   margin-right: 40px;
-  overflow: scroll;
 }
 .doctors-container .doctor-top-logo {
   margin-right: 40px;
@@ -5359,7 +5358,6 @@ a {
   height: 250px;
   width: 400px;
   margin-right: 40px;
-  overflow: scroll;
 }
 .indexBar {
   position: absolute;
