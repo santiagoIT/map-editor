@@ -32,7 +32,14 @@ var fnProcessGenericCollection = function(callback, Model, arImageFields) {
             for (var j in arImageFields) {
                 var fieldName = arImageFields[j];
                 if (item[fieldName]) {
-                    arAssetList.push(item[fieldName]);
+                    // download only once (could be used multiple times)
+                    var remotePath = item[fieldName];
+                    if (arAssetList.indexOf(remotePath) == -1) {
+                        arAssetList.push(remotePath);
+                    }
+                    else {
+                        console.log('File already downloaded. Skipped. ', remotePath);
+                    }
                 }
             }
         }
