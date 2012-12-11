@@ -180,7 +180,16 @@ define([
             },
 
             showAllLocations : function() {
-                var arJson = _.map(this.collection.models, function(entry) {
+
+                var results = this.collection.filter(function (loc) {
+                    if (!loc.get('includeInSearch')){
+                        return false;
+                    }
+                    return true;
+                    }
+                );
+
+                var arJson = _.map(results, function(entry) {
                     return entry.toJSON();
                 });
                 this.searchModel.setJsonResults(arJson);
