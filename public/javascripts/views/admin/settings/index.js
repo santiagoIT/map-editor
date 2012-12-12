@@ -19,7 +19,8 @@ define([
             initialize:function () {
                 this.viewModel = {
                     mapsShowHotspots : kioskHelper.getValueFromLocalStorage('mapsShowHotspots', "false"),
-                    mapsShowClosestClickTarget : kioskHelper.getValueFromLocalStorage('mapsShowClosestClickTarget', "false")
+                    mapsShowClosestClickTarget : kioskHelper.getValueFromLocalStorage('mapsShowClosestClickTarget', "false"),
+                    toIntroTimerAt : kioskHelper.getValueFromLocalStorage('toIntroTimerAt', "100")
                 }
 
                 console.log('settings', this.viewModel);
@@ -48,6 +49,7 @@ define([
 
                 kioskHelper.saveValueToLocalStorage('mapsShowHotspots', data.mapsShowHotspots);
                 kioskHelper.saveValueToLocalStorage('mapsShowClosestClickTarget', data.mapsShowClosestClickTarget);
+                kioskHelper.saveValueToLocalStorage('toIntroTimerAt', data.toIntroTimerAt);
 
                 require(['itworks.app'], function (app) {
                     app.getRouter().navigate('', {trigger:true});

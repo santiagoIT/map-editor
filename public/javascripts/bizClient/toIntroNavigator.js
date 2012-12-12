@@ -2,9 +2,10 @@ define([
     'jquery',
     'Underscore',
     'backbone',
+    'biz/kioskHelper',
     'text!views/client/common/toIntroModal.html'
 ],
-    function ($, _, Backbone, modalHtml) {
+    function ($, _, Backbone, kioskHelper, modalHtml) {
 
        var
            _secsToWait = 100, // number of seconds
@@ -12,6 +13,10 @@ define([
            _timerId,
            _$modal = null,
            _$countdownText = null;
+
+        // allow secs to wait override
+        _secsToWait = parseInt(kioskHelper.getValueFromLocalStorage('toIntroTimerAt', "100"));
+        console.log('_secsToWait', _secsToWait);
 
        var startCounting = function() {
            if (!_timerId) {
