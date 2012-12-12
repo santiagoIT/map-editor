@@ -2,7 +2,8 @@ module.exports = {
     index : function(req, res) {
         var
             enableRightClick = 0;
-        if (process.env['ENABLE_RIGHTCLICK']){
+        if (process.env['ENABLE_RIGHTCLICK'] && process.env['ENABLE_RIGHTCLICK'] == 1){
+            console.log('RightClickEnabled');
             enableRightClick = 1;
         }
         res.render('index',
