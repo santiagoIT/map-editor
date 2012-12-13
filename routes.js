@@ -47,6 +47,8 @@ module.exports = function (app) {
     app.get('/admin/localSetup', ensureAuthenticated, admin.localSetup);
     app.post('/admin/localSetup', ensureAuthenticated, admin.localSetupPost);
     app.get('/admin/localSetupSuccess', ensureAuthenticated, admin.localSetupSuccess);
+    app.get('/admin/importCsvFile', ensureAuthenticated, admin.importCsvFile);
+    app.post('/admin/importCsvFile', ensureAuthenticated, admin.importCsvFilePost);
 
     // api - maps
     app.get('/api', ensureAuthenticated, api.api);

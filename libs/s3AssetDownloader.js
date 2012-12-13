@@ -106,11 +106,7 @@ module.exports = {
         async.parallel([fnProcessMaps, fnProcessServices, fnProcessDoctors], function(err, results){
 
             // copy locally
-            async.forEach(arAssetList, function(item, callback) {
-                downloadFile(item, callback);
-            }, function(err){
-                mainCallback(err);
-            });
+            async.forEach(arAssetList, downloadFile, mainCallback);
         });
 
     }

@@ -1,5 +1,6 @@
 var
-    s3AssetDownloader = require('../libs/s3AssetDownloader');
+    s3AssetDownloader = require('../libs/s3AssetDownloader'),
+    csvFileImporter = require('../libs/doctorCsvFileImporter');
 
 module.exports = {
     index : function(req, res) {
@@ -20,5 +21,17 @@ module.exports = {
 
     localSetupSuccess : function(req, res) {
         res.render('admin/localSetupSuccess', { title: 'Local Server Setup' });
+    },
+
+    importCsvFile : function(req,res) {
+        res.render('admin/importCsvFile', { title: 'Import CSV File' });
+    },
+
+    importCsvFilePost : function(req, res, next) {
+
+        csvFileImporter.processCsvFile(req, res, function(err){
+            // TODO: handle error
+            res.redirect('/admin/localSetupSuccess');
+        });
     }
 };
