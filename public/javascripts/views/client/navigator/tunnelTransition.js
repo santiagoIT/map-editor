@@ -26,7 +26,6 @@ define([
                     }
                 });
 
-            $modal.find('.modal-header > h3').html(description);
             $modal.find('.modal-body > p').html(instructions);
             $modal.find('#timeCountDown').html(timeLeft);
         }
