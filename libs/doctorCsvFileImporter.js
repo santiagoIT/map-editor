@@ -30,6 +30,11 @@ var fnProcessLine = function(item, callback) {
         speciality : tokens[3].trim(),
         details : tokens[4].trim() // address
     };
+
+    if (!data.lastName) {
+        callback();
+        return;
+    }
     if (phone) {
         data.details += '<br/>' + phone;
     }
