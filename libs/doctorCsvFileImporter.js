@@ -10,16 +10,29 @@ var
  */
 
 var fnProcessLine = function(item, callback) {
-    var tokens = item.split(',');
-    if (tokens.length < 2) {
+    if (!item) {
         callback();
         return;
     }
+    var tokens = item.split(',');
+    if (tokens.length < 6) {
+        callback();
+        return;
+    }
+
+    var
+        phone = tokens[5].trim(),
+        image = tokens[6].trim();
+
     var data = {
-        firstName : tokens[0],
-        lastName : tokens[1],
-        speciality : tokens[3]
+        firstName : tokens[0].trim(),
+        lastName : tokens[1].trim(),
+        speciality : tokens[3].trim(),
+        details : tokens[4].trim() // address
     };
+    if (phone) {
+        data.details += '<br/>' + phone;
+    }
 
     DoctorModel.find({firstName: data.firstName, lastName: data.lastName}, function (err, entries) {
         if (err) {
@@ -36,13 +49,14 @@ var fnProcessLine = function(item, callback) {
             callback();
             return;
         }
-
-        // update doctor
-
+        else if (entries.length > 0){
+            var model = entries[0];
+            console.log('found one', model);
+            model.set(data);
+            model.save();
+        }
 
         callback();
-
-        console.log('Name', data.firstName, data.lastName);
     }
         );
 };

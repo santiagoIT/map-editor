@@ -31,12 +31,18 @@ define([
                 // We keep track of the rendered state of the view
                 this._rendered = true;
 
-                // reset select
-                this.$el.html(this.template({
+                var data = {
                     s3Root: imageManager.getS3Root(),
                     model:this.model.toJSON(),
                     mapName : this.mapName
-                }));
+                };
+                // trim description
+                if (data.model.description.length > 60) {
+                    data.model.description = data.model.description.substring(0, 60) + ' ...';
+                }
+
+                // reset select
+                this.$el.html(this.template(data));
 
                 return this;
             },

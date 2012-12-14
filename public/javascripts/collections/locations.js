@@ -7,7 +7,11 @@ define([
     var LocationCollection = Backbone.Collection.extend({
 
         model: Map,
-        url : 'api/locations'
+        url : 'api/locations',
+
+        comparator: function( collection ){
+            return( collection.get( 'name' ) );
+        }
     });
     return new LocationCollection;
 });

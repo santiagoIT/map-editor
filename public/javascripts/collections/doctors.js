@@ -7,7 +7,11 @@ define([
     var Collection = Backbone.Collection.extend({
 
         model: Model,
-        url : 'api/doctors'
+        url : 'api/doctors',
+
+        comparator: function( collection ){
+            return( collection.get( 'lastName' ) );
+        }
     });
     return new Collection;
 });
