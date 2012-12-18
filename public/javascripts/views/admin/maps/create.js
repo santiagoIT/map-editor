@@ -7,7 +7,8 @@ define([
     'models/mapModel',
     'collections/maps',
     'biz/imageUploader',
-    'libs/jquery.iframe-transport/jquery.iframe-transport'
+    'libs/jquery.iframe-transport/jquery.iframe-transport',
+    'libs/jquery-plugins/jquery-to-json'
 ],
     function ($, _, Backbone, require, html, MapModel, maps, imageUploader) {
 
