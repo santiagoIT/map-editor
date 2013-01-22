@@ -15,6 +15,12 @@ define([
             'services' : 'services',
             'doctors' : 'doctors',
 
+            // messages
+            'messages' : 'messages',
+            'createMessage' : 'createMessage',
+            'writeMessage' : 'writeMessage',
+            'messageSent' : 'messageSent',
+
             // Default
             '*actions':'defaultAction'
         },
@@ -42,6 +48,20 @@ define([
         // services
         services : function() {
             this.launchView('views/client/services/index');
+        },
+
+        // messages
+        messages : function() {
+            this.launchView('views/client/messages/index');
+        },
+        createMessage : function() {
+            this.launchView('views/client/messages/createMessage');
+        },
+        writeMessage : function() {
+            this.launchView('views/client/messages/writeMessage');
+        },
+        messageSent : function() {
+            this.launchView('views/client/messages/messageSent');
         },
 
         defaultAction:function (actions) {
