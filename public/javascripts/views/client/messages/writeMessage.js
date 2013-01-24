@@ -3,14 +3,16 @@ define([
     'Underscore',
     'backbone',
     'bizClient/toIntroNavigator',
+    'views/client/keyboard/main',
     'text!views/client/messages/writeMessage.html'
 ],
-    function ($, _, Backbone, toIntroNavigator, html) {
+    function ($, _, Backbone, toIntroNavigator, KeyboardView, html) {
         var View = Backbone.View.extend({
 
             events:{
                 //'click .navItem':"onNavigateTo",
-                'click .btnSubmitMessage':"onBtnSubmitMessage"
+                'click .btnSubmitMessage':"onBtnSubmitMessage",
+                'focus textarea' : 'showKeyboard'
             },
 
             initialize:function () {
@@ -23,7 +25,11 @@ define([
 
                 this.$el.html(html);
 
-                console.log('roomNumber', this.options[0], 'delivery', this.options[1]);
+                // keyboard view
+                this.keyboardView = new KeyboardView();
+                var $keyboard = this.$el.find('.keyboard');
+                $keyboard.append(this.keyboardView.el);
+                this.addChildView(this.keyboardView);
             },
 
                 onBtnSubmitMessage :  function(el){
@@ -45,6 +51,14 @@ define([
                 // launch writeMessagePage
                 this.onNavigateTo(el);
             },
+
+            showKeyboard:function(event) {
+                this.keyboardView.$el.parent().show();
+
+                var $element = $(event.target);
+                this.keyboardView.setFocusedElement($element);
+            },
+
 
             render:function () {
 
