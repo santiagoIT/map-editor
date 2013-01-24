@@ -2,9 +2,10 @@ define([
     'jquery',
     'Underscore',
     'backbone',
-    'text!views/client/intro/index.html'
+    'bizClient/toIntroNavigator',
+    'text!views/client/messages/index.html'
 ],
-    function ($, _, Backbone, html) {
+    function ($, _, Backbone, toIntroNavigator, html) {
         var View = Backbone.View.extend({
 
             events:{
@@ -13,10 +14,11 @@ define([
 
             initialize:function () {
                 this.$el.html(html);
+                toIntroNavigator.addHomeRoute('#messages');
             },
 
             render:function () {
-
+                return this;
             }
         });
 

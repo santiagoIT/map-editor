@@ -4987,6 +4987,41 @@ a.badge:hover {
 .affix {
   position: fixed;
 }
+.containerHorizontal {
+  width: 1280px;
+}
+.messages-intro {
+  background-image: url('/images/messages/bkgd.jpg');
+  width: 1280px;
+  height: 720px;
+}
+#btnTouchHereMsg {
+  position: relative;
+  background-image: url('/images/messages/btnTouchMe.png');
+  width: 198px;
+  height: 69px;
+  cursor: pointer;
+  top: 300px;
+  left: 300px;
+}
+.btnWriteMessage {
+  cursor: pointer;
+  position: relative;
+  background-image: url('/images/messages/btnTouchMe.png');
+  width: 198px;
+  height: 69px;
+  top: 300px;
+  left: 300px;
+}
+.btnSubmitMessage {
+  cursor: pointer;
+  position: relative;
+  background-image: url('/images/messages/btnTouchMe.png');
+  width: 198px;
+  height: 69px;
+  top: 300px;
+  left: 300px;
+}
 body {
   -webkit-user-select: none;
   -moz-user-select: none;

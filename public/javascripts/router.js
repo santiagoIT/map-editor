@@ -18,7 +18,7 @@ define([
             // messages
             'messages' : 'messages',
             'createMessage' : 'createMessage',
-            'writeMessage' : 'writeMessage',
+            'writeMessage/:room/:delivery' : 'writeMessage',
             'messageSent' : 'messageSent',
 
             // Default
@@ -57,8 +57,8 @@ define([
         createMessage : function() {
             this.launchView('views/client/messages/createMessage');
         },
-        writeMessage : function() {
-            this.launchView('views/client/messages/writeMessage');
+        writeMessage : function(room, delivery) {
+            this.launchView('views/client/messages/writeMessage', room, delivery);
         },
         messageSent : function() {
             this.launchView('views/client/messages/messageSent');
@@ -73,9 +73,25 @@ define([
             Backbone.history.start();
         },
 
-        launchView : function(view, id){
+        launchView : function(view){
+
+            var args = Array.prototype.slice.call(arguments);
+            var options = {};
+            if (args.length > 1) {
+                args = args.slice(1);
+                // keep compatibility with existing views
+                if (args.length == 1) {
+                    options = args[0];
+                }
+                else {
+                    _.each(args, function(value, key, list){
+                        options[key] = value;
+                    });
+                }
+            }
+
             require([view], function(View){
-                viewManager.showView(new  View(id));
+                viewManager.showView(new  View(options));
             });
         }
     });

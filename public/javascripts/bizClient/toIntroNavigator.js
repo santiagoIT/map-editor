@@ -12,10 +12,13 @@ define([
            _counter,
            _timerId,
            _$modal = null,
+           _routeToNavigateTo = '',
+           _additionalHomeRoutes = [],
            _$countdownText = null;
 
         // allow secs to wait override
         _secsToWait = parseInt(kioskHelper.getValueFromLocalStorage('toIntroTimerAt', "100"));
+      //  _secsToWait = 12;
         console.log('_secsToWait', _secsToWait);
 
        var startCounting = function() {
@@ -35,7 +38,7 @@ define([
 
             var $modal = null;
 
-            if (_counter == 10 && window.location.hash) {
+            if (_counter == 10 && !isHomeRoute()) {
 
                 // show modal
                 var self = this;
@@ -61,12 +64,13 @@ define([
 
             if (_counter <= 0) {
 
-                if (window.location.hash) {
+                if (!isHomeRoute()) {
                     _$modal.modal('hide'); // navigate();
                 }
                 else {
                     // just reset counter until a change happens
                     _counter = _secsToWait;
+                    console.log('skipped because on home route');
                 }
 
                 return;
@@ -84,12 +88,27 @@ define([
             require(['itworks.app'], function (app) {
                 // hide any modals
                 $('.modal').modal('hide');
-                app.getRouter().navigate('', {trigger:true});
+                app.getRouter().navigate(_routeToNavigateTo, {trigger:true});
             });
         };
 
+        var isHomeRoute = function() {
+            if (!window.location.hash) {
+                return true;
+            }
+
+            return _additionalHomeRoutes.indexOf(window.location.hash) != -1;
+        };
+
         var exports = {
-            startCounting : startCounting
+            startCounting : startCounting,
+            setRouteToNavigateTo : function(route) {
+                _routeToNavigateTo = route;
+            },
+
+            addHomeRoute : function (route) {
+                _additionalHomeRoutes.push(route);
+            }
         };
 
         return exports;

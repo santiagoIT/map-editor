@@ -1,9 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+<div class="row">
+    <div class="containerHorizontal">
+        <div>
+            <h1>Here we create a message!!!!</h1>
+            <div>
+                <div class="control-group">
+                    <label class="control-label" for="roomNumber">Numero de habitacion</label>
 
-</body>
-</html>
+                    <div class="controls">
+                        <input type="text" class="input-block-level" id="roomNumber" name="roomNumber" >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Metodo</label>
+
+                    <div class="controls">
+                        <select id="deliveryMode">
+                            <option value="sms">SMS</option>
+                            <option value="email" selected>Email</option>
+                            <option value="room">Monitor Cuarto</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-error"></div>
+                    <div class="navItem btnWriteMessage" data-navitem="writeMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
