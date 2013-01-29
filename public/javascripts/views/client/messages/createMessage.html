@@ -1,32 +1,37 @@
-<div class="row">
-    <div class="containerHorizontal">
-        <div>
-            <h1>Here we create a message!!!!</h1>
+    <div class="row">
+        <div class="containerHorizontal messages-intro">
             <div>
-                <div class="control-group">
-                    <label class="control-label" for="roomNumber">Numero de habitacion</label>
+                <div class="createMessageFormContainer">
+                        <div class="createMessageFormContainerWraper">
+                            <div class="control-group">
+                                <label class="control-label" for="roomNumber">Numero de habitacion</label>
 
-                    <div class="controls">
-                        <input type="text" class="input-block-level" id="roomNumber" name="roomNumber" >
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">Metodo</label>
+                                <div class="controls">
+                                    <input type="text" class="input-block-level" id="roomNumber" name="roomNumber" >
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="name">Nombre</label>
 
-                    <div class="controls">
-                        <select id="deliveryMode">
-                            <option value="sms">SMS</option>
-                            <option value="email" selected>Email</option>
-                            <option value="room">Monitor Cuarto</option>
-                        </select>
+                                <div class="controls">
+                                    <input type="text" class="input-block-level" id="name" name="name" >
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="email">Email</label>
+
+                                <div class="controls">
+                                    <input type="text" class="input-block-level" id="email" name="email" >
+                                </div>
+                            </div>
+                        <div>
+                            <div class="text-error"></div>
+                            <div class="btnWriteMessage" data-navitem="writeMessage"></div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div class="text-error"></div>
-                    <div class="navItem btnWriteMessage" data-navitem="writeMessage"></div>
                 </div>
             </div>
+            <div id="btnMessageHome" class="navItem" data-navitem="messages"></div>
         </div>
+        <div id="keyboardPortrait" class="keyboard hide"></div>
     </div>
-    <div class="keyboard hide"></div>
-</div>

@@ -1,21 +1,23 @@
 <div class="row">
-    <div class="containerHorizontal">
-        <div>
-            <h1>Here we WRITE a message!!!!</h1>
+    <div class="containerHorizontal messages-intro">
+        <div class="writeMessageContainer">
             <div>
-                <div class="control-group">
-                    <label class="control-label" for="message">Mensaje</label>
-
-                    <div class="controls">
-                        <textarea rows="12" cols="12" id="message" name="message"></textarea>
-                    </div>
-                </div>
                 <div>
-                    <div class="text-error"></div>
-                    <div class="navItem btnSubmitMessage" data-navitem="messageSent"></div>
+                    <div class="control-group">
+                        <label class="control-label" for="message">Escribe tu mensaje de maximo 140 caracteres!</label>
+
+                        <div class="controls">
+                            <textarea id="message" name="message"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-error"></div>
+                        <div class="navItem btnSubmitMessage" data-navitem="messageSent"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="keyboard hide"></div>
+
+    <div id="keyboardPortrait" class="keyboard hide"></div>
 </div>

@@ -19,7 +19,6 @@ define([
         // allow secs to wait override
         _secsToWait = parseInt(kioskHelper.getValueFromLocalStorage('toIntroTimerAt', "100"));
       //  _secsToWait = 12;
-        console.log('_secsToWait', _secsToWait);
 
        var startCounting = function() {
            if (!_timerId) {

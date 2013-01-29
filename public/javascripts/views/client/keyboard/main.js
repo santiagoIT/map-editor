@@ -19,6 +19,7 @@ define([
                 'click #swapKeyboard':"onSwapKeyboard"
             },
             lettersShown: true,
+            _doneCallback:null,
 
             initialize:function () {
                 this.$el.html(html);
@@ -115,6 +116,15 @@ define([
                 this.$el.parent().hide();
             },
 
+            setDoneBehaviour: function (text, callback) {
+                if (text) {
+                    this.$el.find('#inputDone').text(text);
+                }
+                if (callback) {
+                    this._doneCallback = callback;
+                }
+            },
+
             onCharPress:function(el){
                 var $element = $(el.target);
                 var text = this.$focusedElement.val();
@@ -158,6 +168,12 @@ define([
             },
 
             onInputDone : function(){
+
+                if (this._doneCallback) {
+                    this._doneCallback();
+                    return;
+                }
+
                 var $form = this.$focusedElement.closest('form');
                 if ($form) {
                     $form.submit();

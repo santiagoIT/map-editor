@@ -18,7 +18,7 @@ define([
             // messages
             'messages' : 'messages',
             'createMessage' : 'createMessage',
-            'writeMessage/:room/:delivery' : 'writeMessage',
+            'writeMessage' : 'writeMessage',
             'messageSent' : 'messageSent',
 
             // Default
@@ -57,8 +57,8 @@ define([
         createMessage : function() {
             this.launchView('views/client/messages/createMessage');
         },
-        writeMessage : function(room, delivery) {
-            this.launchView('views/client/messages/writeMessage', room, delivery);
+        writeMessage : function() {
+            this.launchView('views/client/messages/writeMessage');
         },
         messageSent : function() {
             this.launchView('views/client/messages/messageSent');
