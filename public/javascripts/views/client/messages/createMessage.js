@@ -77,9 +77,7 @@ define([
 
                 // all OK!
                 // launch writeMessagePage
-                var route = $(el.target).attr('data-navitem');
-                $(el.target).attr('data-navitem', route);
-                this.onNavigateTo(el);
+                this.navigateToRoute('writeMessage');
             },
 
             validateEmail: function(email) {

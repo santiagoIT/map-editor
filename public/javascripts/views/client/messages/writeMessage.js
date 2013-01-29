@@ -11,8 +11,6 @@ define([
         var View = Backbone.View.extend({
 
             events:{
-                //'click .navItem':"onNavigateTo",
-                'click .btnSubmitMessage':"onBtnSubmitMessage",
                 'focus textarea' : 'showKeyboard'
             },
 
@@ -42,15 +40,11 @@ define([
                 // configure keyboard behaviour
                 var self = this;
                 this.keyboardView.setDoneBehaviour('ENVIAR', function() {
-
-                    var el = {
-                        target: self.$el.find('.btnSubmitMessage')[0]
-                    }
-                    self.onBtnSubmitMessage(el);
+                    self.onSubmitMessage();
                 });
             },
 
-            onBtnSubmitMessage :  function(el){
+            onSubmitMessage :  function(){
 
                 // get from local storage
                 var msgInfo = JSON.parse(kioskHelper.getValueFromLocalStorage("messageInfo"));
@@ -79,8 +73,7 @@ define([
 
 
                 // all OK!
-                // launch writeMessagePage
-                this.onNavigateTo(el);
+                this.navigateToRoute('messageSent');
             },
 
             showKeyboard:function(event) {

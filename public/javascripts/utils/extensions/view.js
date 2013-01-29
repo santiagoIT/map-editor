@@ -3,6 +3,10 @@ define(['Underscore', 'backbone'], function (_, Backbone) {
     // extend backbone views
     Backbone.View.prototype.onNavigateTo = function (el) {
         var route = $(el.target).attr('data-navitem');
+        return this.navigateToRoute(route);
+    };
+    // extend backbone views
+    Backbone.View.prototype.navigateToRoute = function (route) {
         require(['itworks.app'], function (app) {
             app.getRouter().navigate(route, {trigger:true});
         });
